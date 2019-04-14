@@ -22,9 +22,10 @@ library.add(faAngry);
 Vue.component("fa-icon", FontAwesomeIcon);
 
 import {} from "./apis/request";
+import "@/components/global.js";
 console.log("A");
-import Loading from "./components/loading";
-Vue.use(Loading);
+// import Loading from "./components/loading";
+// Vue.use(Loading);
 
 // 封装好的有拦截器的axios：this.$http
 // import packedAxios from "./utils/axios";
