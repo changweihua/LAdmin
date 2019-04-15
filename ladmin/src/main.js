@@ -23,7 +23,7 @@ Vue.component("fa-icon", FontAwesomeIcon);
 
 import {} from "./apis/request";
 import "@/components/global.js";
-console.log("A");
+
 // import Loading from "./components/loading";
 // Vue.use(Loading);
 

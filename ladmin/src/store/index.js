@@ -6,6 +6,8 @@ import persistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
+import { _PERMISSION } from '@/store/permission';
+
 export default new Vuex.Store({
   state: {
     CURRENT_USER: {}
@@ -16,6 +18,9 @@ export default new Vuex.Store({
     }
   },
   actions: {},
+  modules: {
+    permission: _PERMISSION
+  },
   plugins: [
     persistedState({
       // storage: {

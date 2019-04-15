@@ -1,3 +1,9 @@
+const path = require("path");
+
+function resolve(dir) {
+  return path.join(__dirname, dir);
+}
+
 module.exports = {
     publicPath: '/', // 部署应用时的根路径(默认'/'),也可用相对路径(存在使用限制)
     outputDir: 'dist', // 运行时生成的生产环境构建文件的目录(默认''dist''，构建之前会被清除)
@@ -13,6 +19,11 @@ module.exports = {
             title: 'Index Page', // 当使用 title 选项时,在 template 中使用：<title><%= htmlWebpackPlugin.options.title %></title>
             chunks: ['chunk-vendors', 'chunk-common', 'index'] // 在这个页面中包含的块，默认情况下会包含,提取出来的通用 chunk 和 vendor chunk
         }
+        // subpage: {
+        //   entry: "src/pages/subpage/main.js",
+        //   template: "public/subpage.html",
+        //   filename: "subpage/index.html"
+        // }
     },
     lintOnSave: true, // 是否在保存的时候检查
     productionSourceMap: true, // 生产环境是否生成 sourceMap 文件
@@ -44,5 +55,22 @@ module.exports = {
     pluginOptions: {
         // 第三方插件配置
         // ...
+    },
+    // chainWebpack: config => {
+    //   // TODO: Remove this workaround once https://github.com/vuejs/vue-cli/issues/2463 is fixed
+    //   // Remove preload plugins for multi-page build to prevent infinite recursion
+    //   Object.keys(pagesObject).forEach(page => {
+    //     config.plugins.delete(`preload-${page}`)
+    //     config.plugins.delete(`prefetch-${page}`)
+    //   })
+    // }
+    chainWebpack: config => {
+      config.plugins.delete('preload');
+      config.plugins.delete('prefetch');
+      config.resolve.alias
+        .set("@", resolve("src"))
+        .set("scss", resolve("src/scss"))
+        .set("assets", resolve("src/assets"))
+        .set("components", resolve("src/components"));
     }
 };

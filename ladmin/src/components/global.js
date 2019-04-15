@@ -5,7 +5,7 @@ function capitalizeFirstLetter(string) {
 }
 
 // 找到components文件夹下以.vue命名的文件
-const requireComponent = require.context('.', true, /.vue$/);
+const requireComponent = require.context('components', true, /.vue$/);
 requireComponent.keys().forEach(fileName => {
   const componentConfig = requireComponent(fileName);
   // var cmpt = fileName.slice(fileName.lastIndexOf("/"));
