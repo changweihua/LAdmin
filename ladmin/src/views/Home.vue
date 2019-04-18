@@ -1,13 +1,14 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <hello-world msg="Welcome to Your Vue.js App222222222222222222222222"/>
+    <hello-world :msg="configurationList.length+''"/>
     <loading />
-    abc
+    <x-table :table-columns="tableColumns" :table-data="configurationList" />
   </div>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import { values } from "@/apis/account";
 import { userList } from "@/apis/user";
 
@@ -15,13 +16,29 @@ export default {
   name: "home",
   components: {
   },
+  data() {
+    return {
+      tableColumns: [{
+        prop: 'configurationName',
+        label: 'ConfigurationName'
+      }]
+    }
+  },
   mounted() {
-    values().then(res => {
-      console.log(res);
-    });
-    userList().then(res => {
-      console.log(res);
-    });
+    this.fetchList()
+    console.log(this.$store.state.configuration.configurationList)
+  },
+  watch: {
+  },
+  computed: {
+    // ...mapState(["configurationList"])
+    ...mapState({
+      "configurationList": state => state.configuration.configurationList 
+    })
+    // ...mapState('configuration', ['configurationList'])
+  },
+  methods: {
+    ...mapActions(["fetchList"])
   }
 };
 </script>

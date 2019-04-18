@@ -51,4 +51,4 @@ function filterAsyncRouter(routers) {
 //   return () => import(`@/view/modules/${view}`);
 // }
 
-export default _PERMISSION;
+export { _PERMISSION } ;

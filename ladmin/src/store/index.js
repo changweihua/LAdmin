@@ -7,8 +7,10 @@ import persistedState from "vuex-persistedstate";
 Vue.use(Vuex);
 
 import { _PERMISSION } from '@/store/permission';
+import { configurationModule } from '@/store/configuration';
 
 export default new Vuex.Store({
+  // namespace: true,
   state: {
     CURRENT_USER: {}
   },
@@ -19,7 +21,8 @@ export default new Vuex.Store({
   },
   actions: {},
   modules: {
-    permission: _PERMISSION
+    permission: _PERMISSION,
+    configuration: configurationModule
   },
   plugins: [
     persistedState({
