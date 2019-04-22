@@ -2,14 +2,20 @@ import Vue from "vue";
 import Vuex from "vuex";
 import vuexCache from "vuex-cache";
 import persistedState from "vuex-persistedstate";
+import createLogger from "vuex/dist/logger";
 // import * as Cookies from "js-cookie";
 
 Vue.use(Vuex);
 
-import { _PERMISSION } from '@/store/permission';
+import { permissionModule } from '@/store/permission';
 import { configurationModule } from '@/store/configuration';
 
-export default new Vuex.Store({
+const debug = process.env.NODE_ENV !== 'production';
+const createPersisted = persistedState({
+  storage: window.sessionStorage
+});
+
+const store = new Vuex.Store({
   // namespace: true,
   state: {
     CURRENT_USER: {}
@@ -21,21 +27,11 @@ export default new Vuex.Store({
   },
   actions: {},
   modules: {
-    permission: _PERMISSION,
+    permission: permissionModule,
     configuration: configurationModule
   },
-  plugins: [
-    persistedState({
-      // storage: {
-      //   getItem: key => Cookies.get(key),
-      //   // Please see https://github.com/js-cookie/js-cookie#json, on how to handle JSON.
-      //   setItem: (key, value) => {
-      //     Cookies.set(key, value, { expires: 3, secure: true });
-      //   },
-      //   removeItem: key => Cookies.remove(key)
-      // },
-      storage: window.sessionStorage
-    }),
-    vuexCache({ timeout: 2000 })
-  ]
+  plugins: debug ? [createLogger(), createPersisted] : [createPersisted]
+  // vuexCache({ timeout: 2000 })
 });
+
+export default store;
