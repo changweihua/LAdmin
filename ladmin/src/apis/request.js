@@ -1,7 +1,7 @@
 import Vue from "vue";
 import axios from "axios";
 import { throwErr } from "@/utils"; //utils 捕捉服务端http状态码的方法
-import store from "@/store";   //引入vuex的相关操作
+// import store from "@/store";   //引入vuex的相关操作
 import { Message, Loading } from "element-ui"; //element Toast的提示
 // import router from "@/router";
 

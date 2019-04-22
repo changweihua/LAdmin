@@ -1,29 +1,21 @@
 export const constantRouterMap = [
-  {
-    path: "/",
-    name: "home",
-    component: () => import(/* webpackChunkName: "adminLayout" */"@/layout/Admin.vue"),
-    meta: {
-      requireLogin: true
-    },
-    children: [
-      {
-        path: "home",
-        name: "homeIndex",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        // /* webpackChunkName: "about" */
-        component: () => import(/* webpackChunkName: "home" */ "@/views/Home.vue")
-      }
-    ]
-  }
   // {
-  //   path: "/login",
-  //   name: "login",
-  //   component: () =>
-  //     import(/* webpackChunkName: "login" */ "@/views/account/Login.vue")
+  //   path: "/",
+  //   name: "admin",
+  //   component: () => import(/* webpackChunkName: "adminLayout" */"@/layout/Admin.vue")
+  //   // redirect: '/home'
   // },
+  {
+    path: "/login",
+    name: "login",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "@/views/account/Login.vue"),
+    meta: {
+      hidden: true,
+      icon: 'home'
+    },
+    noDropdown: true
+  },
   // {
   //   path: "/404",
   //   name: "404",
