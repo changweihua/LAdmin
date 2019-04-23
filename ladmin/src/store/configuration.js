@@ -1,31 +1,29 @@
-import { fetchConfigurationList } from "@/apis/configuration";
+import { fetchConfigurationList } from '@/apis/configuration'
 
 const configurationModule = {
   state: {
-    configurationList: [],
+    configurationList: []
   },
   mutations: {
     setList(state, rows) {
-      console.log(rows);
-      state.configurationList = rows.slice();
-      console.log(state);
+      state.configurationList = rows.slice()
     }
   },
   actions: {
     fetchList({ commit }, query) {
+      console.log(query)
       fetchConfigurationList({
         limit: 20,
         page: 1
-      }).then(res => {
-        console.log("then");
-        console.log(res);
-        commit('setList', res.pager.items);
-      }).catch(err => {
-        console.log("catch");
-        console.log(err);
-      });
+      })
+        .then((res) => {
+          commit('setList', res.pager.items)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
-};
+}
 
-export { configurationModule } ;
+export { configurationModule }

@@ -1,25 +1,29 @@
 // 动态需要根据权限加载的路由表
 export const asyncRouterMap = [
   {
-    path: "/",
-    name: "admin",
-    component: () => import(/* webpackChunkName: "adminLayout" */"@/layout/Admin.vue"),
-    // redirect: '/admin/index',
+    path: '/',
+    name: 'admin',
+    component: () =>
+      import(/* webpackChunkName: 'adminLayout' */ '@/layout/Admin.vue'),
+    // redirect: {
+    //   name: 'home'
+    // },
     meta: {
       requireLogin: true
     },
     children: [
       {
-        path: "home",
-        name: "homeIndex",
+        path: 'home',
+        name: 'homeIndex',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        // /* webpackChunkName: "about" */
-        component: () => import(/* webpackChunkName: "home" */ "@/views/Home.vue")
+        // /* webpackChunkName: 'about' */
+        component: () =>
+          import(/* webpackChunkName: 'home' */ '@/views/Home.vue')
       }
     ]
-  },
+  }
   // {
   //   path: '/permission',
   //   // name: 'permissionhome',
@@ -40,5 +44,4 @@ export const asyncRouterMap = [
   //     }
   //   ]
   // },
-  { path: '*', redirect: '/404', hidden: true }
-];
+]

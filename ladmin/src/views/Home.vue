@@ -8,37 +8,39 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
-import { values } from "@/apis/account";
-import { userList } from "@/apis/user";
+// import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+// import { values } from '@/apis/account'
+// import { userList } from '@/apis/user'
 
 export default {
-  name: "home",
-  components: {
-  },
+  name: 'home',
+  components: {},
   data() {
     return {
-      tableColumns: [{
-        prop: 'configurationName',
-        label: 'ConfigurationName'
-      }]
+      tableColumns: [
+        {
+          prop: 'configurationName',
+          label: 'ConfigurationName'
+        }
+      ]
     }
   },
   mounted() {
     this.fetchList()
     console.log(this.$store.state.configuration.configurationList)
   },
-  watch: {
-  },
+  watch: {},
   computed: {
-    // ...mapState(["configurationList"])
-    ...mapState({
-      "configurationList": state => state.configuration.configurationList 
-    })
+    ...mapState(['configuration.configurationList'])
+    // ...mapState({
+    //   'configurationList': (state) =>
+    //     state.configuration.configurationList
+    // })
     // ...mapState('configuration', ['configurationList'])
   },
   methods: {
-    ...mapActions(["fetchList"])
+    ...mapActions(['fetchList'])
   }
-};
+}
 </script>
