@@ -193,9 +193,12 @@ export default {
   },
   methods: {
     handleCommand(command) {
+      let that = this
+
       this.$message("click on item " + command);
       if (command === "logout") {
-        localStorage.JWT_TOKEN = "";
+        that.$store.commit('SET_CURRENT_USER', {})
+        that.$store.commit('SET_JWT_TOKEN', '')
         this.$router.replace({
           name: "login"
         });
