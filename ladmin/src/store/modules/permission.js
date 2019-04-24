@@ -36,7 +36,7 @@ const permissionModule = {
       // 和已经存在的路由表拼接
       state.routers = constantRouterMap.concat(routers)
       // 404 页 '*' 放在所有route之后
-      let notFound = { path: '*', redirect: '/404', hidden: true }
+      let notFound = { path: '*', redirect: '/404', meta: { hidden: true } }
 
       state.addRouters.push(notFound)
       state.routers.push(notFound)
@@ -44,14 +44,22 @@ const permissionModule = {
     }
   },
   actions: {
-    generateRoutes({ commit }, response) {
+    generateRoutes({ commit, state }, response) {
       console.log(response)
       const accessedRouters = asyncRouterMap.filter((v) => {
         console.log(v)
         return true
       })
+      let lastRouters = []
+      if (state.routers) {
+        lastRouters = accessedRouters.filter(accessedRouter => {
+          return !state.routers.some(route => { return accessedRouter.path === route.path })
+        })
+      } else {
+        lastRouters = accessedRouters
+      }
 
-      commit('setRouters', accessedRouters)
+      commit('setRouters', lastRouters)
       // let asyncRouters = filterAsyncRouter(response);
       // asyncRouters.push({ path: '*', redirect: '/404', hidden: true });
       // commit('setRouters', asyncRouters);

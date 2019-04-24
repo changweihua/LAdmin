@@ -7,8 +7,9 @@ import createLogger from 'vuex/dist/logger'
 
 Vue.use(Vuex)
 
-import { permissionModule } from '@/store/permission'
-import { configurationModule } from '@/store/configuration'
+import { permissionModule } from '@/store/modules/permission'
+import { configurationModule } from '@/store/modules/configuration'
+import getters from '@/store/getters'
 
 const debug = process.env.NODE_ENV !== 'production'
 const createPersisted = persistedState({
@@ -18,14 +19,19 @@ const createPersisted = persistedState({
 const store = new Vuex.Store({
   // namespace: true,
   state: {
-    CURRENT_USER: {}
+    CURRENT_USER: {},
+    JWT_TOKEN: ''
   },
   mutations: {
     SET_CURRENT_USER(state, user) {
       state.CURRENT_USER = user
+    },
+    SET_JWT_TOKEN(state, token) {
+      state.JWT_TOKEN = token
     }
   },
   actions: {},
+  getters: getters,
   modules: {
     permission: permissionModule,
     configuration: configurationModule

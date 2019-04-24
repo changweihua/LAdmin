@@ -44,7 +44,7 @@ module.exports = {
       proxy: {
         // 配置多个代理(配置一个 proxy: 'http://localhost:4000' )
         "/api": {
-          target: 'http://localhost:6373',
+          target: 'http://localhost:56491',
           // target: 'http://192.168.1.4:8999',
           pathRewrite: {
             '^/api': '/api'

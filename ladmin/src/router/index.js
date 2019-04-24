@@ -23,9 +23,12 @@ const router = new Router({
 // 所以需要鉴权,我都会在路由meta添加添加一个字段requireLogin,设置为true的时候
 // 这货就必须走鉴权,像登录页这些不要,是可以直接访问的!!!
 router.beforeEach((to, from, next) => {
-  // if (true || to.matched.some((res) => res.meta.requireLogin)) {
+  console.log(store.getters.addRouters)
+  console.log(to)
+  if (to.matched.some((res) => res.meta.requireLogin)) {
     // 判断是否需要登录权限
-    if (window.localStorage.JWT_TOKEN && window.localStorage.JWT_TOKEN !== '') {
+    console.log(store.getters.currentUser)
+    if (store.getters.currentUser && store.getters.token !== '') {
       // 判断是否登录
       // JSON.parse(window.localStorage.getItem('JWT_TOKEN')).lifeTime
       let lifeTime = new Date().getTime() * 1000
@@ -34,29 +37,25 @@ router.beforeEach((to, from, next) => {
 
       if (nowTime < lifeTime) {
         console.log(to)
-        console.log(store.state.permission.addRouters)
+        console.log(store.getters.addRouters)
         // 路由是否加载完成标识
-        if (!store.state.permission.routerLoadDone) {
+        if (!store.getters.routerLoadDone) {
         // if (store.state.permission.addRouters.length === 1) {
           store
-            .dispatch('generateRoutes', [
-              {
-                path: 'home',
-                name: 'about',
-                component: 'About'
-              }
-            ])
+            .dispatch('generateRoutes', [])
             .then(() => {
               // store.getters.addRouters
               // 动态添加可访问路由表
-              console.log(store.state.permission.addRouters)
-              router.addRoutes(store.state.permission.addRouters)
+              console.log(store.getters.addRouters)
+              router.addRoutes(store.getters.addRouters)
               // router.addRoutes({ path: '*', redirect: '/404', hidden: true })
               // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
               // eslint-disable-next-line new-cap
               next({ ...to, replace: true })
             })
         } else {
+          console.log(store.getters.addRouters)
+          console.log(to)
           next()
         }
       } else {
@@ -77,9 +76,19 @@ router.beforeEach((to, from, next) => {
         path: '/login'
       })
     }
-  // } else {
-  //   next()
-  // }
+  } else {
+    if (to.matched.length === 0) {
+      next({
+        path: '/login'
+      })
+    } else {
+      next()
+    }
+  }
+})
+
+router.afterEach(() => {
+  // NProgress.done() // 结束Progress
 })
 
 export default router

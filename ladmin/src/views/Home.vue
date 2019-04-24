@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
     <hello-world :msg="configurationList.length+''"/>
     <loading />
     <x-table :table-columns="tableColumns" :table-data="configurationList" />
@@ -32,11 +31,11 @@ export default {
   },
   watch: {},
   computed: {
-    ...mapState(['configuration.configurationList'])
-    // ...mapState({
-    //   'configurationList': (state) =>
-    //     state.configuration.configurationList
-    // })
+    // ...mapState(['configuration.configurationList'])
+    ...mapState({
+      'configurationList': (state) =>
+        state.configuration.configurationList
+    })
     // ...mapState('configuration', ['configurationList'])
   },
   methods: {
