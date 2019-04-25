@@ -36,10 +36,10 @@ const permissionModule = {
       // 和已经存在的路由表拼接
       state.routers = constantRouterMap.concat(routers)
       // 404 页 '*' 放在所有route之后
-      let notFound = { path: '*', redirect: '/404', meta: { hidden: true } }
+      // let notFound = { path: '*', redirect: '/404', meta: { hidden: true } }
 
-      state.addRouters.push(notFound)
-      state.routers.push(notFound)
+      // state.addRouters.push(notFound)
+      // state.routers.push(notFound)
       state.routerLoadDone = true
     }
   },

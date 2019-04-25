@@ -19,6 +19,7 @@ const router = new Router({
 })
 
 var isRouterGenerated = false
+var isChanged = false
 
 // 路由拦截
 // 差点忘了说明,不是所有版块都需要鉴权的
@@ -73,16 +74,31 @@ router.beforeEach((to, from, next) => {
       // 路由是否加载完成标识
       // if (!store.getters.routerLoadDone) {
       console.log(isRouterGenerated)
-      var isChanged = false
+     
       if (!isRouterGenerated) {
         if (store.getters.addRouters.length > 0) {
+          store
+            .dispatch('generateRoutes', [])
+            .then(() => {
+              // store.getters.addRouters
+              // 动态添加可访问路由表
+              console.log(store.getters.addRouters)
+              router.addRoutes(store.getters.routers)
+              // router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
+              isRouterGenerated = true
+              isChanged = true
+              // router.addRoutes({ path: '*', redirect: '/404', hidden: true })
+              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+              // eslint-disable-next-line new-cap
+              next({ ...to, replace: true })
+            })
           console.log('load from local')
-          router.addRoutes(store.getters.addRouters)
-          // router.addRoutes({ path: '*', redirect: '/404', hidden: true })
-          isRouterGenerated = true
-          isChanged = true
-          // next()
-          next({ ...to, replace: true })
+          // router.addRoutes(store.getters.addRouters)
+          // // router.addRoutes({ path: '*', redirect: '/404', hidden: true })
+          // isRouterGenerated = true
+          // isChanged = true
+          // // next()
+          // next({ ...to, replace: true })
           // next({
           //   path: to.path
           // })
@@ -93,8 +109,7 @@ router.beforeEach((to, from, next) => {
               // store.getters.addRouters
               // 动态添加可访问路由表
               console.log(store.getters.addRouters)
-              router.addRoutes(store.getters.addRouters)
-              // router.addRoutes({ path: '*', redirect: '/404', hidden: true })
+              router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
               isRouterGenerated = true
               isChanged = true
               // router.addRoutes({ path: '*', redirect: '/404', hidden: true })
@@ -107,7 +122,9 @@ router.beforeEach((to, from, next) => {
         // next({ ...to, replace: true })
       } else {
         console.log('isChanged'+isChanged)
+        // next()
         if (isChanged) {
+          isChanged = false
           next({ ...to, replace: true })
         } else {
           next()
