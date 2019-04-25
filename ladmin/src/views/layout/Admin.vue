@@ -197,7 +197,7 @@ export default {
 
       this.$message("click on item " + command);
       if (command === "logout") {
-        that.$store.commit('SET_CURRENT_USER', {})
+        that.$store.commit('SET_CURRENT_USER', false)
         that.$store.commit('SET_JWT_TOKEN', '')
         this.$router.replace({
           name: "login"

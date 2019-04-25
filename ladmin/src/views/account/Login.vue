@@ -56,7 +56,7 @@ export default {
   methods: {
     handleLoginClick() {
       let that = this
-
+      that.$store.commit('RESET_ROUTERLOADDONE', false)
       login(this.account)
         .then((res) => {
           window.localStorage.JWT_TOKEN = res.token

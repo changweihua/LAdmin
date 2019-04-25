@@ -42,13 +42,13 @@
         <template slot="title">
           <fa-icon icon="language"></fa-icon> {{item.name}}
         </template>
-        <router-link v-for="child in item.children" :key="child.path" class="title-link" :to="item.path+'/'+child.path">
+        <router-link v-for="child in item.children" :key="child.path" class="title-link" :to="{ name: child.name }">
           <el-menu-item :index="item.path+'/'+child.path">
             {{child.name}}
           </el-menu-item>
         </router-link>
       </el-submenu>
-      <router-link :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :to="item.children[0].path">
+      <router-link :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :to="'/'+item.children[0].path">
         <el-menu-item :index="item.path+'/'+item.children[0].path">
           <fa-icon icon="language"></fa-icon> {{item.name}}
         </el-menu-item>

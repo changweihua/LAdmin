@@ -1,13 +1,13 @@
 import { constantRouterMap } from '@/router/constantRouterMap'
 import { asyncRouterMap } from '@/router/asyncRouterMap'
 // import vuexCache from 'vuex-cache';
-import persistedState from 'vuex-persistedstate'
-import createLogger from 'vuex/dist/logger'
+// import persistedState from 'vuex-persistedstate'
+// import createLogger from 'vuex/dist/logger'
 
-const debug = process.env.NODE_ENV !== 'production'
-const createPersisted = persistedState({
-  storage: window.sessionStorage
-})
+// const debug = process.env.NODE_ENV !== 'production'
+// const createPersisted = persistedState({
+//   storage: window.sessionStorage
+// })
 
 // function hasPermission(roles, route) {
 //   return true
@@ -25,7 +25,7 @@ const permissionModule = {
     routerLoadDone: false
   },
   mutations: {
-    SET_ROUTERLOADDONE: (state, routerLoadDone) => {
+    RESET_ROUTERLOADDONE: (state, routerLoadDone) => {
       state.routerLoadDone = routerLoadDone
       state.routers = constantRouterMap
       state.addRouters = []
@@ -89,8 +89,8 @@ const permissionModule = {
       //   resolve()
       // })
     }
-  },
-  plugins: debug ? [createLogger(), createPersisted] : [createPersisted]
+  }
+  // plugins: debug ? [createLogger(), createPersisted] : [createPersisted]
 }
 
 // function filterAsyncRouter(routers) {

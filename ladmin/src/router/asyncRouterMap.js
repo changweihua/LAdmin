@@ -3,7 +3,7 @@ export const asyncRouterMap = [
   {
     path: '/configuration',
     name: 'configuration',
-    // redirect: 'list',
+    redirect: 'configurationList',
     component: () =>
       import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
     // redirect: {

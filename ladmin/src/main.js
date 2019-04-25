@@ -15,6 +15,8 @@ import { faAmilia } from '@fortawesome/free-brands-svg-icons'
 import { faAngry } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+import { constantRouterMap } from '@/router/constantRouterMap'
+
 library.add(faCoffee)
 library.add(faLanguage)
 library.add(faAmilia)
@@ -111,5 +113,13 @@ new Vue({
   router,
   store,
   i18n,
-  render: (h) => h(App)
+  render: (h) => h(App),
+  created: function() {
+    console.log(store.getters.routers)
+    // if (store.getters.addRouters.length > 0) {
+    //   let userPath = constantRouterMap.concat(store.getters.addRouters)
+    //   this.$router.addRoutes(userPath)
+    //   this.$router.push('/')
+    // }
+  }
 }).$mount('#app')
