@@ -26,6 +26,7 @@ const permissionModule = {
   },
   mutations: {
     RESET_ROUTERLOADDONE: (state, routerLoadDone) => {
+      console.log('RESET_ROUTERLOADDONE')
       state.routerLoadDone = routerLoadDone
       state.routers = constantRouterMap
       state.addRouters = []
@@ -47,19 +48,18 @@ const permissionModule = {
     generateRoutes({ commit, state }, response) {
       console.log(response)
       const accessedRouters = asyncRouterMap.filter((v) => {
-        console.log(v)
         return true
       })
-      let lastRouters = []
-      if (state.routers) {
-        lastRouters = accessedRouters.filter(accessedRouter => {
-          return !state.routers.some(route => { return accessedRouter.path === route.path })
-        })
-      } else {
-        lastRouters = accessedRouters
-      }
-
-      commit('setRouters', lastRouters)
+      // let lastRouters = []
+      // if (state.routers) {
+      //   lastRouters = accessedRouters.filter(accessedRouter => {
+      //     return !state.routers.some(route => { return accessedRouter.path === route.path })
+      //   })
+      // } else {
+      //   lastRouters = accessedRouters
+      // }
+      // console.log(lastRouters)
+      commit('setRouters', accessedRouters)
       // let asyncRouters = filterAsyncRouter(response);
       // asyncRouters.push({ path: '*', redirect: '/404', hidden: true });
       // commit('setRouters', asyncRouters);

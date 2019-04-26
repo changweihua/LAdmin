@@ -3,7 +3,6 @@ import Vue from "vue";
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
 // 找到components文件夹下以.vue命名的文件
 const requireComponent = require.context('components', true, /.vue$/);
 requireComponent.keys().forEach(fileName => {

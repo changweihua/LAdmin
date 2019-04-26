@@ -109,13 +109,15 @@ Vue.config.productionTip = false
 //   }
 // });
 
+console.log('from main.js')
+
 new Vue({
   router,
   store,
   i18n,
   render: (h) => h(App),
   created: function() {
-    console.log(store.getters.routers)
+    console.log('app created')
     // if (store.getters.addRouters.length > 0) {
     //   let userPath = constantRouterMap.concat(store.getters.addRouters)
     //   this.$router.addRoutes(userPath)

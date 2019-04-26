@@ -6,7 +6,7 @@
           <div class="isClossTab">
             <fa-icon :icon="['fab', 'amilia']" />
           </div>
-          <sidebar />
+          <sidebar :is-collapse="isCollapse" />
         </div>
         </el-aside>
         <el-container>
@@ -198,10 +198,12 @@ export default {
       this.$message("click on item " + command);
       if (command === "logout") {
         that.$store.commit('SET_CURRENT_USER', false)
+        that.$store.commit('RESET_ROUTERLOADDONE', false)
         that.$store.commit('SET_JWT_TOKEN', '')
-        this.$router.replace({
+        that.$router.replace({
           name: "login"
         });
+        // location.reload()
       }
     },
     handleOpen(key, keyPath) {

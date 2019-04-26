@@ -1,10 +1,10 @@
 export const constantRouterMap = [
   {
-    path: '/',
-    name: 'admin',
+    path: '',
+    name: 'dashboard',
     component: () => import(/* webpackChunkName: 'adminLayout' */'@/views/layout/Admin.vue'),
     redirect: {
-      name: 'dashboard'
+      name: 'dashboardIndex'
     },
     leaf: true,
     meta: {
@@ -15,9 +15,31 @@ export const constantRouterMap = [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
-        name: 'dashboard',
+        name: 'dashboardIndex',
         leaf: true,
         meta: { title: 'Dashboard', icon: 'dashboard', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '',
+    name: 'about',
+    leaf: true,
+    component: () => import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
+    redirect: {
+      name: 'aboutIndex'
+    },
+    children: [
+      {
+        path: 'about',
+        name: 'aboutIndex',
+        component: () =>
+          import(/* webpackChunkName: 'hello' */ '@/views/modules/About.vue'),
+        meta: {
+          hidden: false,
+          requireLogin: true
+        },
+        leaf: true
       }
     ]
   },
@@ -30,7 +52,7 @@ export const constantRouterMap = [
       hidden: true,
       requireLogin: false
     },
-    noDropdown: true
+    leaf: true
   },
   {
     path: '/404',
