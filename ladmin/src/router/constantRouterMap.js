@@ -3,7 +3,7 @@ export const constantRouterMap = [
     path: '',
     name: 'dashboard',
     component: () =>
-      import(/* webpackChunkName: 'adminLayout' */'@/views/layout/Admin.vue'),
+      import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
     redirect: {
       name: 'dashboardIndex'
     },
