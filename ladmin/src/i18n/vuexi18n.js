@@ -49,3 +49,5 @@ Vue.i18n.add('de', translationsDe)
 
 // set the start locale to use
 Vue.i18n.set('en')
+
+Vue.prototype.L = Vue.i18n.t

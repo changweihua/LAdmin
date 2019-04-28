@@ -2,7 +2,8 @@ export const constantRouterMap = [
   {
     path: '',
     name: 'dashboard',
-    component: () => import(/* webpackChunkName: 'adminLayout' */'@/views/layout/Admin.vue'),
+    component: () =>
+      import(/* webpackChunkName: 'adminLayout' */'@/views/layout/Admin.vue'),
     redirect: {
       name: 'dashboardIndex'
     },
@@ -14,10 +15,11 @@ export const constantRouterMap = [
     children: [
       {
         path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
+        component: () =>
+          import('@/views/dashboard/index'),
         name: 'dashboardIndex',
         leaf: true,
-        meta: { title: 'Dashboard', icon: 'dashboard', noCache: true }
+        meta: { title: 'dashboard', hidden: false, icon: 'dashboard', noCache: true }
       }
     ]
   },
@@ -25,9 +27,14 @@ export const constantRouterMap = [
     path: '',
     name: 'about',
     leaf: true,
-    component: () => import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
+    component: () =>
+      import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
     redirect: {
       name: 'aboutIndex'
+    },
+    meta: {
+      hidden: false,
+      requireLogin: true
     },
     children: [
       {
@@ -36,6 +43,7 @@ export const constantRouterMap = [
         component: () =>
           import(/* webpackChunkName: 'hello' */ '@/views/modules/About.vue'),
         meta: {
+          title: 'about',
           hidden: false,
           requireLogin: true
         },

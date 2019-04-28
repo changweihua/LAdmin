@@ -82,16 +82,20 @@ router.beforeEach((to, from, next) => {
     console.log('no need auth')
     if (to.matched.length === 0) {
       console.log('not matched')
-      store
-        .dispatch('generateRoutes', [])
-        .then(() => {
-          // 动态添加可访问路由表
-          router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-          // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-          // eslint-disable-next-line new-cap
-          next({ ...to, replace: true })
-        })
-      isRouterGenerated = true
+      if (!isRouterGenerated) {
+        if (store.getters.addRouters.length > 0) {
+          store
+            .dispatch('generateRoutes', [])
+            .then(() => {
+              // 动态添加可访问路由表
+              router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
+              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+              // eslint-disable-next-line new-cap
+              next({ ...to, replace: true })
+            })
+          isRouterGenerated = true
+        }
+      }
     } else {
       next()
     }

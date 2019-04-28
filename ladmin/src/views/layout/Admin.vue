@@ -44,16 +44,19 @@
               </el-row>
             </div>
           </el-header>
-          <el-main>
-            <el-breadcrumb separator="/" class="crumbs">
-              <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-              <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-              <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-              <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-            </el-breadcrumb>
-            <div>
-              <router-view />
-            </div>
+          <el-main class="main-body">
+            <el-row>
+              <el-col col="24">
+                <el-card>
+                  <breadcrumb />
+                </el-card>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col col="24">
+                <router-view />
+              </el-col>
+            </el-row>
           </el-main>
         <el-footer class="main-footer" height="50px">
           <p>页脚</p>
@@ -68,6 +71,7 @@
   padding: 0;
   margin: 0;
 }
+@import "../../assets/main.css";
 </style>
 
 <style scoped lang="scss">
@@ -172,45 +176,57 @@ $color: #fff;
     color: $color;
     line-height: 50px;
   }
+
+  .main-body .el-card {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    &:first-child {
+      margin-top: 0;
+    }
+    // &:last-child {
+    //   margin-bottom: 0;
+    // }
+  }
+
 }
 </style>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
-  name: "AdminLayout",
+  name: 'AdminLayout',
   data() {
     return {
       isCollapse: false,
       tabWidth: 200,
       test1: 1,
       intelval: null
-    };
+    }
   },
   computed: {
-    ...mapState(["CURRENT_USER"])
+    ...mapState(['CURRENT_USER'])
   },
   methods: {
     handleCommand(command) {
       let that = this
 
-      this.$message("click on item " + command);
-      if (command === "logout") {
+      this.$message('click on item ' + command)
+      if (command === 'logout') {
         that.$store.commit('SET_CURRENT_USER', false)
         that.$store.commit('RESET_ROUTERLOADDONE', false)
         that.$store.commit('SET_JWT_TOKEN', '')
         that.$router.replace({
-          name: "login"
-        });
+          name: 'login'
+        })
         // location.reload()
       }
     },
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+      console.log(key, keyPath)
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+      console.log(key, keyPath)
     },
     isClossTabFun() {
       // clearInterval(this.intelval);
@@ -224,25 +240,25 @@ export default {
       // } else {
       //   this.tabWidth = 200;
       // }
-      this.isCollapse = !this.isCollapse;
+      this.isCollapse = !this.isCollapse
     },
     toggleLang(lang) {
-      if (lang == "zh") {
-        localStorage.setItem("locale", "zh");
-        this.$i18n.locale = localStorage.getItem("locale");
+      if (lang === 'zh') {
+        localStorage.setItem('locale', 'zh')
+        this.$i18n.locale = localStorage.getItem('locale')
         this.$message({
-          message: "切换为中文！",
-          type: "success"
-        });
-      } else if (lang == "en") {
-        localStorage.setItem("locale", "en");
-        this.$i18n.locale = localStorage.getItem("locale");
+          message: '切换为中文！',
+          type: 'success'
+        })
+      } else if (lang === 'en') {
+        localStorage.setItem('locale', 'en')
+        this.$i18n.locale = localStorage.getItem('locale')
         this.$message({
-          message: "Switch to English!",
-          type: "success"
-        });
+          message: 'Switch to English!',
+          type: 'success'
+        })
       }
     }
   }
-};
+}
 </script>

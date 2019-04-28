@@ -11,6 +11,7 @@ export const asyncRouterMap = [
     // },
     leaf: false,
     meta: {
+      title: 'configuration',
       requireLogin: true
     },
     children: [
@@ -22,8 +23,24 @@ export const asyncRouterMap = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-          import(/* webpackChunkName: 'home' */ '@/views/configuration/List.vue'),
+          import('@/views/configuration/List.vue'),
         meta: {
+          title: 'configurationList',
+          requireLogin: true
+        }
+      },
+      {
+        path: 'create',
+        name: 'configurationCreate',
+        leaf: true,
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+          import('@/views/configuration/create.vue'),
+        meta: {
+          hidden: true,
+          title: 'configurationCreate',
           requireLogin: true
         }
       }

@@ -29,7 +29,7 @@
       </template>
     </template>
   </el-menu> -->
-  <el-menu 
+  <el-menu
     :unique-opened='true'
     mode="vertical"
     :default-active="$route.path"
@@ -46,28 +46,28 @@
         <template slot="title">
           <fa-icon icon="language"></fa-icon> {{item.name}}
         </template>
-        <el-menu-item v-for="child in item.children" :key="child.path" :index="child.name">
+        <!-- <el-menu-item v-for="child in item.children" :key="child.path" :index="child.name">
           {{child.name}}
-        </el-menu-item>
-        <!-- <router-link v-for="child in item.children" :key="child.path" class="title-link" :to="{ name: child.name }">
+        </el-menu-item> -->
+        <router-link v-for="child in item.children.filter(c => !c.meta.hidden)" :key="child.path" class="title-link" :to="{ name: child.name }">
           <el-menu-item :index="child.name">
             {{child.name}}
           </el-menu-item>
-        </router-link> -->
+        </router-link>
       </el-submenu>
-      <el-menu-item :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :index="item.name">
+      <!-- <el-menu-item :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :index="item.name">
         <fa-icon icon="language"></fa-icon> {{item.name}}
-      </el-menu-item>
-      <!-- <router-link :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :to="{ name: item.name }">
+      </el-menu-item> -->
+      <router-link :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :to="{ name: item.name }">
         <el-menu-item :index="item.path+'/'+item.children[0].path">
           <fa-icon icon="language"></fa-icon> {{item.name}}
         </el-menu-item>
-      </router-link> -->
+      </router-link>
     </template>
   </el-menu>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Sidebar',
@@ -78,21 +78,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'sideRouters'
-    ])
+    ...mapGetters(['sideRouters'])
   },
   watch: {},
   methods: {
     handleOpen(key, keyPath) {
-      console.log(key);
-      console.log(keyPath);
+      console.log(key)
+      console.log(keyPath)
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+      console.log(key, keyPath)
     },
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      console.log(key, keyPath)
       this.$router.push({
         name: keyPath
       })

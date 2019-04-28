@@ -1,8 +1,17 @@
 <template>
   <div class="home">
-    <hello-world :msg="configurationList.length+''"/>
-    <loading />
-    <x-table :table-columns="tableColumns" :table-data="configurationList" />
+    <!-- <loading /> -->
+    <el-row style="margin-top:30px;">
+      <el-col :span="24">
+        <el-card class="box-card">
+          <x-table :table-columns="tableColumns" :table-data="configurationList">
+            <el-row slot="tools" class="btn-wrap">
+              <el-button type="primary" size="small" icon="el-icon-plus" @click="handleCreateClick">Add</el-button>
+            </el-row>
+          </x-table>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -21,6 +30,22 @@ export default {
         {
           prop: 'configurationName',
           label: 'ConfigurationName'
+        },
+        {
+          prop: 'configurationType',
+          label: 'ConfigurationType'
+        },
+        {
+          prop: 'configurationValue',
+          label: 'ConfigurationValue'
+        },
+        {
+          prop: 'createdDate',
+          label: 'CreatedDate'
+        },
+        {
+          prop: 'createdUser',
+          label: 'CreatedUser'
         }
       ]
     }
@@ -39,7 +64,12 @@ export default {
     // ...mapState('configuration', ['configurationList'])
   },
   methods: {
-    ...mapActions(['fetchList'])
+    ...mapActions(['fetchList']),
+    handleCreateClick() {
+      this.$router.push({
+        name: 'configurationCreate'
+      })
+    }
   }
 }
 </script>

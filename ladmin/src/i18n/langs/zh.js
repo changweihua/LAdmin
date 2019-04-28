@@ -12,5 +12,9 @@ module.exports = {
     nb: '新百伦',
     ln: '李宁'
   },
-  logout: '退出'
+  logout: '退出',
+  dashboard: '面板',
+  about: '关于',
+  configuration: '系统配置',
+  configurationList: '列表'
 }
