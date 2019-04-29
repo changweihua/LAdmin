@@ -15,7 +15,7 @@ import { faAmilia } from '@fortawesome/free-brands-svg-icons'
 import { faAngry } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import { constantRouterMap } from '@/router/constantRouterMap'
+// import { constantRouterMap } from '@/router/constantRouterMap'
 
 library.add(faCoffee)
 library.add(faLanguage)
@@ -110,6 +110,8 @@ Vue.config.productionTip = false
 // });
 
 console.log('from main.js')
+
+Vue.prototype.L = Vue.$t
 
 new Vue({
   router,

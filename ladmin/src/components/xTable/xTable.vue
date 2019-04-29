@@ -102,8 +102,7 @@ export default {
       total: 100
     }
   },
-  computed: {
-  },
+  computed: {},
   methods: {
     handleSizeChange(val) {
       this.$emit('size-change', val)

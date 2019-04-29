@@ -1,5 +1,6 @@
 // 注意：一定是 exports，不是 export，否则会报错，报错信息是下列的中的内容不是 string
-module.exports = {
+// module.exports = {
+const zh = {
   message: {
     title: '运动品牌'
   },
@@ -18,3 +19,5 @@ module.exports = {
   configuration: '系统配置',
   configurationList: '列表'
 }
+
+export default zh

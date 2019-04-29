@@ -47,7 +47,7 @@
           <el-main class="main-body">
             <el-row>
               <el-col col="24">
-                <el-card>
+                <el-card shadow="never">
                   <breadcrumb />
                 </el-card>
               </el-col>
@@ -183,11 +183,7 @@ $color: #fff;
     &:first-child {
       margin-top: 0;
     }
-    // &:last-child {
-    //   margin-bottom: 0;
-    // }
   }
-
 }
 </style>
 
