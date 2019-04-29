@@ -1,5 +1,15 @@
 const path = require("path");
 
+const debug = process.env.NODE_ENV !== 'production'
+// const VueConf = require('./src/assets/js/libs/vue_config_class')
+// const vueConf = new VueConf(process.argv)
+ 
+console.log('')
+console.log('本地启动或构建的文件信息 | 开始--------------------------------------------------------------')
+// console.log(vueConf.pages)
+console.log('本地启动或构建的文件信息 | 结束--------------------------------------------------------------')
+console.log('')
+
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
@@ -65,6 +75,12 @@ module.exports = {
     //   })
     // }
     chainWebpack: config => {
+      if (debug) {
+        // 本地开发配置
+      } else {
+        // 生产开发配置
+      }
+
       config.plugins.delete('preload');
       config.plugins.delete('prefetch');
       config.resolve.alias
@@ -72,5 +88,20 @@ module.exports = {
         .set("scss", resolve("src/scss"))
         .set("assets", resolve("src/assets"))
         .set("components", resolve("src/components"));
+
+        const oneOfsMap = config.module.rule('scss').oneOfs.store
+        oneOfsMap.forEach(item => {
+          item
+            .use('sass-resources-loader')
+            .loader('sass-resources-loader')
+            .options({
+              // Provide path to the file with resources
+              resources: './src/assets/scss/color.scss'
+     
+              // Or array of paths
+              // resources: ['./src/assets/scss/color.scss', './src/element-variables.scss']
+            })
+            .end()
+        })
     }
 };

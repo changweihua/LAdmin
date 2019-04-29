@@ -6,7 +6,8 @@ const getters = {
     return !r.meta || !r.meta.hidden
   }),
   token: state => state.JWT_TOKEN,
-  routerLoadDone: state => state.permission.routerLoadDone
+  routerLoadDone: state => state.permission.routerLoadDone,
+  showCrumb: state => state.CRUMB_VISIBILITY
 }
 
 export default getters

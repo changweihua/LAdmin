@@ -1,40 +1,46 @@
 <template>
-  <div class="home">
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-    <loading />
-    <calendar
-      ref="calendar1"
-      :events="calendar1.events"
-      :lunar="calendar1.lunar"
-      :value="calendar1.value"
-      :values="calendar1.values"
-      :weeks="calendar1.weeks"
-      :months="calendar1.months"
-      :totalMonth="calendar1.totalMonth"
-      @select="calendar1.select"
-      @selectMonth="calendar1.selectMonth"
-      @selectYear="calendar1.selectYear"
-    ></calendar>
+  <el-row>
+    <el-col :span="15">
+      <calendar
+        ref="calendar1"
+        :events="calendar1.events"
+        :lunar="calendar1.lunar"
+        :value="calendar1.value"
+        :values="calendar1.values"
+        :weeks="calendar1.weeks"
+        :months="calendar1.months"
+        :totalMonth="calendar1.totalMonth"
+        @select="calendar1.select"
+        @selectMonth="calendar1.selectMonth"
+        @selectYear="calendar1.selectYear" />
+    </el-col>
+    <el-col :offset="1" :span="8">
+      <el-card>
+       <div slot="header" class="clearfix">aaa</div>
+      <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+      <div>
+        <span>好吃的汉堡</span>
+        <div class="bottom clearfix">
+          <time class="time">sssssssssss</time>
+          <el-button type="text" class="button">操作按钮</el-button>
+        </div>
+      </div>
+    </el-card>
+    </el-col>
     <!--<button @click="changeEvents">异步更新Price</button>-->
     <!--<button @click="calendar1.value=[2018,1,Math.floor(Math.random()*30+1)]">动态设置日期</button>-->
     <!--<button @click="$refs.calendar1.setToday()">返回今天</button>-->
-  </div>
+  </el-row>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+// import { mapActions, mapState } from "vuex";
 
 export default {
   name: "dashboard",
   components: {},
   data() {
     return {
-      tableColumns: [
-        {
-          prop: "configurationName",
-          label: "ConfigurationName"
-        }
-      ],
       year: 0,
       month: 0,
       day: 0,
@@ -73,15 +79,49 @@ export default {
     };
   },
   mounted() {
-    this.fetchList();
+    // this.fetchList();
+    // this.$store.commit('SET_CRUMB_VISIBILITY', false)
   },
   watch: {},
   computed: {},
   methods: {
-    ...mapActions(["fetchList"]),
+    // ...mapActions(["fetchList"]),
     lookThisMonth() {
       this.$refs.calendar1.setToday();
     }
   }
 };
 </script>
+
+<style scoped lang="scss">
+.time {
+    font-size: 13px;
+    color: #999;
+  }
+  
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
+
+  .button {
+    padding: 0;
+    float: right;
+  }
+
+  .image {
+    width: 100%;
+    display: block;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+      display: table;
+      content: "";
+  }
+  
+  .clearfix:after {
+      clear: both
+  }
+</style>
+

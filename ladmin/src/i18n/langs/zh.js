@@ -17,7 +17,30 @@ const zh = {
   dashboard: '面板',
   about: '关于',
   configuration: '系统配置',
-  configurationList: '列表'
+  configurationList: '列表',
+  week: {
+    sunday: '日',
+    monday: '一',
+    tuesday: '二',
+    wednesday: '三',
+    thursday: '四',
+    friday: '五',
+    saturday: '六'
+  },
+  month: {
+    january: '01月',
+    february: '02月',
+    march: '03月',
+    april: '04月',
+    may: '05月',
+    june: '06月',
+    july: '07月',
+    august: '08月',
+    september: '09月',
+    october: '10月',
+    november: '11月',
+    december: '12月'
+  }
 }
 
 export default zh

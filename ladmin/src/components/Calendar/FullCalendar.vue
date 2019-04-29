@@ -1,7 +1,4 @@
-<style scoped lang="scss">
-
-// $highlight-color: rgb(255, 208, 75);
-
+<style scoped>
 .calendar {
   margin: auto;
   width: 100%;
@@ -135,10 +132,6 @@
 .calendar td.isToday span {
   background-color: #ccc;
   color: #fff;
-  height: 26px;
-  width: 26px;
-  line-height: 26px;
-  border: 1px solid $highlight-color;
 }
 .calendar td .text {
   position: absolute;
@@ -249,15 +242,16 @@
 
 <template>
   <el-card>
-    <div slot="header" class="clearfix">
-<div class="calendar-tools">
+  <div class="calendar">
+    <div class="swiper-container">
+      <div class="calendar-tools">
         <div class="calendar-info">
           <div class="month">
             <div
               class="month-inner"
               :style="{ top: -(this.month * 20) + 'px' }"
             >
-              <span :key="m" v-for="m in months">{{ $t(m) }}</span>
+              <span :key="m" v-for="m in months">{{ m }}</span>
             </div>
           </div>
           <div class="year" @click.stop="changeYear">{{ year }}年</div>
@@ -267,6 +261,7 @@
         >
           <span
             class="calendar-prev swiper-button-prev"
+            :style="'visibility:' + prevBtnIsHid"
             @click="prev"
           >
             <svg
@@ -289,6 +284,7 @@
           </span>
           <span
             class="calendar-next swiper-button-next"
+            :style="'visibility:' + nextBtnIsHid"
             @click="next"
           >
             <svg
@@ -311,9 +307,6 @@
           </span>
         </div>
       </div>
-    </div>
-  <div class="calendar">
-    <div class="swiper-container">
       <div>
         <table cellpadding="5">
           <thead>
@@ -326,12 +319,12 @@
       <table cellpadding="5">
         <tbody>
           <tr
-            :key="k1+day"
+            :key="day"
             v-for="(day, k1) in days"
             style="{'animation-delay',(k1*30)+'ms'}"
           >
             <td
-              :key="k2+child"
+              :key="child"
               v-for="(child, k2) in day"
               :class="{
                 selected: child.selected,
@@ -361,6 +354,16 @@
         </tbody>
       </table>
     </div>
+
+    <div class="calendar-years" :class="{ show: yearsShow }">
+      <span
+        :key="y"
+        v-for="y in years"
+        @click.stop="selectYear(y)"
+        :class="{ active: y == year }"
+        >{{ y }}</span
+      >
+    </div>
   </div>
   </el-card>
 </template>
@@ -369,7 +372,7 @@
 import calendar from "@/utils/calendar.js"
 
 export default {
-  name: "calendar",
+  name: "full-calendar",
   props: {
     // 一共显示多少个月
     totalMonth: {
@@ -411,25 +414,43 @@ export default {
       type: Array,
       default: function() {
         return ['week.sunday', 'week.monday', 'week.tuesday', 'week.wednesday', 'week.thursday', 'week.friday', 'week.saturday']
+        return window.navigator.language.toLowerCase() == "zh-cn"
+          ? ["日", "一", "二", "三", "四", "五", "六"]
+          : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
       }
     },
     // 自定义月份
     months: {
       type: Array,
       default: function() {
-        return [
-              "month.january",
-              "month.february",
-              "month.march",
-              "month.april",
-              "month.may",
-              "month.june",
-              "month.july",
-              "month.august",
-              "month.september",
-              "month.october",
-              "month.november",
-              "month.december"
+        return window.navigator.language.toLowerCase() == "zh-cn"
+          ? [
+              "01月",
+              "02月",
+              "03月",
+              "04月",
+              "05月",
+              "06月",
+              "07月",
+              "08月",
+              "09月",
+              "10月",
+              "11月",
+              "12月"
+            ]
+          : [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December"
             ]
       }
     },

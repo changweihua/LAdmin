@@ -45,7 +45,7 @@
             </div>
           </el-header>
           <el-main class="main-body">
-            <el-row>
+            <el-row v-if="showCrumb">
               <el-col col="24">
                 <el-card shadow="never">
                   <breadcrumb />
@@ -71,6 +71,7 @@
   padding: 0;
   margin: 0;
 }
+
 @import "../../assets/main.css";
 </style>
 
@@ -188,20 +189,32 @@ $color: #fff;
 </style>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'AdminLayout',
   data() {
     return {
+      showCrumb: true,
       isCollapse: false,
       tabWidth: 200,
       test1: 1,
       intelval: null
     }
   },
+  watch: {
+    "$route"() {
+      // 获取当前路径
+      let routeName = this.$route.name;
+      console.log(routeName)
+      this.showCrumb = routeName !== 'dashboardIndex'
+      // 检索当前路径
+      // this.checkRouterLocal(path);
+    }
+  },
   computed: {
-    ...mapState(['CURRENT_USER'])
+    ...mapState(['CURRENT_USER', 'CRUMB_VISIBILITY'])
+    // ...mapGetters('showCrumb')
   },
   methods: {
     handleCommand(command) {

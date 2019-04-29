@@ -20,7 +20,8 @@ const store = new Vuex.Store({
   // namespace: true,
   state: {
     CURRENT_USER: {},
-    JWT_TOKEN: ''
+    JWT_TOKEN: '',
+    CRUMB_VISIBILITY: true
   },
   mutations: {
     SET_CURRENT_USER(state, user) {
@@ -28,6 +29,9 @@ const store = new Vuex.Store({
     },
     SET_JWT_TOKEN(state, token) {
       state.JWT_TOKEN = token
+    },
+    SET_CRUMB_VISIBILITY(state, visible) {
+      state.CRUMB_VISIBILITY = visible
     }
   },
   actions: {},

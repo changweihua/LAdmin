@@ -12,8 +12,31 @@ module.exports = {
     ln: 'LI Ning'
   },
   logout: 'Logout',
-  dashboard: '面板',
-  about: '关于',
-  configuration: '系统配置',
-  configurationList: '列表'
+  dashboard: 'Dashboard',
+  about: 'About',
+  configuration: 'Configuration',
+  configurationList: 'List',
+  week: {
+    sunday: 'SUN',
+    monday: 'MON',
+    tuesday: 'TUE',
+    wednesday: 'WED',
+    thursday: 'THU',
+    friday: 'FRI',
+    saturday: 'SAT'
+  },
+  month: {
+    january: 'January',
+    february: 'February',
+    march: 'March',
+    april: 'April',
+    may: 'May',
+    june: 'June',
+    july: 'July',
+    august: 'August',
+    september: 'September',
+    october: 'October',
+    november: 'November',
+    december: 'December'
+  }
 }
