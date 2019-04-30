@@ -59,6 +59,13 @@ module.exports = {
           pathRewrite: {
             '^/api': '/api'
           }
+        },
+        "/message": {
+          target: 'http://localhost:56491',
+          // target: 'http://192.168.1.4:8999',
+          pathRewrite: {
+            '^/message': '/'
+          }
         }
       }
     },

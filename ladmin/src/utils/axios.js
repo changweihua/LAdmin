@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'element-ui'
-import router from './router'
+import router from '../router'
 
 const Axios = axios.create({
   // baseURL: '/', // 因为我本地做了反向代理
@@ -27,7 +27,7 @@ Axios.interceptors.request.use(
       // 序列化
       config.data = qs.stringify(config.data)
     }
-
+    console.log('from ./utils/axios.js')
     // 若是有做鉴权token , 就给头部带上token
     if (localStorage.token) {
       config.headers.Authorization = localStorage.token

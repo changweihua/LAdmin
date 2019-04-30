@@ -30,8 +30,8 @@ import '@/components/global.js'
 // Vue.use(Loading);
 
 // 封装好的有拦截器的axios：this.$http
-// import packedAxios from './utils/axios';
-// Vue.use(packedAxios); // 使用this.$http代替封装好的axios
+import packedAxios from './utils/axios';
+Vue.use(packedAxios); // 使用this.$http代替封装好的axios
 
 Vue.config.productionTip = false
 

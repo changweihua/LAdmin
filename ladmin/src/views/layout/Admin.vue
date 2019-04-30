@@ -36,6 +36,7 @@
                           <el-dropdown-item command="logout"><fa-icon icon="language"></fa-icon> {{$t("logout")}}</el-dropdown-item>
                           <el-dropdown-item @click.native="toggleLang('zh')" :disabled="$i18n.locale == 'zh'">中文</el-dropdown-item>
                           <el-dropdown-item @click.native="toggleLang('en')" :disabled="$i18n.locale == 'en'">English</el-dropdown-item>
+                          <el-dropdown-item command="send">Send</el-dropdown-item>
                         </el-dropdown-menu>
                       </el-dropdown>
                     </el-col>
@@ -189,7 +190,11 @@ $color: #fff;
 </style>
 
 <script>
+
+const signalR = require('@aspnet/signalr')
+
 import { mapState, mapGetters } from 'vuex'
+import { send } from '@/apis/message'
 
 export default {
   name: 'AdminLayout',
@@ -199,24 +204,62 @@ export default {
       isCollapse: false,
       tabWidth: 200,
       test1: 1,
-      intelval: null
+      intelval: null,
+      connection: null
     }
   },
   watch: {
-    "$route"() {
+    "$route": {
+      handler(newVal, oldVal) {
       // 获取当前路径
       let routeName = this.$route.name;
       console.log(routeName)
       this.showCrumb = routeName !== 'dashboardIndex'
+      
       // 检索当前路径
       // this.checkRouterLocal(path);
+      },
+      deep: true,
+      immediate: true
     }
   },
   computed: {
     ...mapState(['CURRENT_USER', 'CRUMB_VISIBILITY'])
     // ...mapGetters('showCrumb')
   },
+  mounted() {
+    this.initSignalR()
+  },
   methods: {
+    initSignalR() {
+
+      if (this.connection === null) {
+
+        this.connection = new signalR.HubConnectionBuilder()
+          .withUrl('http://localhost:56491/test')
+          .build()
+
+        this.connection.on('someFunc', (obj) => {
+          console.log('Someone called this, paramters: ' + obj.random)
+        })
+
+        this.connection.on('ReceiveUpdate', (obj) => {
+          console.log('ReceiveUpdate')
+        })
+
+        this.connection.on('Finished', (obj) => {
+         this.connection.stop()
+          console.log('Finished')
+        })
+
+      }
+      
+      this.connection.start()
+        .catch(err => {
+          console.error(err)
+        })
+
+    },
     handleCommand(command) {
       let that = this
 
@@ -229,6 +272,12 @@ export default {
           name: 'login'
         })
         // location.reload()
+      } else if (command === 'send') {
+        send({ random: 'abc' }).then((res) => { 
+            console.log(res)
+            console.log(res.text())
+          })
+          .then(id => this.connection.invoke('GetLastCount', id))
       }
     },
     handleOpen(key, keyPath) {
