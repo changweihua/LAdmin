@@ -231,7 +231,7 @@ export default {
     this.initSignalR()
   },
   methods: {
-    initSignalR() {
+    initSignalR(callback) {
 
       if (this.connection === null) {
 
@@ -252,13 +252,28 @@ export default {
           console.log('Finished')
         })
 
+        this. connection.onClosed = (evt) => {
+          if (evt) {
+            console.log(evt)
+          }
+        }
+
       }
       
+      if (this.connection.connectionState === 0) {
+
       this.connection.start()
-        // .done(() => { console.log('Now connected, connection ID=' + this.connection.id); })
+        .then(() => { 
+          console.log(this.connection)
+          console.log('Now connected, connection ID=' + this.connection.id);
+          if (callback) {
+            callback(this.connection);
+          }
+        })
         .catch(err => {
           console.error(err)
         })
+      }
 
     },
     handleCommand(command) {
@@ -274,7 +289,15 @@ export default {
         })
         // location.reload()
       } else if (command === 'send') {
-        this.connection.invoke('GetLastestCount', 'ssss')
+        if (this.connection.connectionState === 0) {
+        this.initSignalR(function(conn){
+          conn.invoke('GetLastestCount', 'ssss')
+        })
+        } else {
+          this.connection.invoke('GetLastestCount', 'ssss')
+        }
+
+
 //        this.connection.start().then(() => {
 // this.connection.invoke('GetLastestCount', 'ssss')
 //        })
