@@ -255,6 +255,7 @@ export default {
       }
       
       this.connection.start()
+        // .done(() => { console.log('Now connected, connection ID=' + this.connection.id); })
         .catch(err => {
           console.error(err)
         })
@@ -273,11 +274,16 @@ export default {
         })
         // location.reload()
       } else if (command === 'send') {
-        send({ random: 'abc' }).then((res) => { 
-            console.log(res)
-            console.log(res.text())
-          })
-          .then(id => this.connection.invoke('GetLastCount', id))
+        this.connection.invoke('GetLastestCount', 'ssss')
+//        this.connection.start().then(() => {
+// this.connection.invoke('GetLastestCount', 'ssss')
+//        })
+        // send({ random: 'abc' }).then((res) => { 
+        //     console.log(res)
+        //     console.log(res.text())
+        //     return res.text()
+        //   })
+        //   .then(id => this.connection.invoke('GetLastestCount', id))
       }
     },
     handleOpen(key, keyPath) {
