@@ -44,7 +44,7 @@
     <template v-for="item in sideRouters">
       <el-submenu :key="item.name" :index="item.name" v-if="!item.leaf">
         <template slot="title">
-          <fa-icon icon="language"></fa-icon> {{ $t(item.name) }}
+          <fa-icon :icon="['far', item.meta.icon || 'square']"></fa-icon> {{ $t(item.name) }}
         </template>
         <!-- <el-menu-item v-for="child in item.children" :key="child.path" :index="child.name">
           {{child.name}}
@@ -58,9 +58,9 @@
       <!-- <el-menu-item :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :index="item.name">
         <fa-icon icon="language"></fa-icon> {{item.name}}
       </el-menu-item> -->
-      <router-link :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :to="{ name: item.name }">
+      <router-link :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :to="{ name: item.name }" class="title-link">
         <el-menu-item :index="item.path+'/'+item.children[0].path">
-          <fa-icon icon="language"></fa-icon> {{ $t(item.name) }}
+          <fa-icon :icon="['far', item.meta.icon || 'square']"></fa-icon> {{ $t(item.name) }}
         </el-menu-item>
       </router-link>
     </template>
@@ -98,3 +98,18 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+  .title-link {
+    text-decoration: none;
+    outline: none;
+    &:hover{
+      color: rgb(255, 208, 75);
+    }
+  }
+
+  .el-menu{
+    border-right: 0 !important;
+  } 
+
+</style>

@@ -10,7 +10,8 @@ export const constantRouterMap = [
     leaf: true,
     meta: {
       hidden: false,
-      requireLogin: true
+      requireLogin: true,
+      icon: 'home'
     },
     children: [
       {
@@ -34,7 +35,8 @@ export const constantRouterMap = [
     },
     meta: {
       hidden: false,
-      requireLogin: true
+      requireLogin: true,
+      icon: 'registered'
     },
     children: [
       {

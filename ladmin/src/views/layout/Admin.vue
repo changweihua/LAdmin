@@ -60,7 +60,7 @@
             </el-row>
           </el-main>
         <el-footer class="main-footer" height="50px">
-          <p>页脚</p>
+          <p>&copy; 2018-2019</p>
         </el-footer>
       </el-container>
     </el-container>
@@ -99,8 +99,10 @@ $color: #fff;
   box-sizing: border-box;
   a {
     line-height: $header-height;
+    color: #fff !important;
   }
   i {
+    color: #fff !important;
     font-size: 20px;
     line-height: $header-height;
     transition: all 0.5s;
@@ -146,7 +148,7 @@ $color: #fff;
     }
     .menu {
       width: 100%;
-      border-right: 0;
+      border-right: 0 !important;
     }
   }
   .main-header {
@@ -228,7 +230,9 @@ export default {
     // ...mapGetters('showCrumb')
   },
   mounted() {
-    this.initSignalR()
+    this.initSignalR(function(conn) {
+          conn.invoke('GetLastestCount', 'ssss')
+        })
   },
   methods: {
     initSignalR(callback) {
@@ -236,14 +240,22 @@ export default {
       if (this.connection === null) {
 
         this.connection = new signalR.HubConnectionBuilder()
-          .withUrl('http://localhost:56491/test')
+          .withUrl('http://localhost:6373/test')
           .build()
 
         this.connection.on('someFunc', (obj) => {
+          this.$message({
+            message: obj.random,
+            type: 'success'
+          })
           console.log('Someone called this, paramters: ' + obj.random)
         })
 
         this.connection.on('ReceiveUpdate', (obj) => {
+          this.$message({
+            message: obj.random,
+            type: 'success'
+          })
           console.log('ReceiveUpdate')
         })
 
@@ -252,34 +264,38 @@ export default {
           console.log('Finished')
         })
 
-        this. connection.onClosed = (evt) => {
+        this.connection.onClosed = (evt) => {
           if (evt) {
             console.log(evt)
           }
         }
 
       }
-      
+      console.log(this.connection.connectionState)
       if (this.connection.connectionState === 0) {
 
       this.connection.start()
         .then(() => { 
           console.log(this.connection)
-          console.log('Now connected, connection ID=' + this.connection.id);
+          console.log('Now connected, connection ID=' + this.connection.id)
           if (callback) {
-            callback(this.connection);
+            callback(this.connection)
           }
         })
         .catch(err => {
           console.error(err)
         })
+      } else {
+        if (callback) {
+            callback(this.connection)
+          }
       }
 
     },
     handleCommand(command) {
       let that = this
 
-      this.$message('click on item ' + command)
+      // this.$message('click on item ' + command)
       if (command === 'logout') {
         that.$store.commit('SET_CURRENT_USER', false)
         that.$store.commit('RESET_ROUTERLOADDONE', false)
@@ -289,15 +305,10 @@ export default {
         })
         // location.reload()
       } else if (command === 'send') {
-        if (this.connection.connectionState === 0) {
-        this.initSignalR(function(conn){
+        this.initSignalR(function(conn) {
           conn.invoke('GetLastestCount', 'ssss')
         })
-        } else {
-          this.connection.invoke('GetLastestCount', 'ssss')
-        }
-
-
+        // send({ random: 'abc' })
 //        this.connection.start().then(() => {
 // this.connection.invoke('GetLastestCount', 'ssss')
 //        })

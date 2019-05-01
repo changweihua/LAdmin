@@ -13,7 +13,7 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { faLanguage } from '@fortawesome/free-solid-svg-icons'
 import { faAmilia } from '@fortawesome/free-brands-svg-icons'
 import { faAngry } from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
 
 // import { constantRouterMap } from '@/router/constantRouterMap'
 
@@ -22,6 +22,9 @@ library.add(faLanguage)
 library.add(faAmilia)
 library.add(faAngry)
 Vue.component('fa-icon', FontAwesomeIcon)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('font-awesome-layers', FontAwesomeLayers)
+Vue.component('font-awesome-layers-text', FontAwesomeLayersText)
 
 import {} from './apis/request'
 import '@/components/global.js'

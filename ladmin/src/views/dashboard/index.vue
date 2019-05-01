@@ -16,13 +16,13 @@
     </el-col>
     <el-col :offset="1" :span="8">
       <el-card>
-       <div slot="header" class="clearfix">aaa</div>
-      <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+       <div slot="header" class="clearfix">工作台</div>
       <div>
-        <span>好吃的汉堡</span>
+        <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image" style="height: 304px;">
         <div class="bottom clearfix">
-          <time class="time">sssssssssss</time>
-          <el-button type="text" class="button">操作按钮</el-button>
+          <time class="time">来是偶然，去是必然，尽其当然，顺其自然</time>
+          <el-button type="text" class="button">打卡签到</el-button>
+          <!-- <el-button type="success" icon="el-icon-check" circle></el-button> -->
         </div>
       </div>
     </el-card>
@@ -101,12 +101,14 @@ export default {
   
   .bottom {
     margin-top: 13px;
+    height: 40px;
     line-height: 12px;
   }
 
   .button {
     padding: 0;
     float: right;
+    color: $highlight-color;
   }
 
   .image {
@@ -123,5 +125,10 @@ export default {
   .clearfix:after {
       clear: both
   }
+
+  .el-card__body {
+    height: 395px !important;
+  }
+
 </style>
 

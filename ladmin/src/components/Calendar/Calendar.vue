@@ -250,7 +250,9 @@
 <template>
   <el-card>
     <div slot="header" class="clearfix">
-<div class="calendar-tools">
+日程表
+    </div>
+    <div class="calendar-tools">
         <div class="calendar-info">
           <div class="month">
             <div
@@ -311,7 +313,6 @@
           </span>
         </div>
       </div>
-    </div>
   <div class="calendar">
     <div class="swiper-container">
       <div>
