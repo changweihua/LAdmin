@@ -30,7 +30,7 @@
                     <el-col :span="2">
                       <el-dropdown trigger="click" @command="handleCommand">
                         <span class="el-dropdown-link">
-                          <img src="avator.jpg" alt="">
+                          <img src="avator.png" alt="">
                         </span>
                         <el-dropdown-menu slot="dropdown">
                           <el-dropdown-item command="logout"><fa-icon icon="language"></fa-icon> {{$t("logout")}}</el-dropdown-item>
@@ -189,6 +189,8 @@ $color: #fff;
     }
   }
 }
+
+
 </style>
 
 <script>
@@ -240,7 +242,7 @@ export default {
       if (this.connection === null) {
 
         this.connection = new signalR.HubConnectionBuilder()
-          .withUrl('http://localhost:6373/test')
+          .withUrl('http://localhost:56491/test')
           .build()
 
         this.connection.on('someFunc', (obj) => {
