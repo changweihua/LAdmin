@@ -130,5 +130,10 @@ export default {
     height: 395px !important;
   }
 
+  
+/deep/ .el-card__header {
+  color: $card-header-title-color !important;
+}
+
 </style>
 

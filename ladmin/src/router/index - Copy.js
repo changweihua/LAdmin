@@ -94,18 +94,6 @@ router.beforeEach((to, from, next) => {
               next({ ...to, replace: true })
             })
           isRouterGenerated = true
-        } else {
-          console.log('dispatch generateRoutes')
-          store
-            .dispatch('generateRoutes', [])
-            .then(() => {
-              // 动态添加可访问路由表
-              router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-              // eslint-disable-next-line new-cap
-              next({ ...to, replace: true })
-            })
-          isRouterGenerated = true
         }
       }
     } else {

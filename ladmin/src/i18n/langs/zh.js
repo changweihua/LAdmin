@@ -18,6 +18,8 @@ const zh = {
   about: '关于',
   configuration: '系统配置',
   configurationList: '列表',
+  configurationEdit: '编辑',
+  configurationCreate: '新增',
   week: {
     sunday: '日',
     monday: '一',

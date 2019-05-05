@@ -4,7 +4,7 @@
     <el-row style="margin-top:30px;">
       <el-col :span="24">
         <el-card class="box-card">
-          <x-table :table-columns="tableColumns" :table-data="configurationList">
+          <x-table :table-key="id" :table-columns="tableColumns" :table-actions="tableActions" :table-data="configurationList">
             <el-row slot="tools" class="btn-wrap">
               <el-button type="primary" size="small" icon="el-icon-plus" @click="handleCreateClick">Add</el-button>
             </el-row>
@@ -47,7 +47,18 @@ export default {
           prop: 'createdUser',
           label: 'CreatedUser'
         }
-      ]
+      ],
+      tableActions: [{
+        name: 'Edit',
+        icon: 'el-icon-edit',
+        handler: (row) => {
+          this.handleEditClick(row)
+        },
+        authorized: true,
+        disabled: (row) => {
+          return false
+        }
+      }]
     }
   },
   mounted() {
@@ -68,6 +79,14 @@ export default {
     handleCreateClick() {
       this.$router.push({
         name: 'configurationCreate'
+      })
+    },
+    handleEditClick(row) {
+      this.$router.push({
+        name: 'configurationEdit',
+        params: {
+          id: row.id
+        }
       })
     }
   }

@@ -1,5 +1,7 @@
 import { constantRouterMap } from '@/router/constantRouterMap'
 import { asyncRouterMap } from '@/router/asyncRouterMap'
+import { fetchPermission } from '@/apis/account'
+
 // import vuexCache from 'vuex-cache';
 // import persistedState from 'vuex-persistedstate'
 // import createLogger from 'vuex/dist/logger'
@@ -45,6 +47,15 @@ const permissionModule = {
     }
   },
   actions: {
+    async FETCH_PERMISSION({ commit, state }) {
+      let permission = await fetchPermission()
+      console.log(permission)
+      const accessedRouters = permission.asyncRouters.filter((v) => {
+        return true
+      })
+
+      commit('setRouters', filterAsyncRouter(accessedRouters))
+    },
     generateRoutes({ commit, state }, response) {
       console.log(response)
       const accessedRouters = asyncRouterMap.filter((v) => {
@@ -93,33 +104,39 @@ const permissionModule = {
   // plugins: debug ? [createLogger(), createPersisted] : [createPersisted]
 }
 
-// function filterAsyncRouter(routers) {
-//   // 遍历后台传来的路由字符串，转换为组件对象
-//   let accessedRouters = routers.filter((router) => {
-//     if (router.meta) {
-//       // 默认图标处理
-//       router.meta.icon = router.meta.icon ? router.meta.icon : 'component'
-//     }
-//     if (router.component === 'main') {
-//       // Main组件特殊处理
-//       // router.component = AppMain;
-//     } else {
-//       // 处理组件---重点
-//       router.component = loadView(router.component)
-//     }
-//     // 存在子集
-//     if (router.children && router.children.length) {
-//       router.children = filterAsyncRouter(router.children)
-//     }
-//     return true
-//   })
+function filterAsyncRouter(routers) {
+  // 遍历后台传来的路由字符串，转换为组件对象
+  let accessedRouters = routers.filter((router) => {
+    if (router.meta) {
+      // 默认图标处理
+      router.meta.icon = router.meta.icon ? router.meta.icon : 'component'
+    }
+    if (router.component === 'main') {
+      // Main组件特殊处理
+      // router.component = AppMain;
+    } else {
+      // 处理组件---重点
+      router.component = loadView(router.component)
+    }
+    // 存在子集
+    if (router.children && router.children.length) {
+      router.children = filterAsyncRouter(router.children)
+    }
+    return true
+  })
 
-//   return accessedRouters
-// }
+  return accessedRouters
+}
 
-// function loadView(view) {
-//   // 路由懒加载
-//   return () => import(`@/views/modules/${view}`)
-// }
+function loadView(view) {
+  // 路由懒加载
+  // if (process.env === 'production') {
+  //   resolved = id => () => import('@/' + id + '.vue')
+  // } else {
+  //   resolved = id => require('@/' + id + '.vue')
+  // }
+  return () => require(`${view}`)
+  return () => import(`@/views/modules/${view}`)
+}
 
 export { permissionModule }

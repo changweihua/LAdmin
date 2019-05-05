@@ -8,3 +8,7 @@ export const login = (params) => {
 export const values = (params) => {
   return request('get', '/api/values', params); //登陆管理员获取自身信息
 };
+
+export const fetchPermission = (params) => {
+  return request('get', '/api/OAuth/GetPermissions', params); //登陆管理员获取自身信息
+};
