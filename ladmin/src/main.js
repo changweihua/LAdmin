@@ -6,7 +6,7 @@ import './plugins/element.js'
 // import axios from 'axios';
 
 import i18n from './i18n/i18n'
-// import './i18n/vuexi18n';
+// import './i18n/vuexi18n'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'

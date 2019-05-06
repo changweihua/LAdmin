@@ -4,7 +4,7 @@
     <el-row style="margin-top:30px;">
       <el-col :span="24">
         <el-card class="box-card">
-          <x-table :table-key="id" :table-columns="tableColumns" :table-actions="tableActions" :table-data="configurationList">
+          <x-table :table-columns="tableColumns" :table-actions="tableActions" :table-data="configurationList">
             <el-row slot="tools" class="btn-wrap">
               <el-button type="primary" size="small" icon="el-icon-plus" @click="handleCreateClick">Add</el-button>
             </el-row>

@@ -20,4 +20,6 @@ const i18n = new VueI18n({
 
 locale.i18n((key, value) => i18n.t(key, value)) // 为了实现element插件的多语言切换
 
+// Vue.prototype.L = Vue.i18n.$t
+
 export default i18n

@@ -16,6 +16,12 @@ module.exports = {
   about: 'About',
   configuration: 'Configuration',
   configurationList: 'List',
+  configurationEdit: 'Edit',
+  configurationCreate: 'Create',
+  configurationName: 'Name',
+  configurationType: 'Type',
+  configurationValue: 'Value',
+  configurationDescription: 'Description',
   week: {
     sunday: 'SUN',
     monday: 'MON',

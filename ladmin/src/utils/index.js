@@ -1,11 +1,10 @@
 // axios捕错
 export const throwErr = (code, response) => {
-  console.log(response)
   let message = '请求错误'
 
   switch (code) {
     case 400:
-      message = '请求错误'
+      message = '参数不合法'
       break
     case 401:
       message = '未授权，请登录'

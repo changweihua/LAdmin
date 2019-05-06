@@ -62,6 +62,7 @@ export default {
           window.localStorage.JWT_TOKEN = res.token
           that.$store.commit('SET_CURRENT_USER', res.user)
           that.$store.commit('SET_JWT_TOKEN', res.token)
+          that.$store.commit('SET_FORM_MODELS', res.elForms)
           that.$message({
             dangerouslyUseHTMLString: true,
             message: '登录成功！',

@@ -1,3 +1,5 @@
+import { stat } from "fs";
+
 const getters = {
   currentUser: state => state.CURRENT_USER,
   addRouters: state => state.permission.addRouters,
@@ -7,7 +9,8 @@ const getters = {
   }),
   token: state => state.JWT_TOKEN,
   routerLoadDone: state => state.permission.routerLoadDone,
-  showCrumb: state => state.CRUMB_VISIBILITY
+  showCrumb: state => state.CRUMB_VISIBILITY,
+  formModels: state => state.FORM_MODELS
 }
 
 export default getters

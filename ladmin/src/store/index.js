@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 // import vuexCache from 'vuex-cache'
 import persistedState from 'vuex-persistedstate'
 import createLogger from 'vuex/dist/logger'
+import i18nVuex from 'i18n-vuex'
 // import * as Cookies from 'js-cookie';
 
 Vue.use(Vuex)
@@ -21,7 +22,8 @@ const store = new Vuex.Store({
   state: {
     CURRENT_USER: {},
     JWT_TOKEN: '',
-    CRUMB_VISIBILITY: true
+    CRUMB_VISIBILITY: true,
+    FORM_MODELS: []
   },
   mutations: {
     SET_CURRENT_USER(state, user) {
@@ -32,13 +34,17 @@ const store = new Vuex.Store({
     },
     SET_CRUMB_VISIBILITY(state, visible) {
       state.CRUMB_VISIBILITY = visible
+    },
+    SET_FORM_MODELS(state, formModels) {
+      state.FORM_MODELS = formModels
     }
   },
   actions: {},
   getters: getters,
   modules: {
     permission: permissionModule,
-    configuration: configurationModule
+    configuration: configurationModule,
+    i18n: i18nVuex.store
   },
   plugins: debug ? [createLogger(), createPersisted] : [createPersisted]
   // vuexCache({ timeout: 2000 })

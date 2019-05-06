@@ -20,6 +20,10 @@ const zh = {
   configurationList: '列表',
   configurationEdit: '编辑',
   configurationCreate: '新增',
+  configurationName: '配置项名称',
+  configurationType: '配置项类型',
+  configurationValue: '配置项值',
+  configurationDescription: '描述',
   week: {
     sunday: '日',
     monday: '一',

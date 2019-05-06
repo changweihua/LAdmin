@@ -1,37 +1,55 @@
 <template>
   <div>
     <el-card>
-      <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
-        <el-form-item label="名称">
-          <el-input v-model="formLabelAlign.name"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域">
-          <el-input v-model="formLabelAlign.region"></el-input>
-        </el-form-item>
-        <el-form-item label="活动形式">
-          <el-input v-model="formLabelAlign.type"></el-input>
-        </el-form-item>
-      </el-form>
+      <x-form :label-position="labelPosition" :label-width="labelWidth" :form-items="formItems" :form-model="formModel" />
     </el-card>
     <el-card>
       <el-row>
-        <el-button>暂存</el-button>
+        <el-button @click="handleSaveClick">暂存</el-button>
       </el-row>
     </el-card>
   </div>
 </template>
 
 <script>
+
+import { postConfiguration } from '@/apis/configuration'
+import { mapState } from 'vuex'
+
 export default {
   name: 'configuration-create',
+  computed: {
+    ...mapState(['FORM_MODELS'])
+  },
+  mounted() {
+    var form = this.FORM_MODELS.find(fm => fm.formName === 'ConfigurationCreation')
+    this.formItems = form.formItems.filter(item => !item.hidden)
+  },
   data() {
     return {
       labelPosition: 'right',
-      formLabelAlign: {
-        name: '',
-        region: '',
-        type: ''
-      }
+      labelWidth: '120px',
+      formItems: [],
+      formModel: {}
+    }
+  },
+  methods: {
+    handleSaveClick() {
+      console.log(this.formModel)
+      var that = this
+      postConfiguration(Object.assign({}, this.formModel)).then(res => {
+        if (res.code === 0) {
+          that.$message({
+            dangerouslyUseHTMLString: true,
+            message: '保存成功',
+            onClose() {
+              that.$router.push({
+                name: 'configurationList'
+              })
+            }
+          })
+        }
+      })
     }
   }
 }

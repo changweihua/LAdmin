@@ -60,6 +60,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(
   response => {
     tryHideFullScreenLoading();
+    console.log(response)
     if (response.data.code === 0) {   // 服务端定义的响应code码为0时请求成功
       return Promise.resolve(response.data); // 使用Promise.resolve 正常响应
     } else if (response.data.code === 1401) { // 服务端定义的响应code码为1401时为未登录
@@ -70,6 +71,9 @@ axios.interceptors.response.use(
       // router.push("/login")
       return Promise.reject(response.data);   //使用Promise.reject 抛出错误和异常
     } else {
+      Message({
+        message: response.data.result
+      })
       return Promise.reject(response.data);
     }
   },
@@ -79,6 +83,9 @@ axios.interceptors.response.use(
       let res = {};
       res.code = error.response.status;
       res.msg = throwErr(error.response.status, error.response); //throwErr 捕捉服务端的http状态码 定义在utils工具类的方法
+      Message({
+        message: error.response.data.result || res.msg
+      })
       return Promise.reject(res);
     }
     return Promise.reject(error);
@@ -99,6 +106,8 @@ export default function request(method, url, data) {  //暴露 request 给我们
     return axios.delete(url, {
       params: data
     });
+  } else if (method === "put") {
+    return axios.put(url, data);
   }
 }
 
