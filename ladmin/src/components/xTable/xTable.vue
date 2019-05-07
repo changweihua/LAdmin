@@ -33,7 +33,7 @@
       <el-pagination
         :current-page="tablePager.page"
         :page-sizes="[10,20,30,50]"
-        :page-size="tablePager.maxResultCount"
+        :page-size="tablePager.limit"
         :total="tablePager.total"
         background
         layout="total, sizes, prev, pager, next, jumper"
@@ -74,7 +74,7 @@ export default {
       default: () => {
         return {
           page: 1,
-          maxResultCount: 20,
+          limit: 20,
           skipCount: 0,
           total: 0
         }

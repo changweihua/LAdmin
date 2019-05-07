@@ -3,11 +3,11 @@
     <el-card>
       <x-form :label-position="labelPosition" :label-width="labelWidth" :form-actions="formActions" :form-rules="formRules" :form-items="formItems" :form-model="formModel" @form-submit="handleFormSubmit" @form-save="handleFormSave" />
     </el-card>
-    <el-card>
+    <!-- <el-card>
       <el-row>
         <el-button @click="handleSaveClick">暂存</el-button>
       </el-row>
-    </el-card>
+    </el-card> -->
   </div>
 </template>
 
@@ -64,8 +64,12 @@ export default {
     }
   },
   methods: {
-    handleFormSubmit(msg) {
-      console.log(msg)
+    handleFormSubmit(result) {
+      console.log(result)
+      if (result.isValid) {
+        console.log(result.model)
+        this.handleSaveClick()
+      }
     },
     handleFormSave(msg) {
       console.log(msg)

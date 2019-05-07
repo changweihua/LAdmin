@@ -4,7 +4,7 @@
     <el-row style="margin-top:30px;">
       <el-col :span="24">
         <el-card class="box-card">
-          <x-table :table-columns="tableColumns" :table-actions="tableActions" :table-data="configurationList">
+          <x-table :table-columns="tableColumns" :table-pager="tablePager" :table-actions="tableActions" :table-data="configurationList" :table-query="tableQuery" @size-change="handleSizeChange" @current-change="handleCurrentChange">
             <el-row slot="tools" class="btn-wrap">
               <el-button type="primary" size="small" icon="el-icon-plus" @click="handleCreateClick">Add</el-button>
             </el-row>
@@ -26,6 +26,14 @@ export default {
   components: {},
   data() {
     return {
+      tablePager: {
+        page: 1,
+        limit: 10,
+        skipCount: 0,
+        total: 0
+      },
+      tableQuery: {
+      },
       tableColumns: [
         {
           prop: 'configurationName',
@@ -62,15 +70,21 @@ export default {
     }
   },
   mounted() {
-    this.fetchList()
-    console.log(this.$store.state.configuration.configurationList)
+    var query = Object.assign({}, this.tableQuery, this.tablePager)
+    this.fetchList(query)
   },
-  watch: {},
+  watch: {
+    'pager': function(newVal, oldVal) {
+      this.tablePager.total = newVal.totalCount
+    }
+  },
   computed: {
     // ...mapState(['configuration.configurationList'])
     ...mapState({
       'configurationList': (state) =>
-        state.configuration.configurationList
+        state.configuration.configurationList,
+      'pager': (state) =>
+        state.configuration.pager
     })
     // ...mapState('configuration', ['configurationList'])
   },
@@ -88,6 +102,18 @@ export default {
           id: row.id
         }
       })
+    },
+    handleSizeChange(val) {
+      this.tablePager.limit = val
+      this.tablePager.skipCount = (this.tablePager.page - 1) * this.tablePager.maxResultCount
+      var query = Object.assign({}, this.tableQuery, this.tablePager)
+      this.fetchList(query)
+    },
+    handleCurrentChange(val) {
+      this.tablePager.page = val
+      this.tablePager.skipCount = (this.tablePager.page - 1) * this.tablePager.maxResultCount
+      var query = Object.assign({}, this.tableQuery, this.tablePager)
+      this.fetchList(query)
     }
   }
 }

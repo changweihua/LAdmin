@@ -94,16 +94,14 @@ export default {
       if (requireValid) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$emit(handlerName, '哈哈，通过校验啦')
-            alert('submit!');
+            this.$emit(handlerName, { msg: '哈哈，通过校验啦', isValid: true, model: this.formModel })
           } else {
-            console.log('error submit!!')
-            this.$emit(handlerName, '哈哈，怎么会没有通过校验呢')
+            this.$emit(handlerName, { msg: '哈哈，怎么会没有通过校验呢', isValid: false })
             return false;
           }
         });
       } else {
-        this.$emit(handlerName, '哈哈，跳过校验')
+        this.$emit(handlerName, { msg: '哈哈，跳过校验', isValid: true, model: this.formModel })
       }
     }
   }

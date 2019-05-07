@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { login } from '@/apis/account'
+import { login, auth } from '@/apis/account'
 
 export default {
   name: 'AccountLogin',
@@ -40,7 +40,10 @@ export default {
       },
       account: {
         userName: '',
-        password: ''
+        password: '',
+        client_id: 'ancdkfsdfds',
+        client_secret: 'dsadsfdsfds',
+        grant_type: 'password'
       },
       rules: {
         userName: [{ required: true, message: '请输入账号', trigger: 'blur' }],
@@ -57,11 +60,11 @@ export default {
     handleLoginClick() {
       let that = this
       that.$store.commit('RESET_ROUTERLOADDONE', false)
-      login(this.account)
+      auth(this.account)
         .then((res) => {
-          window.localStorage.JWT_TOKEN = res.token
-          that.$store.commit('SET_CURRENT_USER', res.user)
-          that.$store.commit('SET_JWT_TOKEN', res.token)
+          window.localStorage.JWT_TOKEN = res.access_token
+          that.$store.commit('SET_CURRENT_USER', res.user || {})
+          that.$store.commit('SET_JWT_TOKEN', res.access_token)
           that.$store.commit('SET_FORM_MODELS', res.elForms)
           that.$message({
             dangerouslyUseHTMLString: true,
