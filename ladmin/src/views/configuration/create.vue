@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-card>
-      <x-form :label-position="labelPosition" :label-width="labelWidth" :form-items="formItems" :form-model="formModel" />
+      <x-form :label-position="labelPosition" :label-width="labelWidth" :form-actions="formActions" :form-rules="formRules" :form-items="formItems" :form-model="formModel" @form-submit="handleFormSubmit" @form-save="handleFormSave" />
     </el-card>
     <el-card>
       <el-row>
@@ -24,16 +24,52 @@ export default {
   mounted() {
     var form = this.FORM_MODELS.find(fm => fm.formName === 'ConfigurationCreation')
     this.formItems = form.formItems.filter(item => !item.hidden)
+    this.formRules = Object.assign({}, form.formRules, this.formRules) 
   },
   data() {
     return {
       labelPosition: 'right',
       labelWidth: '120px',
       formItems: [],
-      formModel: {}
+      formModel: {},
+      formRules: {},
+      formActions: [
+        {
+          name: 'Edit',
+          icon: 'el-icon-edit',
+          handler: (row) => {
+            console.log(this.formModel)
+          },
+          handlerName: 'form-submit',
+          authorized: true,
+          disabled: (row) => {
+            return false
+          },
+          requireValid: true
+        },
+        {
+          name: 'Draft',
+          icon: 'el-icon-edit',
+          handler: (row) => {
+            console.log(this.formModel)
+          },
+          handlerName: 'form-save',
+          authorized: true,
+          disabled: (row) => {
+            return false
+          },
+          requireValid: false
+        }
+      ]
     }
   },
   methods: {
+    handleFormSubmit(msg) {
+      console.log(msg)
+    },
+    handleFormSave(msg) {
+      console.log(msg)
+    },
     handleSaveClick() {
       console.log(this.formModel)
       var that = this
