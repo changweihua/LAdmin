@@ -44,7 +44,8 @@
     <template v-for="item in sideRouters">
       <el-submenu :key="item.name" :index="item.name" v-if="!item.leaf">
         <template slot="title">
-          <fa-icon :icon="['far', item.meta.icon || 'square']"></fa-icon> {{ $t(item.name) }}
+          <fa-icon :icon="['fas', item.meta.icon || 'square']"></fa-icon>
+          <span> {{ $t(item.name) }} </span>
         </template>
         <!-- <el-menu-item v-for="child in item.children" :key="child.path" :index="child.name">
           {{child.name}}
@@ -60,7 +61,8 @@
       </el-menu-item> -->
       <router-link :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :to="{ name: item.name }" class="title-link">
         <el-menu-item :index="item.path+'/'+item.children[0].path">
-          <fa-icon :icon="['far', item.meta.icon || 'square']"></fa-icon> {{ $t(item.name) }}
+          <fa-icon :icon="['fas', item.meta.icon || 'square']"></fa-icon>
+          <span> {{ $t(item.name) }} </span>
         </el-menu-item>
       </router-link>
     </template>

@@ -11,7 +11,7 @@ export const constantRouterMap = [
     meta: {
       hidden: false,
       requireLogin: true,
-      icon: 'home'
+      icon: 'thumbtack'
     },
     children: [
       {
@@ -36,7 +36,7 @@ export const constantRouterMap = [
     meta: {
       hidden: false,
       requireLogin: true,
-      icon: 'registered'
+      icon: 'users'
     },
     children: [
       {

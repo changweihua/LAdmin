@@ -22,6 +22,7 @@
 
 <script>
 import { login, auth } from '@/apis/account'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'AccountLogin',
@@ -57,12 +58,17 @@ export default {
     })
   },
   methods: {
+    ...mapActions({
+      fetchProfile: 'fetchProfile'
+    }),
     handleLoginClick() {
       let that = this
       that.$store.commit('RESET_ROUTERLOADDONE', false)
       auth(this.account)
         .then((res) => {
+          console.log(res)
           window.localStorage.JWT_TOKEN = res.access_token
+          window.localStorage.REFRESH_TOKEN = res.refresh_token
           that.$store.commit('SET_CURRENT_USER', res.user || {})
           that.$store.commit('SET_JWT_TOKEN', res.access_token)
           that.$store.commit('SET_FORM_MODELS', res.elForms)
@@ -70,6 +76,7 @@ export default {
             dangerouslyUseHTMLString: true,
             message: '登录成功！',
             onClose() {
+              // that.fetchProfile()
               that.$router.push('/')
             }
           })

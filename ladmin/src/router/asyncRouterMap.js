@@ -6,9 +6,6 @@ export const asyncRouterMap = [
     redirect: 'configurationList',
     component: () =>
       import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
-    // redirect: {
-    //   name: 'home'
-    // },
     leaf: false,
     meta: {
       title: 'configuration',
@@ -33,9 +30,6 @@ export const asyncRouterMap = [
         path: 'create',
         name: 'configurationCreate',
         leaf: true,
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
         component: () =>
           import('@/views/configuration/create.vue'),
         meta: {
@@ -48,14 +42,63 @@ export const asyncRouterMap = [
         path: 'edit/:id',
         name: 'configurationEdit',
         leaf: true,
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
         component: () =>
           import('@/views/configuration/edit.vue'),
         meta: {
           hidden: true,
           title: 'configurationEdit',
+          requireLogin: true
+        }
+      }
+    ]
+  },
+  {
+    path: '/role',
+    name: 'role',
+    redirect: 'roleList',
+    component: () =>
+      import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
+    leaf: false,
+    meta: {
+      title: 'roleList',
+      requireLogin: true
+    },
+    children: [
+      {
+        path: 'list',
+        name: 'roleList',
+        leaf: true,
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () =>
+          import('@/views/role/List.vue'),
+        meta: {
+          title: 'roleList',
+          requireLogin: true
+        }
+      },
+      {
+        path: 'create',
+        name: 'roleCreate',
+        leaf: true,
+        component: () =>
+          import('@/views/role/create.vue'),
+        meta: {
+          hidden: true,
+          title: 'roleCreate',
+          requireLogin: true
+        }
+      },
+      {
+        path: 'edit/:id',
+        name: 'roleEdit',
+        leaf: true,
+        component: () =>
+          import('@/views/configuration/edit.vue'),
+        meta: {
+          hidden: true,
+          title: 'roleEdit',
           requireLogin: true
         }
       }

@@ -58,11 +58,10 @@ import { mapActions, mapState } from 'vuex'
 // import { userList } from '@/apis/user'
 
 export default {
-  name: 'configurationlist',
+  name: 'roleList',
   components: {},
   data() {
     return {
-      form: {},
       tablePager: {
         page: 1,
         limit: 10,
@@ -129,7 +128,7 @@ export default {
     ...mapActions(['fetchList']),
     handleCreateClick() {
       this.$router.push({
-        name: 'configurationCreate'
+        name: 'roleCreate'
       })
     },
     handleEditClick(row) {

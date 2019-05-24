@@ -10,7 +10,9 @@ Vue.use(Vuex)
 
 import { permissionModule } from '@/store/modules/permission'
 import { configurationModule } from '@/store/modules/configuration'
+import { userModule } from '@/store/modules/user'
 import getters from '@/store/getters'
+import actions from '@/store/actions'
 
 const debug = process.env.NODE_ENV !== 'production'
 const createPersisted = persistedState({
@@ -39,11 +41,12 @@ const store = new Vuex.Store({
       state.FORM_MODELS = formModels
     }
   },
-  actions: {},
+  actions: actions,
   getters: getters,
   modules: {
     permission: permissionModule,
     configuration: configurationModule,
+    user: userModule,
     i18n: i18nVuex.store
   },
   plugins: debug ? [createLogger(), createPersisted] : [createPersisted]

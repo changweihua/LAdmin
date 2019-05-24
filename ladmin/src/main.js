@@ -9,6 +9,10 @@ import i18n from './i18n/i18n'
 // import './i18n/vuexi18n'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
+import {fas} from '@fortawesome/free-solid-svg-icons'
+import {far} from '@fortawesome/free-regular-svg-icons'
+import {fab} from '@fortawesome/free-brands-svg-icons'
+
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { faLanguage } from '@fortawesome/free-solid-svg-icons'
 import { faAmilia } from '@fortawesome/free-brands-svg-icons'
@@ -16,7 +20,7 @@ import { faAngry } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
 
 // import { constantRouterMap } from '@/router/constantRouterMap'
-
+library.add(fas, far, fab)
 library.add(faCoffee)
 library.add(faLanguage)
 library.add(faAmilia)

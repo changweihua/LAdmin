@@ -3,3 +3,10 @@
   text-align: right;
 }
 
+.el-menu--collapse > .title-link > .el-menu-item span {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  visibility: hidden;
+  display: inline-block;
+}
