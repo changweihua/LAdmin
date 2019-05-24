@@ -341,7 +341,7 @@
                 rightDay: child.rightDay,
                 isToday: child.isToday
               }"
-              @click="select(k1, k2, $event)"
+              @click="select(k1, k2, $event)" @dblclick="doubleClick(k1, k2, $event)"
             >
               <span>{{ child.day }}</span>
               <div class="text" v-if="child.eventName != undefined">
@@ -368,6 +368,8 @@
 
 <script>
 import calendar from "@/utils/calendar.js"
+
+var clickTimer = null
 
 export default {
   name: "calendar",
@@ -780,19 +782,50 @@ export default {
     },
     // 选中日期
     select(k1, k2, e) {
+      if(clickTimer) {
+        window.clearTimeout(clickTimer)
+        clickTimer = null
+      }
+
+      clickTimer = window.setTimeout(() => {
+        if (e != undefined) e.stopPropagation()
+        // 日期范围
+        // 取消上次选中
+        this.unselectAll()
+        // 设置当前选中天
+        this.days[k1][k2].selected = true
+        if (this.days[k1][k2].rightDay != undefined) {
+          this.days[k1][k2].rightDay = false
+        }
+        if (this.days[k1][k2].isToday != undefined) {
+          this.days[k1][k2].isToday = false
+        }
+        this.$emit("select", [
+          this.year,
+          this.zero ? this.zeroPad(this.month + 1) : this.month + 1,
+          this.zero ? this.zeroPad(this.days[k1][k2].day) : this.days[k1][k2].day
+        ])
+      }, 300) // 大概时间300ms
+    },
+    doubleClick(k1, k2, e) {
+      if (clickTimer) {
+        window.clearTimeout(clickTimer)
+        clickTimer = null
+      }
+
       if (e != undefined) e.stopPropagation()
       // 日期范围
       // 取消上次选中
       this.unselectAll()
       // 设置当前选中天
       this.days[k1][k2].selected = true
-      if (this.days[k1][k2].rightDay != undefined) {
+      if (this.days[k1][k2].rightDay !== undefined) {
         this.days[k1][k2].rightDay = false
       }
-      if (this.days[k1][k2].isToday != undefined) {
+      if (this.days[k1][k2].isToday !== undefined) {
         this.days[k1][k2].isToday = false
       }
-      this.$emit("select", [
+      this.$emit('dbSelect', [
         this.year,
         this.zero ? this.zeroPad(this.month + 1) : this.month + 1,
         this.zero ? this.zeroPad(this.days[k1][k2].day) : this.days[k1][k2].day

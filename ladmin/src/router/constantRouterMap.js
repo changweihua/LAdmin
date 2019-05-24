@@ -54,6 +54,35 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '',
+    name: 'history',
+    leaf: true,
+    component: () =>
+      import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
+    redirect: {
+      name: 'historyIndex'
+    },
+    meta: {
+      hidden: false,
+      requireLogin: true,
+      icon: 'users'
+    },
+    children: [
+      {
+        path: 'history',
+        name: 'historyIndex',
+        component: () =>
+          import(/* webpackChunkName: 'hello' */ '@/views/modules/History.vue'),
+        meta: {
+          title: 'history',
+          hidden: false,
+          requireLogin: false
+        },
+        leaf: true
+      }
+    ]
+  },
+  {
     path: '/login',
     name: 'login',
     component: () =>

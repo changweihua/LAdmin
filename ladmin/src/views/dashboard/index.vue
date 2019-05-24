@@ -1,5 +1,13 @@
 <template>
   <el-row>
+    <el-col :span="24">
+      <el-row class="message-row" :gutter="20">
+        <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+        <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
+        <el-col :span="6"><div class="grid-content bg-purple-dark"></div></el-col>
+        <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+      </el-row>
+    </el-col>
     <el-col :span="15">
       <calendar
         ref="calendar1"
@@ -11,6 +19,7 @@
         :months="calendar1.months"
         :totalMonth="calendar1.totalMonth"
         @select="calendar1.select"
+        @dbSelect="calendar1.dbSelect"
         @selectMonth="calendar1.selectMonth"
         @selectYear="calendar1.selectYear" />
     </el-col>
@@ -67,6 +76,9 @@ export default {
         },
         select(value) {
           console.log(value.toString());
+        },
+        dbSelect(value) {
+          console.log('dblick')
         },
         selectMonth(month, year) {
           console.log(year, month);
@@ -134,6 +146,29 @@ export default {
 /deep/ .el-card__header {
   color: $card-header-title-color !important;
 }
+
+
+  .message-row .el-col {
+    border-radius: 4px;
+    margin-bottom: 25px;
+  }
+  .message-row .el-col .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .message-row .el-col .bg-purple {
+    background: #d3dce6;
+  }
+  .message-row .el-col .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .message-row .el-col .grid-content {
+    border-radius: 4px;
+    min-height: 85px;
+  }
+  .message-row .el-col .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
 
 </style>
 

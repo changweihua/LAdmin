@@ -25,7 +25,7 @@
                       <a><fa-icon icon="language"></fa-icon></a>
                     </el-col>
                     <el-col :span="4">
-                      <a class="animated fadeIn">{{CURRENT_USER.userName}}</a>
+                      <a class="animated fadeIn">{{userProfile.username}}</a>
                     </el-col>
                     <el-col :span="2">
                       <el-dropdown trigger="click" @command="handleCommand">
@@ -73,7 +73,7 @@
   margin: 0;
 }
 
-@import "../../assets/main.css";
+@import '../../assets/main.css'
 </style>
 
 <style scoped lang="scss">
@@ -219,7 +219,7 @@ export default {
       let routeName = this.$route.name;
       console.log(routeName)
       this.showCrumb = routeName !== 'dashboardIndex'
-      
+      console.log(this.userProfile)
       // 检索当前路径
       // this.checkRouterLocal(path);
       },
@@ -228,8 +228,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(['CURRENT_USER', 'CRUMB_VISIBILITY'])
-    // ...mapGetters('showCrumb')
+    ...mapState(['CURRENT_USER', 'CRUMB_VISIBILITY']),
+    ...mapGetters(['userProfile'])
   },
   mounted() {
     this.initSignalR(function(conn) {
@@ -289,10 +289,9 @@ export default {
         })
       } else {
         if (callback) {
-            callback(this.connection)
-          }
+          callback(this.connection)
+        }
       }
-
     },
     handleCommand(command) {
       let that = this
