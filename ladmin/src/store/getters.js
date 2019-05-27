@@ -11,7 +11,7 @@ const getters = {
   routerLoadDone: state => state.permission.routerLoadDone,
   showCrumb: state => state.CRUMB_VISIBILITY,
   formModels: state => state.FORM_MODELS,
-  userProfile: state => JSON.parse(window.atob(state.JWT_TOKEN.split('.')[1]))
+  userProfile: state => state.JWT_TOKEN ? JSON.parse(window.atob(state.JWT_TOKEN.split('.')[1])) : {}
 }
 
 export default getters

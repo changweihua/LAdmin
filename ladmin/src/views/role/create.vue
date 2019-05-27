@@ -3,34 +3,73 @@
     <el-card>
       <x-form :label-position="labelPosition" :label-width="labelWidth" :form-actions="formActions" :form-rules="formRules" :form-items="formItems" :form-model="formModel" @form-submit="handleFormSubmit" @form-save="handleFormSave" />
     </el-card>
-    <!-- <el-card>
-      <el-row>
-        <el-button @click="handleSaveClick">暂存</el-button>
-      </el-row>
-    </el-card> -->
   </div>
 </template>
 
 <script>
 
-import { postConfiguration } from '@/apis/configuration'
+import { postRole } from '@/apis/role'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'configuration-create',
+  name: 'role-create',
   computed: {
     ...mapState(['FORM_MODELS'])
   },
   mounted() {
-    var form = this.FORM_MODELS.find(fm => fm.formName === 'ConfigurationCreation')
-    this.formItems = form.formItems.filter(item => !item.hidden)
-    this.formRules = Object.assign({}, form.formRules, this.formRules) 
+    var form = this.FORM_MODELS.find(fm => fm.formName === 'RoleCreation')
+    console.log(this.FORM_MODELS)
+    console.log(form)
+    if (form) {
+      this.formItems = form.formItems.filter(item => !item.hidden)
+      this.formRules = Object.assign({}, form.formRules, this.formRules)
+    }
   },
   data() {
     return {
       labelPosition: 'right',
       labelWidth: '120px',
-      formItems: [],
+      formItems: [{
+        label: 'roleName',
+        prop: 'roleName',
+        type: 'text'
+      }, {
+        label: 'roleDescription',
+        prop: 'roleDescription',
+        type: 'textarea'
+      }, {
+        label: 'parentRole',
+        prop: 'parentRole',
+        type: 'select-tree',
+        // 数据默认字段
+        treeProps: {
+          parent: 'parentId',   // 父级唯一标识
+          value: 'id',          // 唯一标识
+          label: 'label',       // 标签显示
+          children: 'children', // 子级
+        },
+        // 数据列表
+        options: [
+          {
+            parentId: '0',
+            id: 'A',
+            label: 'label-A',
+            children: [
+              {
+                parentId: 'A',
+                id: 'A-1',
+                label: 'label-A-1',
+              },
+            ],
+          },
+          {
+            parentId: '0',
+            value: 'B',
+            label: 'label-B',
+            children: [],
+          },
+        ]
+      }],
       formModel: {},
       formRules: {},
       formActions: [
@@ -77,14 +116,14 @@ export default {
     handleSaveClick() {
       console.log(this.formModel)
       var that = this
-      postConfiguration(Object.assign({}, this.formModel)).then(res => {
+      postRole(Object.assign({}, this.formModel)).then(res => {
         if (res.code === 0) {
           that.$message({
             dangerouslyUseHTMLString: true,
             message: '保存成功',
             onClose() {
               that.$router.push({
-                name: 'configurationList'
+                name: 'roleList'
               })
             }
           })

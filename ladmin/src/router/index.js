@@ -32,8 +32,8 @@ router.beforeEach((to, from, next) => {
     let lifeTime = new Date().getTime() * 1000
     // 当前时间的时间戳
     let nowTime = new Date().getTime()
-    // 用户未登录
-    if (!store.getters.currentUser || store.getters.token === '' || nowTime > lifeTime) {
+    // 用户未登录 || nowTime > lifeTime
+    if (!store.getters.currentUser || store.getters.token === '') {
       console.log('Not Logined')
       next({
         path: '/login'

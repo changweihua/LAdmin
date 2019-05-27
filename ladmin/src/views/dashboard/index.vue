@@ -107,68 +107,64 @@ export default {
 
 <style scoped lang="scss">
 .time {
-    font-size: 13px;
-    color: #999;
-  }
+  font-size: 13px;
+  color: #999;
+}
   
-  .bottom {
-    margin-top: 13px;
-    height: 40px;
-    line-height: 12px;
-  }
+.bottom {
+  margin-top: 13px;
+  height: 40px;
+  line-height: 12px;
+}
 
-  .button {
-    padding: 0;
-    float: right;
-    color: $highlight-color;
-  }
+.button {
+  padding: 0;
+  float: right;
+  color: $highlight-color;
+}
 
-  .image {
-    width: 100%;
-    display: block;
-  }
+.image {
+  width: 100%;
+  display: block;
+}
 
-  .clearfix:before,
-  .clearfix:after {
-      display: table;
-      content: "";
-  }
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
   
-  .clearfix:after {
-      clear: both
-  }
+.clearfix:after {
+  clear: both
+}
 
-  .el-card__body {
-    height: 395px !important;
-  }
+.el-card__body {
+  height: 395px !important;
+}
 
-  
 /deep/ .el-card__header {
   color: $card-header-title-color !important;
 }
 
-
-  .message-row .el-col {
-    border-radius: 4px;
-    margin-bottom: 25px;
-  }
-  .message-row .el-col .bg-purple-dark {
-    background: #99a9bf;
-  }
-  .message-row .el-col .bg-purple {
-    background: #d3dce6;
-  }
-  .message-row .el-col .bg-purple-light {
-    background: #e5e9f2;
-  }
-  .message-row .el-col .grid-content {
-    border-radius: 4px;
-    min-height: 85px;
-  }
-  .message-row .el-col .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
-  }
-
+.message-row .el-col {
+  border-radius: 4px;
+  margin-bottom: 25px;
+}
+.message-row .el-col .bg-purple-dark {
+  background: #99a9bf;
+}
+.message-row .el-col .bg-purple {
+  background: #d3dce6;
+}
+.message-row .el-col .bg-purple-light {
+  background: #e5e9f2;
+}
+.message-row .el-col .grid-content {
+  border-radius: 4px;
+  min-height: 55px;
+}
+.message-row .el-col .row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
 </style>
-

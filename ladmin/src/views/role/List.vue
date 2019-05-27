@@ -52,16 +52,15 @@
 </template>
 
 <script>
-// import { mapActions } from 'vuex'
+
 import { mapActions, mapState } from 'vuex'
-// import { values } from '@/apis/account'
-// import { userList } from '@/apis/user'
 
 export default {
   name: 'roleList',
   components: {},
   data() {
     return {
+      form: {},
       tablePager: {
         page: 1,
         limit: 10,
@@ -72,16 +71,16 @@ export default {
       },
       tableColumns: [
         {
-          prop: 'configurationName',
-          label: 'ConfigurationName'
+          prop: 'roleName',
+          label: 'RoleName'
         },
         {
-          prop: 'configurationType',
-          label: 'ConfigurationType'
+          prop: 'roleDescription',
+          label: 'RoleDescription'
         },
         {
-          prop: 'configurationValue',
-          label: 'ConfigurationValue'
+          prop: 'parentRole',
+          label: 'ParentRole'
         },
         {
           prop: 'createdDate',
@@ -102,12 +101,22 @@ export default {
         disabled: (row) => {
           return false
         }
+      }, {
+        name: 'Assign',
+        icon: 'el-icon-edit',
+        handler: (row) => {
+          this.handleEditClick(row)
+        },
+        authorized: true,
+        disabled: (row) => {
+          return false
+        }
       }]
     }
   },
   mounted() {
     var query = Object.assign({}, this.tableQuery, this.tablePager)
-    this.fetchList(query)
+    this.fetchRoleList(query)
   },
   watch: {
     'pager': function(newVal, oldVal) {
@@ -118,14 +127,14 @@ export default {
     // ...mapState(['configuration.configurationList'])
     ...mapState({
       'configurationList': (state) =>
-        state.configuration.configurationList,
+        state.role.roleList,
       'pager': (state) =>
-        state.configuration.pager
+        state.role.rolePager
     })
     // ...mapState('configuration', ['configurationList'])
   },
   methods: {
-    ...mapActions(['fetchList']),
+    ...mapActions(['fetchRoleList']),
     handleCreateClick() {
       this.$router.push({
         name: 'roleCreate'
@@ -143,19 +152,19 @@ export default {
       this.tablePager.limit = val
       this.tablePager.skipCount = (this.tablePager.page - 1) * this.tablePager.maxResultCount
       var query = Object.assign({}, this.tableQuery, this.tablePager)
-      this.fetchList(query)
+      this.fetchRoleList(query)
     },
     handleCurrentChange(val) {
       this.tablePager.page = val
       this.tablePager.skipCount = (this.tablePager.page - 1) * this.tablePager.maxResultCount
       var query = Object.assign({}, this.tableQuery, this.tablePager)
-      this.fetchList(query)
+      this.fetchRoleList(query)
     },
     handleSearchClick() {
       this.tablePager.page = 1
       this.tablePager.skipCount = (this.tablePager.page - 1) * this.tablePager.maxResultCount
       var query = Object.assign({}, this.tableQuery, this.tablePager)
-      this.fetchList(query)
+      this.fetchRoleList(query)
     }
   }
 }

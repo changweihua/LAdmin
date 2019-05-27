@@ -197,7 +197,7 @@ $color: #fff;
 
 const signalR = require('@aspnet/signalr')
 
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import { send } from '@/apis/message'
 
 export default {
@@ -211,6 +211,9 @@ export default {
       intelval: null,
       connection: null
     }
+  },
+  created() {
+    console.log('Admin created')
   },
   watch: {
     "$route": {
@@ -232,11 +235,16 @@ export default {
     ...mapGetters(['userProfile'])
   },
   mounted() {
+    console.log('Admin mounted')
     this.initSignalR(function(conn) {
           conn.invoke('GetLastestCount', 'ssss')
         })
+    this.loadForms()
   },
   methods: {
+    ...mapActions({
+      loadForms: 'LOAD_FORM_MODELS'
+    }),
     initSignalR(callback) {
 
       if (this.connection === null) {

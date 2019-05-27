@@ -59,7 +59,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      fetchProfile: 'fetchProfile'
+      fetchProfile: 'fetchProfile',
+      loadForms: 'LOAD_FORM_MODELS'
     }),
     handleLoginClick() {
       let that = this
@@ -71,12 +72,12 @@ export default {
           window.localStorage.REFRESH_TOKEN = res.refresh_token
           that.$store.commit('SET_CURRENT_USER', res.user || {})
           that.$store.commit('SET_JWT_TOKEN', res.access_token)
-          that.$store.commit('SET_FORM_MODELS', res.elForms)
           that.$message({
             dangerouslyUseHTMLString: true,
             message: '登录成功！',
             onClose() {
               // that.fetchProfile()
+              // that.loadForms()
               that.$router.push('/')
             }
           })
@@ -92,7 +93,7 @@ export default {
 <style lang="scss" scoped>
 body {
   width: 100%;
-  height: 100%;
+  // height: 100%;
   background-image: 'url(' + require('@/assets/login-bg.jpg') + ')';
   background-size: 100%;
   background-repeat: no-repeat;

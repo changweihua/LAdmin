@@ -11,6 +11,8 @@ Vue.use(Vuex)
 import { permissionModule } from '@/store/modules/permission'
 import { configurationModule } from '@/store/modules/configuration'
 import { userModule } from '@/store/modules/user'
+import { roleModule } from '@/store/modules/role'
+import { systemModule } from '@/store/modules/system'
 import getters from '@/store/getters'
 import actions from '@/store/actions'
 
@@ -24,8 +26,7 @@ const store = new Vuex.Store({
   state: {
     CURRENT_USER: {},
     JWT_TOKEN: '',
-    CRUMB_VISIBILITY: true,
-    FORM_MODELS: []
+    CRUMB_VISIBILITY: true
   },
   mutations: {
     SET_CURRENT_USER(state, user) {
@@ -36,9 +37,6 @@ const store = new Vuex.Store({
     },
     SET_CRUMB_VISIBILITY(state, visible) {
       state.CRUMB_VISIBILITY = visible
-    },
-    SET_FORM_MODELS(state, formModels) {
-      state.FORM_MODELS = formModels
     }
   },
   actions: actions,
@@ -46,7 +44,9 @@ const store = new Vuex.Store({
   modules: {
     permission: permissionModule,
     configuration: configurationModule,
+    system: systemModule,
     user: userModule,
+    role: roleModule,
     i18n: i18nVuex.store
   },
   plugins: debug ? [createLogger(), createPersisted] : [createPersisted]
