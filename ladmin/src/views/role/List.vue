@@ -85,7 +85,7 @@ export default {
         name: 'Assign',
         icon: 'el-icon-edit',
         handler: (row) => {
-          this.handleEditClick(row)
+          this.handleAssignClick(row)
         },
         authorized: true,
         disabled: (row) => {
@@ -123,6 +123,14 @@ export default {
     handleEditClick(row) {
       this.$router.push({
         name: 'configurationEdit',
+        params: {
+          id: row.id
+        }
+      })
+    },
+    handleAssignClick(row) {
+      this.$router.push({
+        name: 'roleAssign',
         params: {
           id: row.id
         }

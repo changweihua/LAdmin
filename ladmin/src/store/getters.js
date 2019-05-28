@@ -11,6 +11,16 @@ const getters = {
   routerLoadDone: state => state.permission.routerLoadDone,
   showCrumb: state => state.CRUMB_VISIBILITY,
   formModels: state => state.FORM_MODELS,
+  systemModules: state => state.system.SYSTEM_MODULES.map(modul => {
+    return {
+      label: modul.displayName,
+      children: modul.actions.map(action => {
+        return {
+          label: action.displayName
+        }
+      })
+    }
+  }),
   userProfile: state => state.JWT_TOKEN ? JSON.parse(window.atob(state.JWT_TOKEN.split('.')[1])) : {}
 }
 

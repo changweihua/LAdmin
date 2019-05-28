@@ -101,6 +101,18 @@ export const asyncRouterMap = [
           title: 'roleEdit',
           requireLogin: true
         }
+      },
+      {
+        path: 'assign/:id',
+        name: 'roleAssign',
+        leaf: true,
+        component: () =>
+          import('@/views/role/Assign.vue'),
+        meta: {
+          hidden: true,
+          title: 'roleAssign',
+          requireLogin: true
+        }
       }
     ]
   }

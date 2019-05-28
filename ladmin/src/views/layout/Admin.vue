@@ -240,10 +240,12 @@ export default {
           conn.invoke('GetLastestCount', 'ssss')
         })
     this.loadForms()
+    this.loadModules()
   },
   methods: {
     ...mapActions({
-      loadForms: 'LOAD_FORM_MODELS'
+      loadForms: 'LOAD_FORM_MODELS',
+      loadModules: 'LOAD_SYSTEM_MODULES'
     }),
     initSignalR(callback) {
 
