@@ -39,7 +39,7 @@ export default {
         type: 'textarea'
       }, {
         label: 'parentRole',
-        prop: 'parentRole',
+        prop: 'parentId',
         type: 'select-tree',
         // 数据默认字段
         treeProps: {
@@ -52,18 +52,19 @@ export default {
         options: [
           {
             parentId: '0',
-            id: 'A',
+            id: '1',
             label: 'label-A',
             children: [
               {
-                parentId: 'A',
-                id: 'A-1',
+                parentId: '1',
+                id: '2',
                 label: 'label-A-1',
               },
             ],
           },
           {
             parentId: '0',
+            id: '3',
             value: 'B',
             label: 'label-B',
             children: [],

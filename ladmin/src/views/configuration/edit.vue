@@ -23,9 +23,9 @@ export default {
     // ...mapGetters('formModels')
   },
   mounted() {
-    var form = this.FORM_MODELS.find(fm => fm.formName === 'ConfigurationEdition')
-    console.log(form)
-    this.formItems = form.formItems.filter(item => !item.hidden)
+    // var form = this.FORM_MODELS.find(fm => fm.formName === 'ConfigurationEdition')
+    // console.log(form)
+    // this.formItems = form.formItems.filter(item => !item.hidden)
     var id = this.$route.params.id
     fetchConfiguration({ id: id }).then(res => {
       this.formModel = Object.assign({}, res.entity)

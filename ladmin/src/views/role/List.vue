@@ -4,31 +4,11 @@
     <el-row style="margin-top:30px;">
       <el-col :span="24">
         <el-card class="box-card">
-          <el-form :model="form" label-width="100px" class="normal-form">
+          <el-form :model="tableQuery" label-width="100px" class="normal-form">
             <el-row :gutter="20">
               <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                <el-form-item label="L('启动日期')">
-                  <el-input size="medium" />
-                </el-form-item>
-              </el-col>
-              <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                <el-form-item label="L('启动日期')">
-                  <el-input size="medium" />
-                </el-form-item>
-              </el-col>
-              <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                <el-form-item label="L('启动日期')">
-                  <el-input size="medium" />
-                </el-form-item>
-              </el-col>
-              <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                <el-form-item label="L('启动日期')">
-                  <el-input size="medium" />
-                </el-form-item>
-              </el-col>
-              <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                <el-form-item label="L('启动日期')">
-                  <el-input size="medium" />
+                <el-form-item :label="$t('RoleName')" prop="roleName">
+                  <el-input v-model="tableQuery.roleName" size="medium" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -60,7 +40,6 @@ export default {
   components: {},
   data() {
     return {
-      form: {},
       tablePager: {
         page: 1,
         limit: 10,
@@ -68,6 +47,7 @@ export default {
         total: 0
       },
       tableQuery: {
+        roleName: ''
       },
       tableColumns: [
         {
@@ -79,8 +59,8 @@ export default {
           label: 'RoleDescription'
         },
         {
-          prop: 'parentRole',
-          label: 'ParentRole'
+          prop: 'parentName',
+          label: 'ParentName'
         },
         {
           prop: 'createdDate',
