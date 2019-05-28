@@ -8,7 +8,7 @@
             <el-row :gutter="20">
               <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
                 <el-form-item :label="$t('RoleName')" prop="roleName">
-                  <el-input v-model="tableQuery.roleName" size="medium" />
+                  <el-input v-model.trim.lazy="tableQuery.roleName" size="medium" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -129,10 +129,11 @@ export default {
       })
     },
     handleAssignClick(row) {
+      console.log(row)
       this.$router.push({
         name: 'roleAssign',
         params: {
-          id: row.id
+          id: row.roleId
         }
       })
     },

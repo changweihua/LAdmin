@@ -13,9 +13,11 @@ const getters = {
   formModels: state => state.FORM_MODELS,
   systemModules: state => state.system.SYSTEM_MODULES.map(modul => {
     return {
+      name: modul.name,
       label: modul.displayName,
       children: modul.actions.map(action => {
         return {
+          name: action.name,
           label: action.displayName
         }
       })
