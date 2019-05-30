@@ -4,9 +4,9 @@ export const fetchRoleList = (params) => {
   return request('get', '/api/roles/pager', params)
 }
 
-// export const fetchConfiguration = (params) => {
-//   return request('get', '/api/configurations', params)
-// }
+export const fetchRole = (params) => {
+  return request('get', '/api/roles', params)
+}
 
 // export const putConfiguration = (params) => {
 //   return request('put', '/api/configurations', params)

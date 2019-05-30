@@ -15,9 +15,10 @@ const getters = {
     return {
       name: modul.name,
       label: modul.displayName,
+      // disabled: true,
       children: modul.actions.map(action => {
         return {
-          name: action.name,
+          name: modul.name + '.' + action.name,
           label: action.displayName
         }
       })

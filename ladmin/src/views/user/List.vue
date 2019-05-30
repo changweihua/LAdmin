@@ -7,8 +7,8 @@
           <el-form :model="tableQuery" label-width="100px" class="normal-form">
             <el-row :gutter="20">
               <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                <el-form-item :label="$t('RoleName')" prop="roleName">
-                  <el-input v-model.trim.lazy="tableQuery.roleName" size="medium" />
+                <el-form-item :label="$t('UserName')" prop="userName">
+                  <el-input v-model.trim.lazy="tableQuery.userName" size="medium" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -20,7 +20,7 @@
       </el-col>
       <el-col :span="24">
         <el-card class="box-card">
-          <x-table :table-columns="tableColumns" :table-pager="tablePager" :table-actions="tableActions" :table-data="configurationList" :table-query="tableQuery" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+          <x-table :table-columns="tableColumns" :table-pager="tablePager" :table-actions="tableActions" :table-data="userList" :table-query="tableQuery" @size-change="handleSizeChange" @current-change="handleCurrentChange">
             <el-row slot="tools" class="btn-wrap">
               <el-button type="primary" size="small" icon="el-icon-plus" @click="handleCreateClick">Add</el-button>
             </el-row>
@@ -36,7 +36,7 @@
 import { mapActions, mapState } from 'vuex'
 
 export default {
-  name: 'roleList',
+  name: 'userList',
   components: {},
   data() {
     return {
@@ -47,20 +47,24 @@ export default {
         total: 0
       },
       tableQuery: {
-        roleName: ''
+        userName: ''
       },
       tableColumns: [
         {
-          prop: 'roleName',
-          label: 'RoleName'
+          prop: 'loginName',
+          label: 'LoginName'
         },
         {
-          prop: 'roleDescription',
-          label: 'RoleDescription'
+          prop: 'userName',
+          label: 'UserName'
         },
         {
-          prop: 'parentName',
-          label: 'ParentName'
+          prop: 'groups',
+          label: 'Groups'
+        },
+        {
+          prop: 'roles',
+          label: 'Roles'
         },
         {
           prop: 'createdDate',
@@ -81,22 +85,12 @@ export default {
         disabled: (row) => {
           return false
         }
-      }, {
-        name: 'Assign',
-        icon: 'el-icon-edit',
-        handler: (row) => {
-          this.handleAssignClick(row)
-        },
-        authorized: true,
-        disabled: (row) => {
-          return false
-        }
       }]
     }
   },
   mounted() {
     var query = Object.assign({}, this.tableQuery, this.tablePager)
-    this.fetchRoleList(query)
+    this.fetchUserList(query)
   },
   watch: {
     'pager': function(newVal, oldVal) {
@@ -106,32 +100,23 @@ export default {
   computed: {
     // ...mapState(['configuration.configurationList'])
     ...mapState({
-      'configurationList': (state) =>
-        state.role.roleList,
+      'userList': (state) =>
+        state.user.userList,
       'pager': (state) =>
-        state.role.rolePager
+        state.user.userPager
     })
     // ...mapState('configuration', ['configurationList'])
   },
   methods: {
-    ...mapActions(['fetchRoleList']),
+    ...mapActions(['fetchUserList']),
     handleCreateClick() {
       this.$router.push({
-        name: 'roleCreate'
+        name: 'userCreate'
       })
     },
     handleEditClick(row) {
       this.$router.push({
-        name: 'configurationEdit',
-        params: {
-          id: row.roleId
-        }
-      })
-    },
-    handleAssignClick(row) {
-      console.log(row)
-      this.$router.push({
-        name: 'roleAssign',
+        name: 'userEdit',
         params: {
           id: row.roleId
         }
@@ -141,19 +126,19 @@ export default {
       this.tablePager.limit = val
       this.tablePager.skipCount = (this.tablePager.page - 1) * this.tablePager.maxResultCount
       var query = Object.assign({}, this.tableQuery, this.tablePager)
-      this.fetchRoleList(query)
+      this.fetchUserList(query)
     },
     handleCurrentChange(val) {
       this.tablePager.page = val
       this.tablePager.skipCount = (this.tablePager.page - 1) * this.tablePager.maxResultCount
       var query = Object.assign({}, this.tableQuery, this.tablePager)
-      this.fetchRoleList(query)
+      this.fetchUserList(query)
     },
     handleSearchClick() {
       this.tablePager.page = 1
       this.tablePager.skipCount = (this.tablePager.page - 1) * this.tablePager.maxResultCount
       var query = Object.assign({}, this.tableQuery, this.tablePager)
-      this.fetchRoleList(query)
+      this.fetchUserList(query)
     }
   }
 }

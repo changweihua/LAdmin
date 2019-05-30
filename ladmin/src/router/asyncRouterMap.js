@@ -115,6 +115,55 @@ export const asyncRouterMap = [
         }
       }
     ]
+  },
+  {
+    path: '/user',
+    name: 'user',
+    redirect: 'userList',
+    component: () =>
+      import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
+    leaf: false,
+    meta: {
+      title: 'userList',
+      requireLogin: true
+    },
+    children: [
+      {
+        path: 'list',
+        name: 'userList',
+        leaf: true,
+        component: () =>
+          import('@/views/user/List.vue'),
+        meta: {
+          title: 'userList',
+          requireLogin: true
+        }
+      },
+      {
+        path: 'create',
+        name: 'userCreate',
+        leaf: true,
+        component: () =>
+          import('@/views/user/Create.vue'),
+        meta: {
+          hidden: true,
+          title: 'userCreate',
+          requireLogin: true
+        }
+      },
+      {
+        path: 'edit/:id',
+        name: 'userEdit',
+        leaf: true,
+        component: () =>
+          import('@/views/user/Edit.vue'),
+        meta: {
+          hidden: true,
+          title: 'userEdit',
+          requireLogin: true
+        }
+      }
+    ]
   }
   // {
   //   path: '/permission',

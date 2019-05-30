@@ -9,8 +9,11 @@
           ref="tree"
           show-checkbox
           node-key="name"
+          :check-strictly="true"
           :data="systemModules"
-          :props="defaultProps" />
+          :default-checked-keys="assignModel.checkedObjects"
+          :props="defaultProps"
+          @check-change="treeCheckChange" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">立即创建</el-button>
@@ -21,14 +24,16 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { assignRole } from '@/apis/role'
+import { assignRole, fetchRole } from '@/apis/role'
 
 export default {
   name: 'role-assign',
   data() {
     return {
       assignModel: {
-        name: ''
+        name: '',
+        roleId: this.$route.params.id,
+        checkedObjects: []
       },
       defaultProps: {
         children: 'children',
@@ -44,15 +49,21 @@ export default {
     }
   },
   mounted() {
+    var that = this
     var id = this.$route.params.id
-    console.log(id)
+    fetchRole({ id: id }).then(res => {
+      console.log(res)
+      // this.assignModel = Object.assign({}, res.entity)
+      that.assignModel.checkedObjects = res.entity.roleBehaviorObjects.map(behv => behv['objectName'])
+    })
   },
   methods: {
     onSubmit() {
       var checkedNodes = this.$refs.tree.getCheckedNodes(false, true)
+      console.log(checkedNodes)
       var roleObjects = checkedNodes.map(node => {
         return {
-          roleId: 1,
+          roleId: this.assignModel.roleId,
           objectName: node.name
         }
       })
@@ -60,6 +71,12 @@ export default {
       assignRole(roleObjects).then(res => {
         console.log(res)
       })
+    },
+    treeCheckChange(data, isChecked, children) {
+      console.log(data)
+      console.log(isChecked)
+      console.log(children)
+      console.log(this.$refs.tree.getNode(data))
     }
   }
 }
