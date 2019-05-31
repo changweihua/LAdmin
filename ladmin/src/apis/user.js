@@ -11,3 +11,11 @@ export const fetchUserProfile = (params) => {
 export const postUser = (params) => {
   return request('post', '/api/users', params)
 }
+
+export const fetchUser = (params) => {
+  return request('get', '/api/users', params)
+}
+
+export const putUser = (params) => {
+  return request('put', '/api/users', params)
+}

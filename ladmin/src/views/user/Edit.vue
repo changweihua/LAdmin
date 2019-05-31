@@ -8,7 +8,8 @@
 
 <script>
 
-import { postRole } from '@/apis/role'
+import { fetchAllRole } from '@/apis/role'
+import { fetchUser, putUser } from '@/apis/user'
 import { mapState } from 'vuex'
 
 export default {
@@ -17,29 +18,35 @@ export default {
     ...mapState(['FORM_MODELS'])
   },
   mounted() {
-    var form = this.FORM_MODELS.find(fm => fm.formName === 'RoleCreation')
-    console.log(this.FORM_MODELS)
-    console.log(form)
+    var form = (this.FORM_MODELS || []).find(fm => fm.formName === 'RoleCreation')
     if (form) {
       this.formItems = form.formItems.filter(item => !item.hidden)
       this.formRules = Object.assign({}, form.formRules, this.formRules)
     }
+    fetchAllRole().then(res => {
+      this.formItems.find(item => item['prop'] === 'roleId').options = [...res.entity]
+    })
+    var id = this.$route.params.id
+    fetchUser({ id: id }).then(res => {
+      this.formModel = Object.assign({ userId: id }, res.entity)
+    })
   },
   data() {
     return {
+      allRoles: [],
       labelPosition: 'right',
       labelWidth: '120px',
       formItems: [{
-        label: 'roleName',
-        prop: 'roleName',
+        label: 'loginName',
+        prop: 'loginName',
         type: 'text'
       }, {
-        label: 'roleDescription',
-        prop: 'roleDescription',
-        type: 'textarea'
+        label: 'userName',
+        prop: 'userName',
+        type: 'text'
       }, {
         label: 'parentRole',
-        prop: 'parentId',
+        prop: 'roleId',
         type: 'select-tree',
         // 数据默认字段
         treeProps: {
@@ -49,27 +56,7 @@ export default {
           children: 'children', // 子级
         },
         // 数据列表
-        options: [
-          {
-            parentId: '0',
-            id: '1',
-            label: 'label-A',
-            children: [
-              {
-                parentId: '1',
-                id: '2',
-                label: 'label-A-1',
-              },
-            ],
-          },
-          {
-            parentId: '0',
-            id: '3',
-            value: 'B',
-            label: 'label-B',
-            children: [],
-          },
-        ]
+        options: []
       }],
       formModel: {},
       formRules: {},
@@ -117,14 +104,14 @@ export default {
     handleSaveClick() {
       console.log(this.formModel)
       var that = this
-      postRole(Object.assign({}, this.formModel)).then(res => {
+      putUser(Object.assign({}, this.formModel, { roles: [this.formModel.roleId] })).then(res => {
         if (res.code === 0) {
           that.$message({
             dangerouslyUseHTMLString: true,
             message: '保存成功',
             onClose() {
               that.$router.push({
-                name: 'roleList'
+                name: 'userList'
               })
             }
           })

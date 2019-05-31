@@ -4,6 +4,10 @@ export const fetchRoleList = (params) => {
   return request('get', '/api/roles/pager', params)
 }
 
+export const fetchAllRole = (params) => {
+  return request('get', '/api/roles/all', params)
+}
+
 export const fetchRole = (params) => {
   return request('get', '/api/roles', params)
 }

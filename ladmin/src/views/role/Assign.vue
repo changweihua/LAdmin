@@ -68,7 +68,10 @@ export default {
         }
       })
       console.log(roleObjects)
-      assignRole(roleObjects).then(res => {
+      assignRole({
+        roleId: this.assignModel.roleId,
+        objects: checkedNodes.map(node => node['name'])
+      }).then(res => {
         console.log(res)
       })
     },

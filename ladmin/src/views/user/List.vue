@@ -118,7 +118,7 @@ export default {
       this.$router.push({
         name: 'userEdit',
         params: {
-          id: row.roleId
+          id: row.userId
         }
       })
     },
