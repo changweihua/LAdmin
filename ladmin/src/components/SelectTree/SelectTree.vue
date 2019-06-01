@@ -35,11 +35,15 @@ export default {
   name: 'tree-select',
   props: {
     // 接收绑定参数
-    value: String,
+    value: Number,
     // 输入框宽度
     width: String,
     // 选项数据
     options: {
+      type: Array,
+      required: true,
+    },
+    defaults: {
       type: Array,
       required: true,
     },
@@ -55,8 +59,8 @@ export default {
       required: false,
       default: () => ({
         parent: 'parentId',
-        value: 'rowGuid',
-        label: 'areaName',
+        value: 'id',
+        label: 'label',
         children: 'children',
       }),
     },
@@ -85,8 +89,25 @@ export default {
       this.$refs.tree.filter(val);
     },
     value(val) {
+      console.log('value')
       this.labelModel = this.queryTree(this.data, val);
     },
+    // 'value': {
+    //   deep: true,
+    //   handler(val) {
+    //     console.log('value')
+    //     this.labelModel = this.queryTree(this.data, val)
+    //   }
+    // }
+    'options': {
+      deep: true,
+      handler(val) {
+        console.log('options')
+         console.log(this.data)
+          console.log(this.defaults)
+        this.labelModel = this.queryTree(this.data, this.defaults[0]);
+      }
+    }
   },
   data() {
     return {
@@ -97,7 +118,7 @@ export default {
       // 输入框显示值
       labelModel: '',
       // 实际请求传值
-      valueModel: '0',
+      valueModel: null,
     };
   },
   created() {
@@ -133,12 +154,14 @@ export default {
     // 隐藏时触发
     onHidePopover() {
       this.showStatus = false;
-      this.$emit('selected', this.valueModel);
+      if (this.valueModel) {
+        this.$emit('selected', this.valueModel)
+      }
     },
     // 树节点过滤方法
     filterNode(query, data) {
       if (!query) return true;
-      return data[this.props.label].indexOf(query) !== -1;
+      return (data[this.props.label] || '').indexOf(query) !== -1;
     },
     // 搜索树状数据中的 ID
     queryTree(tree, id) {
@@ -156,13 +179,13 @@ export default {
       return '';
     },
     // 将一维的扁平数组转换为多层级对象
-    buildTree(data, id = '0') {
+    buildTree(data, id = 0) {
       const fa = (parentId) => {
         const temp = [];
         for (let i = 0; i < data.length; i++) {
           const n = data[i];
           if (n[this.props.parent] === parentId) {
-            n.children = fa(n.rowGuid);
+            n.children = fa(n.id);
             temp.push(n);
           }
         }

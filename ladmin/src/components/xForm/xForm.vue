@@ -29,7 +29,7 @@
         <el-input v-model="formModel[item.prop]" :form-type="item.type"/>
       </template>
       <template v-if="item.type==='select-tree'">
-        <tree-select v-model="formModel[item.prop]" :options="item.options" :props="item.treeProps" />
+        <tree-select v-model="formModel[item.prop]" :options="item.options" :defaults="item.defaults" :value="item.value" :props="item.treeProps" />
       </template>
       <template v-if="item.type==='switch'">
         <el-switch v-model="formModel[item.prop]" :form-type="item.type" />

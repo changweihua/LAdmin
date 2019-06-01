@@ -29,6 +29,8 @@ export default {
     var id = this.$route.params.id
     fetchUser({ id: id }).then(res => {
       this.formModel = Object.assign({ userId: id }, res.entity)
+      this.formItems.find(item => item['prop'] === 'roleId').defaults = [...res.entity.roles.map(ur => ur['roleId'])]
+      this.formItems.find(item => item['prop'] === 'roleId').value = [...res.entity.roles.map(ur => ur['roleId'])][0]
     })
   },
   data() {
@@ -56,7 +58,9 @@ export default {
           children: 'children', // 子级
         },
         // 数据列表
-        options: []
+        options: [],
+        defaults: [],
+        value: null
       }],
       formModel: {},
       formRules: {},
