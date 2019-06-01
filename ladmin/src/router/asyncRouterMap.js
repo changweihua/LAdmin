@@ -95,7 +95,7 @@ export const asyncRouterMap = [
         name: 'roleEdit',
         leaf: true,
         component: () =>
-          import('@/views/configuration/edit.vue'),
+          import('@/views/role/Edit.vue'),
         meta: {
           hidden: true,
           title: 'roleEdit',

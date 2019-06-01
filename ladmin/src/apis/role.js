@@ -12,9 +12,9 @@ export const fetchRole = (params) => {
   return request('get', '/api/roles', params)
 }
 
-// export const putConfiguration = (params) => {
-//   return request('put', '/api/configurations', params)
-// }
+export const putRole = (params) => {
+  return request('put', '/api/roles', params)
+}
 
 export const postRole = (params) => {
   return request('post', '/api/roles', params)

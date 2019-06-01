@@ -122,7 +122,7 @@ export default {
     },
     handleEditClick(row) {
       this.$router.push({
-        name: 'configurationEdit',
+        name: 'roleEdit',
         params: {
           id: row.roleId
         }
