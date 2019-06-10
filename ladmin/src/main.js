@@ -5,6 +5,9 @@ import store from './store'
 import './plugins/element.js'
 // import axios from 'axios';
 
+import ErrorPlugin from './plugins/error'
+Vue.use(ErrorPlugin)
+
 import i18n from './i18n/i18n'
 // import './i18n/vuexi18n'
 
