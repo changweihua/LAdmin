@@ -3,10 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    // "build": "vue-cli-service build",
+    "build": "vue-cli-service build --mode build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    // 打包，会把process.env.NODE_ENV设置为步骤2中‘.env.alpha’文件设置的值。
+    // 注意，这里 “--mode 名字“ 要和步骤2中文件名“.env.名字”名字保持一致
+    "alpha": "vue-cli-service build --mode alpha"
   },
   "dependencies": {
     "@aspnet/signalr": "^1.1.4",
