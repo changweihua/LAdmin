@@ -1,5 +1,7 @@
-const path = require("path");
-
+const path = require("path")
+const vConsolePlugin = require('vconsole-webpack-plugin') // 引入 移动端模拟开发者工具 插件 （另：https://github.com/liriliri/eruda）
+const CompressionPlugin = require('compression-webpack-plugin') // Gzip
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin // Webpack包文件分析器
 const debug = process.env.NODE_ENV !== 'production'
 // const VueConf = require('./src/assets/js/libs/vue_config_class')
 // const vueConf = new VueConf(process.argv)
@@ -54,14 +56,14 @@ module.exports = {
       proxy: {
         // 配置多个代理(配置一个 proxy: 'http://localhost:4000' )
         "/api": {
-          target: 'http://localhost:6373',
+          target: 'http://localhost:56491',
           // target: 'http://192.168.1.4:8999',
           pathRewrite: {
             '^/api': '/api'
           }
         },
         "/message": {
-          target: 'http://localhost:6373',
+          target: 'http://localhost:56491',
           // target: 'http://192.168.1.4:8999',
           pathRewrite: {
             '^/message': '/'
@@ -88,6 +90,11 @@ module.exports = {
         // 生产开发配置
       }
 
+      // 测试生产环境, 不压缩js代码
+      if (process.env.VUE_APP_TITLE === 'alpha') {
+        config.optimization.minimize(false)
+      }
+
       config.plugins.delete('preload');
       config.plugins.delete('prefetch');
       config.resolve.alias
@@ -96,19 +103,46 @@ module.exports = {
         .set("assets", resolve("src/assets"))
         .set("components", resolve("src/components"));
 
-        const oneOfsMap = config.module.rule('scss').oneOfs.store
-        oneOfsMap.forEach(item => {
-          item
-            .use('sass-resources-loader')
-            .loader('sass-resources-loader')
-            .options({
-              // Provide path to the file with resources
-              resources: './src/assets/scss/color.scss'
-     
-              // Or array of paths
-              // resources: ['./src/assets/scss/color.scss', './src/element-variables.scss']
-            })
-            .end()
-        })
+      const oneOfsMap = config.module.rule('scss').oneOfs.store
+      oneOfsMap.forEach(item => {
+        item
+          .use('sass-resources-loader')
+          .loader('sass-resources-loader')
+          .options({
+            // Provide path to the file with resources
+            resources: './src/assets/scss/color.scss'
+            // Or array of paths
+            // resources: ['./src/assets/scss/color.scss', './src/element-variables.scss']
+          })
+          .end()
+      })
+    },
+    configureWebpack: config => {
+      //生产and测试环境
+      let pluginsPro = [
+        new CompressionPlugin({ //文件开启Gzip，也可以通过服务端(如：nginx)(https://github.com/webpack-contrib/compression-webpack-plugin)
+          filename: '[path].gz[query]',
+          algorithm: 'gzip',
+          test: new RegExp('\\.(' + ['js', 'css'].join('|') + ')$', ),
+          threshold: 8192,
+          minRatio: 0.8,
+        }),
+        //  Webpack包文件分析器(https://github.com/webpack-contrib/webpack-bundle-analyzer)
+        new BundleAnalyzerPlugin(),
+      ]
+      //开发环境
+      let pluginsDev = [
+        //移动端模拟开发者工具(https://github.com/diamont1001/vconsole-webpack-plugin  https://github.com/Tencent/vConsole)
+        new vConsolePlugin({
+          filter: [], // 需要过滤的入口文件
+          enable: true // 发布代码前记得改回 false
+        }),
+      ]
+      if(process.env.NODE_ENV === 'production') { // 为生产环境修改配置...process.env.NODE_ENV !== 'development'
+        config.plugins = [...config.plugins, ...pluginsPro]
+      } else {
+        // 为开发环境修改配置...
+        config.plugins = [...config.plugins, ...pluginsDev]
+      }
     }
-};
+}

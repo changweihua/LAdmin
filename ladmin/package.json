@@ -1,16 +1,13 @@
 {
   "name": "ladmin",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
-    // "build": "vue-cli-service build",
     "build": "vue-cli-service build --mode build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
-    // 打包，会把process.env.NODE_ENV设置为步骤2中‘.env.alpha’文件设置的值。
-    // 注意，这里 “--mode 名字“ 要和步骤2中文件名“.env.名字”名字保持一致
     "alpha": "vue-cli-service build --mode alpha"
   },
   "dependencies": {
@@ -44,12 +41,15 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
+    "compression-webpack-plugin": "^3.0.0",
     "eslint": "^5.8.0",
     "eslint-plugin-html": "^5.0.3",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.2",
     "sass-loader": "^7.0.3",
+    "vconsole-webpack-plugin": "^1.4.2",
     "vue-cli-plugin-element": "^1.0.1",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.5.21",
+    "webpack-bundle-analyzer": "^3.3.2"
   }
 }

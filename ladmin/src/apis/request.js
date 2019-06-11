@@ -1,5 +1,5 @@
-import Vue from "vue";
-import axios from "axios";
+import Vue from 'vue'
+import axios from 'axios'
 import { throwErr } from "@/utils"; //utils 捕捉服务端http状态码的方法
 // import store from "../store/index";   //引入vuex的相关操作
 import { Message, Loading } from "element-ui"; //element Toast的提示
@@ -12,7 +12,8 @@ axios.defaults.withCredentials = true;
 
 let loading;
 // let cancel, promiseArr = {}
-// const CancelToken = axios.CancelToken
+var CancelToken = axios.CancelToken
+var source = CancelToken.source()
 
 function startLoading() {    // 使用Element loading-start 方法
   loading = Loading.service({
@@ -164,6 +165,9 @@ Vue.prototype.$http = axios;
 
 export default function request(method, url, data) {  //暴露 request 给我们好API 管理
   method = method.toLocaleLowerCase();   //封装RESTful API的各种请求方式 以 post get delete为例
+  // data = Object.assign({}, data, {
+  //   cancelToken: source.token
+  // })
   if (method === "post") {
     return axios.post(url, data);   //axios的post 默认转化为json格式
   } else if (method === "get") {     
