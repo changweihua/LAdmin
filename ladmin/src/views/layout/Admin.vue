@@ -97,6 +97,7 @@ $color: #fff;
   color: #353d47;
   z-index: 4;
   box-sizing: border-box;
+  height: $header-height;
   a {
     line-height: $header-height;
     color: #fff !important;
@@ -329,6 +330,7 @@ export default {
         //     return res.text()
         //   })
         //   .then(id => this.connection.invoke('GetLastestCount', id))
+      } else if (command === 'lock') {
       }
     },
     handleOpen(key, keyPath) {
