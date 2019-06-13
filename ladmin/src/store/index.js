@@ -26,7 +26,8 @@ const store = new Vuex.Store({
   state: {
     CURRENT_USER: {},
     JWT_TOKEN: '',
-    CRUMB_VISIBILITY: true
+    CRUMB_VISIBILITY: true,
+    IS_AJAX_REQUESTING: false
   },
   mutations: {
     SET_CURRENT_USER(state, user) {

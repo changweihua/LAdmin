@@ -110,8 +110,12 @@ export default {
     }
   }
 
-  .el-menu{
+  .el-menu {
     border-right: 0 !important;
-  } 
+  }
+
+  .router-link-active .el-menu {
+    color: rgb(255, 208, 75) !important;
+  }
 
 </style>
