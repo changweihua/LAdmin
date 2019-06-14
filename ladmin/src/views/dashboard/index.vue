@@ -25,10 +25,10 @@
     </el-col>
     <el-col :offset="1" :span="8">
       <el-card>
-       <div slot="header" class="clearfix">工作台</div>
-      <div>
+      <div slot="header" class="clearfix">工作台</div>
+      <div class="shining-box">
         <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image" style="height: 304px;">
-        <div class="bottom clearfix">
+        <div class="bottom shining-box-content clearfix">
           <time class="time">来是偶然，去是必然，尽其当然，顺其自然</time>
           <el-button type="text" class="button">打卡签到</el-button>
           <!-- <el-button type="success" icon="el-icon-check" circle></el-button> -->
@@ -167,4 +167,40 @@ export default {
   padding: 10px 0;
   background-color: #f9fafc;
 }
+
+.shining-box {
+  position: relative;
+}
+
+.shining-box:before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background:#fff;
+  z-index: -1;
+}
+
+.shining-box:after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background:#fff;
+  z-index: -2;
+  filter: blur(40px);
+}
+
+.shining-box:before, .shining-box:after {
+  background: linear-gradient(235deg,#89ff00,#060c21,#00bcd4);
+}
+
+.shining-box-content {
+  box-sizing: border-box;
+}
+
 </style>
