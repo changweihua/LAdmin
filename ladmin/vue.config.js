@@ -133,10 +133,10 @@ module.exports = {
       //开发环境
       let pluginsDev = [
         //移动端模拟开发者工具(https://github.com/diamont1001/vconsole-webpack-plugin  https://github.com/Tencent/vConsole)
-        new vConsolePlugin({
-          filter: [], // 需要过滤的入口文件
-          enable: true // 发布代码前记得改回 false
-        }),
+        // new vConsolePlugin({
+        //   filter: [], // 需要过滤的入口文件
+        //   enable: true // 发布代码前记得改回 false
+        // }),
       ]
       if(process.env.NODE_ENV === 'production') { // 为生产环境修改配置...process.env.NODE_ENV !== 'development'
         config.plugins = [...config.plugins, ...pluginsPro]

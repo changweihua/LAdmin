@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import { Message } from 'element-ui'
 import store from '@/store'
 import { constantRouterMap } from '@/router/constantRouterMap'
+import { fetchPermission } from '@/apis/account'
 
 // 懒加载方式，当路由被访问的时候才加载对应组件
 // const Login = resolve => require(['@/components/Login'], resolve)
@@ -18,7 +19,8 @@ const router = new Router({
   routes: constantRouterMap
 })
 
-var isRouterGenerated = false
+// 标记路由是否生成过
+var isRouterGenerated = false //(sessionStorage.getItem('isRouterGenerated') || 'false') === 'true'
 
 // 路由拦截
 // 差点忘了说明,不是所有版块都需要鉴权的
@@ -26,91 +28,34 @@ var isRouterGenerated = false
 // 这货就必须走鉴权,像登录页这些不要,是可以直接访问的!!!
 router.beforeEach((to, from, next) => {
   // 判断是否需要登录权限，如果不需要登录权限，继续执行
-  if (to.matched.some((res) => res.meta.requireLogin)) {
-    console.log('当前需要身份认证')
-    // 验证当前token是否超时，或者用户为空
-    let lifeTime = new Date().getTime() * 1000
-    // 当前时间的时间戳
-    let nowTime = new Date().getTime()
-    // 用户未登录 || nowTime > lifeTime
-    if (!store.getters.currentUser || store.getters.token === '') {
-      console.log('Not Logined')
+  console.log(to)
+  var userLogined = store.getters.currentUser || store.getters.token !== ''
+  if (to.matched.length > 0) {
+    if (to.matched.some((res) => res.meta.requireLogin) && !userLogined) {
+      console.log('当前需要身份认证')
       next({
         path: '/login'
       })
     } else {
-      if (!store.getters.routerLoadDone) {
-        if (store.getters.addRouters.length > 0) {
-          console.log('load from local')
-          store
-            .dispatch('generateRoutes', [])
-            .then(() => {
-              // 动态添加可访问路由表
-              router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-              // eslint-disable-next-line new-cap
-              next({ ...to, replace: true })
-            })
-          // router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-          isRouterGenerated = true
-          // next('/')
-          next({ ...to, replace: true })
+      // 加载路由
+      console.log(store.getters.routerLoadDone)
+      if (!isRouterGenerated) {
+        if (!store.getters.routerLoadDone) {
+          fetchPermission().then(res => {
+            console.log(res.asyncRouters)
+            store.dispatch('filterRoutes', res.asyncRouters)
+            generateRoutes(to, next)
+          })
         } else {
-          console.log('dispatch generateRoutes')
-          store
-            .dispatch('generateRoutes', [])
-            .then(() => {
-              // 动态添加可访问路由表
-              router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-              // eslint-disable-next-line new-cap
-              next({ ...to, replace: true })
-            })
-          isRouterGenerated = true
+          console.log('AAA')
+          generateRoutes(to, next)
         }
       } else {
-        console.log('user logined')
-        console.log(from)
-        if (to.path === '/login') {
-          next(from.fullPath)
-        } else {
-          next()
-        }
+        next()
       }
     }
   } else {
-    console.log('no need auth')
-    if (to.matched.length === 0) {
-      console.log('not matched')
-      if (!isRouterGenerated) {
-        if (store.getters.addRouters.length > 0) {
-          store
-            .dispatch('generateRoutes', [])
-            .then(() => {
-              // 动态添加可访问路由表
-              router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-              // eslint-disable-next-line new-cap
-              next({ ...to, replace: true })
-            })
-          isRouterGenerated = true
-        } else {
-          console.log('dispatch generateRoutes')
-          store
-            .dispatch('generateRoutes', [])
-            .then(() => {
-              // 动态添加可访问路由表
-              router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-              // eslint-disable-next-line new-cap
-              next({ ...to, replace: true })
-            })
-          isRouterGenerated = true
-        }
-      }
-    } else {
-      next()
-    }
+    next('/')
   }
 })
 
@@ -121,6 +66,16 @@ router.afterEach(() => {
 // 取到浏览器出现网址的最后"/"出现的后边的字符
 function getLastUrl(str, yourStr) {
   str.slice(str.indexOf(yourStr) + 1)
+}
+
+function generateRoutes(to, next) {
+  console.log('generateRoutes')
+  isRouterGenerated = true
+  // 动态添加可访问路由表
+  router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
+  // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+  // eslint-disable-next-line new-cap
+  next({ ...to, replace: true })
 }
 
 export default router

@@ -9,6 +9,7 @@ const getters = {
   }),
   token: state => state.JWT_TOKEN,
   routerLoadDone: state => state.permission.routerLoadDone,
+  routerGenerated: state => state.permission.routerGenerated,
   showCrumb: state => state.CRUMB_VISIBILITY,
   formModels: state => state.FORM_MODELS,
   systemModules: state => state.system.SYSTEM_MODULES.map(modul => {

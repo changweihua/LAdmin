@@ -1,7 +1,7 @@
 import { constantRouterMap } from '@/router/constantRouterMap'
 import { asyncRouterMap } from '@/router/asyncRouterMap'
 import { fetchPermission } from '@/apis/account'
-
+import AdminLayout from '@/views/layout/Admin.vue'
 // import vuexCache from 'vuex-cache';
 // import persistedState from 'vuex-persistedstate'
 // import createLogger from 'vuex/dist/logger'
@@ -24,7 +24,8 @@ const permissionModule = {
   state: {
     routers: constantRouterMap,
     addRouters: [],
-    routerLoadDone: false
+    routerLoadDone: false,
+    routerGenerated: false
   },
   mutations: {
     RESET_ROUTERLOADDONE: (state, routerLoadDone) => {
@@ -55,6 +56,12 @@ const permissionModule = {
       })
 
       commit('setRouters', filterAsyncRouter(accessedRouters))
+    },
+    filterRoutes({ commit, state }, routes) {
+      console.log('filterRoutes')
+      const accessedRouters = filterAsyncRouter(routes)
+      console.log(accessedRouters)
+      commit('setRouters', accessedRouters)
     },
     generateRoutes({ commit, state }, response) {
       console.log(response)
@@ -111,7 +118,7 @@ function filterAsyncRouter(routers) {
       // 默认图标处理
       router.meta.icon = router.meta.icon ? router.meta.icon : 'component'
     }
-    if (router.component === 'main') {
+    if (router.component === 'Layout') {
       // Main组件特殊处理
       // router.component = AppMain;
     } else {
@@ -131,9 +138,9 @@ function filterAsyncRouter(routers) {
 function loadView(view) {
   // 路由懒加载
   // if (process.env === 'production') {
-  //   resolved = id => () => import('@/' + id + '.vue')
+  //   resolved = id => import(`@/views/modules/${view}`)
   // } else {
-  //   resolved = id => require('@/' + id + '.vue')
+  //   resolved = id => require(`${view}`)
   // }
   return () => require(`${view}`)
   return () => import(`@/views/modules/${view}`)
