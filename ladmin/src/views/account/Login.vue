@@ -1,6 +1,6 @@
 <template>
   <!--背景图-->
-  <div class="note" :style="note">
+  <div ref="noteContainer" class="note" :style="note" v-wresize="windowResize">
     <!--login框，表单+tab标签页的组合-->
     <div class="loginFrame">
       <el-form ref="AccountForm" :model="account" :rules="rules" label-position="left" label-width="0px" class="login-container">
@@ -34,7 +34,7 @@ export default {
         top: '0px',
         left: '0px',
         width: '100%',
-        height: '100%',
+        height: '100% !important',
         backgroundImage: 'url(' + require('@/assets/login-bg.jpg') + ')',
         backgroundSize: '100% 100%',
         backgroundRepeat: 'no-repeat'
@@ -56,12 +56,20 @@ export default {
     this.$nextTick(() => {
       // Victor("app", "abc"); // 登陆背景函数调用
     })
+    this.windowResize(this.$refs.AccountForm.offsetWidth, this.$refs.AccountForm.offsetHeight) 
   },
   methods: {
     ...mapActions({
       fetchProfile: 'fetchProfile',
       loadForms: 'LOAD_FORM_MODELS'
     }),
+    windowResize(_w, _h) {
+      console.log(window)
+      console.log(document.documentElement.offsetHeight)
+      this.note = Object.assign({}, this.note, {
+        height: _h + 'px'
+      })
+    },
     handleLoginClick() {
       let that = this
       that.$store.commit('RESET_ROUTERLOADDONE', false)

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+import router from './router/dynamicIndex'
 import store from './store'
 import './plugins/element.js'
 // import axios from 'axios';
@@ -36,11 +36,13 @@ Vue.component('font-awesome-layers-text', FontAwesomeLayersText)
 import {} from './apis/request'
 import '@/components/global.js'
 
+import '@/directive/resizes'
+
 // import Loading from './components/loading';
 // Vue.use(Loading);
 
 // 封装好的有拦截器的axios：this.$http
-import packedAxios from './utils/axios';
+import packedAxios from './utils/axios'
 Vue.use(packedAxios); // 使用this.$http代替封装好的axios
 
 Vue.config.productionTip = false
@@ -118,8 +120,6 @@ Vue.config.productionTip = false
 //     }
 //   }
 // });
-
-console.log('from main.js')
 
 Vue.prototype.L = Vue.$t
 

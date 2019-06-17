@@ -1,11 +1,12 @@
+import AdminLayout from '@/views/layout/Admin.vue'
+
 // 动态需要根据权限加载的路由表
 export const asyncRouterMap = [
   {
     path: '/configuration',
     name: 'configuration',
     redirect: 'configurationList',
-    component: () =>
-      import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
+    component: AdminLayout,
     leaf: false,
     meta: {
       title: 'configuration',

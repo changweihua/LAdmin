@@ -1,9 +1,10 @@
+import AdminLayout from '@/views/layout/Admin.vue'
+
 export const constantRouterMap = [
   {
     path: '',
     name: 'dashboard',
-    component: () =>
-      import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
+    component: AdminLayout,
     redirect: {
       name: 'dashboardIndex'
     },
@@ -28,8 +29,7 @@ export const constantRouterMap = [
     path: '',
     name: 'about',
     leaf: true,
-    component: () =>
-      import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
+    component: AdminLayout,
     redirect: {
       name: 'aboutIndex'
     },
@@ -57,8 +57,7 @@ export const constantRouterMap = [
     path: '',
     name: 'history',
     leaf: true,
-    component: () =>
-      import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
+    component: AdminLayout,
     redirect: {
       name: 'historyIndex'
     },

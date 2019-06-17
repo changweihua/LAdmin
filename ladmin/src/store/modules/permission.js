@@ -2,23 +2,6 @@ import { constantRouterMap } from '@/router/constantRouterMap'
 import { asyncRouterMap } from '@/router/asyncRouterMap'
 import { fetchPermission } from '@/apis/account'
 import AdminLayout from '@/views/layout/Admin.vue'
-// import vuexCache from 'vuex-cache';
-// import persistedState from 'vuex-persistedstate'
-// import createLogger from 'vuex/dist/logger'
-
-// const debug = process.env.NODE_ENV !== 'production'
-// const createPersisted = persistedState({
-//   storage: window.sessionStorage
-// })
-
-// function hasPermission(roles, route) {
-//   return true
-//   // if (route.meta && route.meta.role) {
-//   //   return roles.some(role => route.meta.role.indexOf(role) >= 0)
-//   // } else {
-//   //   return true
-//   // }
-// }
 
 const permissionModule = {
   state: {
@@ -113,11 +96,13 @@ const permissionModule = {
 
 function filterAsyncRouter(routers) {
   // 遍历后台传来的路由字符串，转换为组件对象
+  console.log('filterAsyncRouter')
   let accessedRouters = routers.filter((router) => {
     if (router.meta) {
       // 默认图标处理
       router.meta.icon = router.meta.icon ? router.meta.icon : 'component'
     }
+    console.log(router.component)
     if (router.component === 'Layout') {
       // Main组件特殊处理
       // router.component = AppMain;
@@ -142,7 +127,7 @@ function loadView(view) {
   // } else {
   //   resolved = id => require(`${view}`)
   // }
-  return () => require(`${view}`)
+  return () => require(`${view}`).default
   return () => import(`@/views/modules/${view}`)
 }
 
