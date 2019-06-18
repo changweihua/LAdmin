@@ -3,6 +3,7 @@
     <slot name="tools" />
     <!--Table-->
     <el-table
+      ref="table"
       v-loading="tableLoading"
       :data="tableData"
       :key="tableKey"
@@ -109,6 +110,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.$emit('current-change', val)
+      this.$refs.table.bodyWrapper.scrollTop = 0;
     },
     tableSelectionChange(selection) {
       this.$emit('selection-change', selection)

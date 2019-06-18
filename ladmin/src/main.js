@@ -129,7 +129,7 @@ new Vue({
   i18n,
   render: (h) => h(App),
   created: function() {
-    console.log('app created')
+    console.log('app created from main.js')
     // if (store.getters.addRouters.length > 0) {
     //   let userPath = constantRouterMap.concat(store.getters.addRouters)
     //   this.$router.addRoutes(userPath)

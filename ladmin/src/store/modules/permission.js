@@ -8,14 +8,16 @@ const permissionModule = {
     routers: constantRouterMap,
     addRouters: [],
     routerLoadDone: false,
-    routerGenerated: false
+    routerGenerated: false,
+    routerLoaded: false
   },
   mutations: {
     RESET_ROUTERLOADDONE: (state, routerLoadDone) => {
-      console.log('RESET_ROUTERLOADDONE')
       state.routerLoadDone = routerLoadDone
       state.routers = constantRouterMap
       state.addRouters = []
+      state.routerLoaded = false
+      state.routerGenerated = false
     },
     setRouters: (state, routers) => {
       console.log('setRouters')
@@ -28,6 +30,7 @@ const permissionModule = {
       // state.addRouters.push(notFound)
       // state.routers.push(notFound)
       state.routerLoadDone = true
+      state.routerLoaded = true
     }
   },
   actions: {
@@ -37,7 +40,6 @@ const permissionModule = {
       const accessedRouters = permission.asyncRouters.filter((v) => {
         return true
       })
-
       commit('setRouters', filterAsyncRouter(accessedRouters))
     },
     filterRoutes({ commit, state }, routes) {
@@ -127,7 +129,7 @@ function loadView(view) {
   // } else {
   //   resolved = id => require(`${view}`)
   // }
-  return () => require(`${view}`).default
+  return () => require(`${view}`)
   return () => import(`@/views/modules/${view}`)
 }
 

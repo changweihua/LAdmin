@@ -29,26 +29,31 @@ var isRouterGenerated = false //(sessionStorage.getItem('isRouterGenerated') || 
 router.beforeEach((to, from, next) => {
   // 判断是否需要登录权限，如果不需要登录权限，继续执行
   console.log(to)
-  var userLogined = store.getters.currentUser || store.getters.token !== ''
+  var userLogined = store.getters.token !== ''
+  console.log(userLogined)
   if (to.matched.length > 0) {
+    console.log('当前需要身份认证?')
     if (to.matched.some((res) => res.meta.requireLogin) && !userLogined) {
       console.log('当前需要身份认证')
-      next({
-        path: '/login'
-      })
+      // next({
+      //   path: '/login'
+      // })
     } else {
       // 加载路由
-      if (!isRouterGenerated) {
-        if (!store.getters.routerLoadDone) {
-          fetchPermission().then(res => {
-            console.log(res.asyncRouters)
-            store.dispatch('filterRoutes', res.asyncRouters)
-            generateRoutes(to, next)
-          })
-        } else {
-          console.log('AAA')
-          generateRoutes(to, next)
-        }
+      console.log(isRouterGenerated)
+      if (userLogined && !isRouterGenerated) {
+        console.log(store.getters.routerLoaded)
+        // if (!store.getters.routerLoaded) {
+        //   fetchPermission().then(res => {
+        //     console.log(res.asyncRouters)
+        //     store.dispatch('filterRoutes', res.asyncRouters)
+        //     generateRoutes(to, next)
+        //   })
+        // } else {
+        //   console.log('页面刷新后加载')
+        //   generateRoutes(to, next)
+        // }
+        generateRoutes(to, next)
       } else {
         console.log('isRouterGenerated is true')
         next()

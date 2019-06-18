@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { login, auth } from '@/apis/account'
+import { login, auth, fetchPermission } from '@/apis/account'
 import { mapActions } from 'vuex'
 
 export default {
@@ -66,9 +66,9 @@ export default {
     windowResize(_w, _h) {
       console.log(window)
       console.log(document.documentElement.offsetHeight)
-      this.note = Object.assign({}, this.note, {
-        height: _h + 'px'
-      })
+      // this.note = Object.assign({}, this.note, {
+      //   height: _h + 'px'
+      // })
     },
     handleLoginClick() {
       let that = this
@@ -80,14 +80,19 @@ export default {
           window.localStorage.REFRESH_TOKEN = res.refresh_token
           that.$store.commit('SET_CURRENT_USER', res.user || {})
           that.$store.commit('SET_JWT_TOKEN', res.access_token)
-          that.$message({
-            dangerouslyUseHTMLString: true,
-            message: '登录成功！',
-            onClose() {
-              // that.fetchProfile()
-              // that.loadForms()
-              that.$router.push('/')
-            }
+          fetchPermission().then(res => {
+            console.log(res.asyncRouters)
+            that.$store.dispatch('filterRoutes', res.asyncRouters)
+            that.$message({
+              dangerouslyUseHTMLString: true,
+              message: '登录成功！',
+              onClose() {
+                // that.fetchProfile()
+                // that.loadForms()
+                that.$router.push('/')
+                // location.reload()
+              }
+            })
           })
         })
         .catch((err) => {
@@ -105,6 +110,7 @@ body {
   background-image: 'url(' + require('@/assets/login-bg.jpg') + ')';
   background-size: 100%;
   background-repeat: no-repeat;
+  min-height: 100%;
 }
 
 .login-container {

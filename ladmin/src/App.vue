@@ -26,6 +26,9 @@ export default {
     // window.onresize = function temp() {
     //     that.clientHeight = `${document.documentElement.clientHeight}px`;
     // };
+  },
+  created() {
+    console.log('app created from App.vue')
   }
   // components: {
   //   adminLayout: () => import("@/layout/Admin.vue"),
