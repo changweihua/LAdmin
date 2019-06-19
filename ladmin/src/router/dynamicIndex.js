@@ -14,6 +14,7 @@ Vue.use(Router)
 Vue.use(require('vue-wechat-title'))
 
 const router = new Router({
+  mode: 'history',
   // 解决vue框架页面跳转有白色不可追踪色块的bug
   scrollBehavior: () => ({ x: 0, y: 0 }),
   routes: constantRouterMap
@@ -35,12 +36,13 @@ router.beforeEach((to, from, next) => {
     console.log('当前需要身份认证?')
     if (to.matched.some((res) => res.meta.requireLogin) && !userLogined) {
       console.log('当前需要身份认证')
-      // next({
-      //   path: '/login'
-      // })
+      next({
+        path: '/login'
+      })
     } else {
       // 加载路由
       console.log(isRouterGenerated)
+      //刷新页面后也得进入此方法才可以
       if (userLogined && !isRouterGenerated) {
         console.log(store.getters.routerLoaded)
         // if (!store.getters.routerLoaded) {

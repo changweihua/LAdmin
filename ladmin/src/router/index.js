@@ -14,6 +14,7 @@ Vue.use(Router)
 Vue.use(require('vue-wechat-title'))
 
 const router = new Router({
+  mode: 'history',
   // 解决vue框架页面跳转有白色不可追踪色块的bug
   scrollBehavior: () => ({ x: 0, y: 0 }),
   routes: constantRouterMap

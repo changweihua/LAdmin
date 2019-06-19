@@ -44,7 +44,7 @@ const permissionModule = {
     },
     filterRoutes({ commit, state }, routes) {
       console.log('filterRoutes')
-      const accessedRouters = filterAsyncRouter(routes)
+      const accessedRouters = formatAsyncRouter(routes)
       console.log(accessedRouters)
       commit('setRouters', accessedRouters)
     },
@@ -105,12 +105,14 @@ function filterAsyncRouter(routers) {
       router.meta.icon = router.meta.icon ? router.meta.icon : 'component'
     }
     console.log(router.component)
-    if (router.component === 'Layout') {
+    let componentPath
+    if (router.component === 'AdminLayout') {
       // Main组件特殊处理
-      // router.component = AppMain;
+      // router.component = AdminLayout
     } else {
       // 处理组件---重点
-      router.component = loadView(router.component)
+      componentPath = router.component
+      router.component = () => loadView(componentPath)
     }
     // 存在子集
     if (router.children && router.children.length) {
@@ -122,6 +124,46 @@ function filterAsyncRouter(routers) {
   return accessedRouters
 }
 
+function formatAsyncRouter(routers) {
+  // 遍历后台传来的路由字符串，转换为组件对象
+  console.log('formatAsyncRouter')
+  let accessedRouters = []
+  routers.forEach((router) => {
+    const {
+      path,
+      component,
+      leaf,
+      meta,
+      children,
+      name
+    } = router
+    // if (router.meta) {
+    //   // 默认图标处理
+    //   router.meta.icon = router.meta.icon ? router.meta.icon : 'component'
+    // }
+    const nRouter = {
+      path: path,
+      component(resolve) {
+        let componentPath = ''
+        if (component === 'AdminLayout') {
+          // Main组件特殊处理
+          require(['@/views/layout/Admin.vue'], resolve)
+        } else {
+          // 处理组件---重点
+          require([`${component}`], resolve)
+        }
+      },
+      name: name,
+      children: (children && children.length > 0) ? formatAsyncRouter(children) : [],
+      meta: meta,
+      leaf: leaf
+    }
+    console.log(nRouter)
+    accessedRouters.push(nRouter)
+  })
+  return accessedRouters
+}
+
 function loadView(view) {
   // 路由懒加载
   // if (process.env === 'production') {
@@ -129,6 +171,7 @@ function loadView(view) {
   // } else {
   //   resolved = id => require(`${view}`)
   // }
+  console.log('loadView')
   return () => require(`${view}`)
   return () => import(`@/views/modules/${view}`)
 }
