@@ -251,9 +251,9 @@ export default {
     initSignalR(callback) {
 
       if (this.connection === null) {
-
+        console.log(process.env.VUE_APP_SINGLAR_URL)
         this.connection = new signalR.HubConnectionBuilder()
-          .withUrl('http://localhost:56491/test')
+          .withUrl(process.env.VUE_APP_SINGLAR_URL + '/test')
           .build()
 
         this.connection.on('someFunc', (obj) => {

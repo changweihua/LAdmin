@@ -5,7 +5,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const debug = process.env.NODE_ENV !== 'production'
 // const VueConf = require('./src/assets/js/libs/vue_config_class')
 // const vueConf = new VueConf(process.argv)
- 
+// 注意：只有 VUE_APP_* 定义的变量才能在客户端代码中使用 
+
 console.log('')
 console.log('本地启动或构建的文件信息 | 开始--------------------------------------------------------------')
 // console.log(vueConf.pages)
@@ -56,15 +57,17 @@ module.exports = {
       proxy: {
         // 配置多个代理(配置一个 proxy: 'http://localhost:4000' )
         "/api": {
-          target: 'http://localhost:56491',
-          // target: 'http://192.168.1.4:8999',
+          // target: 'http://localhost:56491',
+          // target: 'http://localhost:9080',
+          target: process.env.VUE_APP_API_ROOT,
           pathRewrite: {
             '^/api': '/api'
           }
         },
         "/message": {
-          target: 'http://localhost:56491',
-          // target: 'http://192.168.1.4:8999',
+          // target: 'http://localhost:56491',
+          // target: 'http://localhost:9080',
+          target: process.env.VUE_APP_API_ROOT,
           pathRewrite: {
             '^/message': '/'
           }
@@ -120,6 +123,9 @@ module.exports = {
     configureWebpack: config => {
       //生产and测试环境
       let pluginsPro = [
+        // new DefinePlugin({
+        //   'process.env.BASE_URL': '\"' + process.env.BASE_URL + '\"'
+        // }),
         new CompressionPlugin({ //文件开启Gzip，也可以通过服务端(如：nginx)(https://github.com/webpack-contrib/compression-webpack-plugin)
           filename: '[path].gz[query]',
           algorithm: 'gzip',
@@ -132,6 +138,9 @@ module.exports = {
       ]
       //开发环境
       let pluginsDev = [
+        // new DefinePlugin({
+        //   'process.env.BASE_URL': '\"' + process.env.BASE_URL + '\"'
+        // })
         //移动端模拟开发者工具(https://github.com/diamont1001/vconsole-webpack-plugin  https://github.com/Tencent/vConsole)
         // new vConsolePlugin({
         //   filter: [], // 需要过滤的入口文件
