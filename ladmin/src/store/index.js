@@ -13,29 +13,28 @@ import { configurationModule } from '@/store/modules/configuration'
 import { userModule } from '@/store/modules/user'
 import { roleModule } from '@/store/modules/role'
 import { systemModule } from '@/store/modules/system'
+import { oauthModule } from '@/store/modules/oauth'
 import getters from '@/store/getters'
 import actions from '@/store/actions'
 
 const debug = process.env.NODE_ENV !== 'production'
 const createPersisted = persistedState({
   storage: window.sessionStorage
+  // reducer(state, paths) {
+  //   console.log(state)
+  //   console.log(paths)
+  //   delete state.permission.routerLoadDone
+  //   return state
+  // }
 })
 
 const store = new Vuex.Store({
   // namespace: true,
   state: {
-    CURRENT_USER: {},
-    JWT_TOKEN: '',
     CRUMB_VISIBILITY: true,
     IS_AJAX_REQUESTING: false
   },
   mutations: {
-    SET_CURRENT_USER(state, user) {
-      state.CURRENT_USER = user
-    },
-    SET_JWT_TOKEN(state, token) {
-      state.JWT_TOKEN = token
-    },
     SET_CRUMB_VISIBILITY(state, visible) {
       state.CRUMB_VISIBILITY = visible
     }
@@ -48,6 +47,7 @@ const store = new Vuex.Store({
     system: systemModule,
     user: userModule,
     role: roleModule,
+    oauth: oauthModule,
     i18n: i18nVuex.store
   },
   plugins: debug ? [createLogger(), createPersisted] : [createPersisted]

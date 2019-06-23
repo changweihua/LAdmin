@@ -6,6 +6,8 @@ import store from '@/store'
 import { constantRouterMap } from '@/router/constantRouterMap'
 import { fetchPermission } from '@/apis/account'
 
+const _import = require('./_import_' + process.env.NODE_ENV)
+
 // 懒加载方式，当路由被访问的时候才加载对应组件
 // const Login = resolve => require(['@/components/Login'], resolve)
 
@@ -13,14 +15,25 @@ Vue.use(Router)
 // 实例化参数
 Vue.use(require('vue-wechat-title'))
 
-const router = new Router({
+const createRouter = () => new Router({
   mode: 'history',
   // 解决vue框架页面跳转有白色不可追踪色块的bug
   scrollBehavior: () => ({ x: 0, y: 0 }),
   routes: constantRouterMap
 })
 
-var isRouterGenerated = false
+const router = createRouter()
+
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
+
+// 标记路由是否生成过
+var isRouterGenerated = false //(sessionStorage.getItem('isRouterGenerated') || 'false') === 'true'
+
+const whiteList = ['/login']
 
 // 路由拦截
 // 差点忘了说明,不是所有版块都需要鉴权的
@@ -28,90 +41,42 @@ var isRouterGenerated = false
 // 这货就必须走鉴权,像登录页这些不要,是可以直接访问的!!!
 router.beforeEach((to, from, next) => {
   // 判断是否需要登录权限，如果不需要登录权限，继续执行
-  if (to.matched.some((res) => res.meta.requireLogin)) {
-    console.log('当前需要身份认证')
-    // 验证当前token是否超时，或者用户为空
-    let lifeTime = new Date().getTime() * 1000
-    // 当前时间的时间戳
-    let nowTime = new Date().getTime()
-    // 用户未登录 || nowTime > lifeTime
-    if (!store.getters.currentUser || store.getters.token === '') {
-      console.log('Not Logined')
-      next({
-        path: '/login'
-      })
+  console.log(`store.getters.access_token=${store.getters.access_token}`)
+  var hasToken = store.getters.access_token !== ''
+  console.log(`hasToken=${hasToken}`)
+  if (hasToken) {
+    if (to.path === '/login') {
+      next({ path: '/' })
     } else {
-      if (!store.getters.routerLoadDone) {
-        if (store.getters.addRouters.length > 0) {
-          console.log('load from local')
-          store
-            .dispatch('generateRoutes', [])
-            .then(() => {
-              // 动态添加可访问路由表
-              router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-              // eslint-disable-next-line new-cap
-              next({ ...to, replace: true })
-            })
-          // router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-          isRouterGenerated = true
-          // next('/')
-          next({ ...to, replace: true })
-        } else {
-          console.log('dispatch generateRoutes')
-          store
-            .dispatch('generateRoutes', [])
-            .then(() => {
-              // 动态添加可访问路由表
-              router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-              // eslint-disable-next-line new-cap
-              next({ ...to, replace: true })
-            })
-          isRouterGenerated = true
-        }
+      if (!store.getters.currentUser) {
+        console.log('获取用户信息')
+        store.dispatch('FETCH_PROFILE').then(res => { // 拉取user_info
+          store.dispatch('GenerateRoutes', store.getters.currentPermissions).then(() => { // 生成可访问的路由表
+            isRouterGenerated = true
+            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+          })
+        }).catch(err => {
+          console.log(err)
+        })
       } else {
-        console.log('user logined')
-        console.log(from)
-        if (to.path === '/login') {
-          next(from.fullPath)
+        if (store.getters.addRouters.length > 0 && !isRouterGenerated) {
+          console.log('load from vuex')
+          isRouterGenerated = true
+          console.log(store.getters.addRouters)
+          // resetRouter()
+          router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+          next({ ...to, replace: true })
         } else {
           next()
         }
       }
     }
   } else {
-    console.log('no need auth')
-    if (to.matched.length === 0) {
-      console.log('not matched')
-      if (!isRouterGenerated) {
-        if (store.getters.addRouters.length > 0) {
-          store
-            .dispatch('generateRoutes', [])
-            .then(() => {
-              // 动态添加可访问路由表
-              router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-              // eslint-disable-next-line new-cap
-              next({ ...to, replace: true })
-            })
-          isRouterGenerated = true
-        } else {
-          console.log('dispatch generateRoutes')
-          store
-            .dispatch('generateRoutes', [])
-            .then(() => {
-              // 动态添加可访问路由表
-              router.addRoutes(store.getters.addRouters.concat({ path: '*', redirect: '/404', hidden: true }))
-              // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-              // eslint-disable-next-line new-cap
-              next({ ...to, replace: true })
-            })
-          isRouterGenerated = true
-        }
-      }
+    if (whiteList.indexOf(to.path) !== -1) { // 在免登录白名单，直接进入
+      next();
     } else {
-      next()
+      next(`/login?redirect=${to.path}`) // 否则全部重定向到登录页
     }
   }
 })
@@ -119,10 +84,5 @@ router.beforeEach((to, from, next) => {
 router.afterEach(() => {
   // NProgress.done() // 结束Progress
 })
-
-// 取到浏览器出现网址的最后"/"出现的后边的字符
-function getLastUrl(str, yourStr) {
-  str.slice(str.indexOf(yourStr) + 1)
-}
 
 export default router

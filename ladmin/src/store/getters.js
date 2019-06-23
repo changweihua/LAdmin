@@ -1,16 +1,18 @@
 import { stat } from "fs";
 
 const getters = {
-  currentUser: state => state.CURRENT_USER,
+  currentUser: state => state.oauth.CURRENT_USER,
+  currentPermissions: state => state.oauth.CURRENT_PERMISSIONS,
   addRouters: state => state.permission.addRouters,
   routers: state => state.permission.routers,
   sideRouters: state => state.permission.routers.filter(r => {
     return !r.meta || !r.meta.hidden
   }),
-  token: state => state.JWT_TOKEN,
-  routerLoadDone: state => state.permission.routerLoadDone,
+  access_token: state => state.oauth.JWT_ACCESS_TOKEN,
+  refresh_token: state => state.oauth.JWT_REFRESH_TOKEN,
+  // routerLoadDone: state => state.permission.routerLoadDone,
   routerLoaded: state => state.permission.routerLoaded,
-  routerGenerated: state => state.permission.routerGenerated,
+  // routerGenerated: state => state.permission.routerGenerated,
   showCrumb: state => state.CRUMB_VISIBILITY,
   formModels: state => state.FORM_MODELS,
   systemModules: state => state.system.SYSTEM_MODULES.map(modul => {

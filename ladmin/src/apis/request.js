@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import { throwErr } from "@/utils"; //utils 捕捉服务端http状态码的方法
-// import store from "@/store"  //引入vuex的相关操作
+import store from "@/store"  //引入vuex的相关操作
 import { Message, Loading } from "element-ui"; //element Toast的提示
 // import router from "@/router";
 import { auth } from '@/apis/account'
@@ -62,22 +62,25 @@ axios.interceptors.request.use(config => {
   config.timeout = 1000 * 1000; // 请求响应时间
   console.log(config)
   showFullScreenLoading();
-  if (localStorage.JWT_TOKEN) { // 判断是否存在token，如果存在的话，则每个http header都加上token
+  console.log(`store.getters.access_token=${store.getters.access_token}`)
+  if (store.getters.access_token !== '') { // 判断是否存在token，如果存在的话，则每个http header都加上token
     if (config.url !== '/api/OAuth/auth') {
-      config.headers.Authorization = `Bearer ${localStorage.JWT_TOKEN}`;
+      config.headers.Authorization = `Bearer ${store.getters.access_token}`;
     }
     return config;
   } else {
     return new Promise(resolve => {
       // 根据refresh获取token
-      auth({
-        refresh_token: localStorage.REFRESH_TOKEN,
-        client_id: 'ancdkfsdfds',
-        client_secret: 'dsadsfdsfds',
-        grant_type: 'refresh_token'
-      }).then(res => {
-        console.log(res)
-      })
+      if (store.getters.refresh_token !== '') {
+        auth({
+          refresh_token: store.getters.refresh_token,
+          client_id: 'ancdkfsdfds',
+          client_secret: 'dsadsfdsfds',
+          grant_type: 'refresh_token'
+        }).then(res => {
+          console.log(res)
+        })
+      }
       // authentication.acquireToken().then(token => {
       //   config.headers['Authorization'] = 'Bearer ' + token
       //   // 添加时间戳 防止get请求缓存
@@ -102,18 +105,21 @@ axios.interceptors.response.use(
       return Promise.resolve(response.data); // 使用Promise.resolve 正常响应
     } else if (response.data.code === 401) { // 服务端定义的响应code码为1401时为未登录
       store.dispatch("setUserInfo", {});
-      return new Promise(resolve => {
-        console.log('refresh token')
-        auth({
-          client_id: 'ancdkfsdfds',
-          client_secret: 'dsadsfdsfds',
-          grant_type: 'refresh_token',
-          refresh_token: localStorage.REFRESH_TOKEN
-        }).then(res => {
-          console.log(res)
+      if (store.getters.refresh_token !== '') {
+        return new Promise(resolve => {
+          console.log('refresh token')
+          auth({
+            client_id: 'ancdkfsdfds',
+            client_secret: 'dsadsfdsfds',
+            grant_type: 'refresh_token',
+            refresh_token: store.getters.refresh_token
+          }).then(res => {
+            console.log(res)
+          })
         })
-      })
-      // router.push("/login")
+      } else {
+        router.push("/login")
+      }
       return Promise.reject(response.data);   //使用Promise.reject 抛出错误和异常
     } else {
       Message({
@@ -128,26 +134,28 @@ axios.interceptors.response.use(
     console.log(error.response.status)
     if (error && error.response) {
       if (error.response.status === 401) {
-        return new Promise(resolve => {
-          console.log('refresh token')
-          if (error.response.data.code !== 40101 && !originalRequest._retry) {
-            originalRequest._retry = true
-            auth({
-              refresh_token: localStorage.REFRESH_TOKEN,
-              client_id: 'ancdkfsdfds',
-              client_secret: 'dsadsfdsfds',
-              grant_type: 'refresh_token'
-            }).then(res => {
-              console.log(res)
-              window.localStorage.setItem('JWT_TOKEN', res.access_token)
-              window.localStorage.setItem('REFRESH_TOKEN', res.refresh_token)
-              axios.defaults.headers.common.Authorization = 'Bearer ' + res.access_token
-              // retry request
-              originalRequest.headers.Authorization = 'Bearer ' + res.access_token
-              return axios(originalRequest)
-            })
-          }
-        })
+        if (store.getters.refresh_token !== '') {
+          return new Promise(resolve => {
+            console.log('refresh token')
+            if (error.response.data.code !== 40101 && !originalRequest._retry) {
+              originalRequest._retry = true
+              auth({
+                refresh_token: store.getters.refresh_token,
+                client_id: 'ancdkfsdfds',
+                client_secret: 'dsadsfdsfds',
+                grant_type: 'refresh_token'
+              }).then(res => {
+                console.log(res)
+                window.localStorage.setItem('JWT_TOKEN', res.access_token)
+                window.localStorage.setItem('REFRESH_TOKEN', res.refresh_token)
+                axios.defaults.headers.common.Authorization = 'Bearer ' + res.access_token
+                // retry request
+                originalRequest.headers.Authorization = 'Bearer ' + res.access_token
+                return axios(originalRequest)
+              })
+            }
+          })
+        }
       }
       let res = {};
       res.code = error.response.status;

@@ -53,51 +53,36 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      // Victor("app", "abc"); // 登陆背景函数调用
-    })
-    this.windowResize(this.$refs.AccountForm.offsetWidth, this.$refs.AccountForm.offsetHeight) 
+    // this.$nextTick(() => {
+    //   // Victor("app", "abc"); // 登陆背景函数调用
+    // })
+    // this.windowResize(this.$refs.AccountForm.offsetWidth, this.$refs.AccountForm.offsetHeight) 
   },
   methods: {
     ...mapActions({
       fetchProfile: 'fetchProfile',
-      loadForms: 'LOAD_FORM_MODELS'
+      loadForms: 'LOAD_FORM_MODELS',
+      jwtOauth: 'JWT_OAUTH'
     }),
     windowResize(_w, _h) {
-      console.log(window)
-      console.log(document.documentElement.offsetHeight)
+      // console.log(window)
+      // console.log(document.documentElement.offsetHeight)
       // this.note = Object.assign({}, this.note, {
       //   height: _h + 'px'
       // })
     },
     handleLoginClick() {
       let that = this
-      that.$store.commit('RESET_ROUTERLOADDONE', false)
-      auth(this.account)
-        .then((res) => {
-          console.log(res)
-          window.localStorage.JWT_TOKEN = res.access_token
-          window.localStorage.REFRESH_TOKEN = res.refresh_token
-          that.$store.commit('SET_CURRENT_USER', res.user || {})
-          that.$store.commit('SET_JWT_TOKEN', res.access_token)
-          fetchPermission().then(res => {
-            console.log(res.asyncRouters)
-            that.$store.dispatch('filterRoutes', res.asyncRouters)
-            that.$message({
-              dangerouslyUseHTMLString: true,
-              message: '登录成功！',
-              onClose() {
-                // that.fetchProfile()
-                // that.loadForms()
-                that.$router.push('/')
-                // location.reload()
-              }
-            })
-          })
+      // that.$store.dispatch('JWT_OAUTH', this.account)
+      that.jwtOauth(this.account).then(res => {
+        that.$message({
+          dangerouslyUseHTMLString: true,
+          message: '登录成功！',
+          onClose() {
+            that.$router.push('/')
+          }
         })
-        .catch((err) => {
-          console.log(err)
-        })
+      })
     }
   }
 }

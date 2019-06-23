@@ -19,14 +19,16 @@ const userModule = {
   },
   actions: {
     fetchProfile({ commit }, query) {
-      fetchUserProfile(Object.assign({ }, query))
-        .then((res) => {
-          console.log(res)
-          commit('setProfile', res.pager)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      return new Promise((resolve, reject) => {
+        fetchUserProfile(Object.assign({ }, query))
+          .then((res) => {
+            commit('setProfile', res.pager)
+            resolve()
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
     },
     fetchUserList({ commit }, query) {
       fetchUserList(Object.assign({

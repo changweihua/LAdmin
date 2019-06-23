@@ -7,6 +7,7 @@ const debug = process.env.NODE_ENV !== 'production'
 // const vueConf = new VueConf(process.argv)
 // 注意：只有 VUE_APP_* 定义的变量才能在客户端代码中使用 
 
+console.log(process.env.VUE_APP_API_ROOT)
 console.log('')
 console.log('本地启动或构建的文件信息 | 开始--------------------------------------------------------------')
 // console.log(vueConf.pages)
@@ -98,6 +99,21 @@ module.exports = {
         config.optimization.minimize(false)
       }
 
+      // config.module
+      //   .rule('vue')
+      //   .use('vue-loader')
+
+      // set preserveWhitespace
+    // config.module
+    //   .rule('vue')
+    //   .use('vue-loader')
+    //   .loader('vue-loader')
+    //   .tap(options => {
+    //     options.compilerOptions.preserveWhitespace = true
+    //     return options
+    //   })
+    //   .end()
+
       config.plugins.delete('preload');
       config.plugins.delete('prefetch');
       config.resolve.alias
@@ -105,6 +121,9 @@ module.exports = {
         .set("scss", resolve("src/scss"))
         .set("assets", resolve("src/assets"))
         .set("components", resolve("src/components"));
+
+      // config.resolve.alias
+      //   .set('vue$', 'vue/dist/vue.esm.js')
 
       const oneOfsMap = config.module.rule('scss').oneOfs.store
       oneOfsMap.forEach(item => {
@@ -121,6 +140,7 @@ module.exports = {
       })
     },
     configureWebpack: config => {
+      // config.resolve.extensions = ['.js', '.vue', '.json']
       //生产and测试环境
       let pluginsPro = [
         // new DefinePlugin({

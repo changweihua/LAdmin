@@ -25,7 +25,7 @@
                       <a><fa-icon icon="language"></fa-icon></a>
                     </el-col>
                     <el-col :span="4">
-                      <a class="animated fadeIn">{{userProfile.username}}</a>
+                      <a class="animated fadeIn">{{currentUser.username}}</a>
                     </el-col>
                     <el-col :span="2">
                       <el-dropdown trigger="click" @command="handleCommand">
@@ -217,23 +217,23 @@ export default {
     console.log('Admin created')
   },
   watch: {
-    "$route": {
-      handler(newVal, oldVal) {
-      // 获取当前路径
-      let routeName = this.$route.name;
-      console.log(routeName)
-      this.showCrumb = routeName !== 'dashboardIndex'
-      console.log(this.userProfile)
-      // 检索当前路径
-      // this.checkRouterLocal(path);
-      },
-      deep: true,
-      immediate: true
-    }
+    // "$route": {
+    //   handler: function(newVal, oldVal) {
+    //   // 获取当前路径
+    //   let routeName = this.$route.name
+    //   console.log(routeName)
+    //   this.showCrumb = routeName !== 'dashboardIndex'
+    //   console.log(this.currentUser)
+    //   // 检索当前路径
+    //   // this.checkRouterLocal(path);
+    //   },
+    //   deep: true,
+    //   immediate: true
+    // }
   },
   computed: {
     ...mapState(['CURRENT_USER', 'CRUMB_VISIBILITY']),
-    ...mapGetters(['userProfile'])
+    ...mapGetters(['userProfile', 'currentUser'])
   },
   mounted() {
     console.log('Admin mounted')
@@ -309,9 +309,9 @@ export default {
 
       // this.$message('click on item ' + command)
       if (command === 'logout') {
-        that.$store.commit('SET_CURRENT_USER', false)
-        that.$store.commit('RESET_ROUTERLOADDONE', false)
-        that.$store.commit('SET_JWT_TOKEN', '')
+        that.$store.commit('SET_CURRENT_USER', null)
+        // that.$store.commit('RESET_ROUTERLOADDONE', false)
+        that.$store.commit('SET_JWT_TOKEN', null)
         that.$router.replace({
           name: 'login'
         })

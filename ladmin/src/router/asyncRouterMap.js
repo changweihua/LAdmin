@@ -57,8 +57,7 @@ export const asyncRouterMap = [
     path: '/role',
     name: 'role',
     redirect: 'roleList',
-    component: () =>
-      import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
+    component: AdminLayout,
     leaf: false,
     meta: {
       title: 'roleList',
@@ -121,8 +120,7 @@ export const asyncRouterMap = [
     path: '/user',
     name: 'user',
     redirect: 'userList',
-    component: () =>
-      import(/* webpackChunkName: 'adminLayout' */ '@/views/layout/Admin.vue'),
+    component: AdminLayout,
     leaf: false,
     meta: {
       title: 'userList',

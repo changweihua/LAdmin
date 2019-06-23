@@ -1,96 +1,69 @@
-import { constantRouterMap } from '@/router/constantRouterMap'
-import { asyncRouterMap } from '@/router/asyncRouterMap'
-import { fetchPermission } from '@/apis/account'
-import AdminLayout from '@/views/layout/Admin.vue'
+import { constantRouterMap, asyncRouterMap, AAdminLayout } from '@/router/constantRouterMap'
+// import { asyncRouterMap } from '@/router/asyncRouterMap'
+// import AdminLayout from '@/views/layout/Admin.vue'
+const _import = require('@/router/_import_' + process.env.NODE_ENV)
 
 const permissionModule = {
   state: {
     routers: constantRouterMap,
-    addRouters: [],
-    routerLoadDone: false,
-    routerGenerated: false,
-    routerLoaded: false
+    addRouters: []
   },
   mutations: {
-    RESET_ROUTERLOADDONE: (state, routerLoadDone) => {
-      state.routerLoadDone = routerLoadDone
-      state.routers = constantRouterMap
-      state.addRouters = []
-      state.routerLoaded = false
-      state.routerGenerated = false
-    },
     setRouters: (state, routers) => {
       console.log('setRouters')
       state.addRouters = routers
       // 和已经存在的路由表拼接
       state.routers = constantRouterMap.concat(routers)
-      // 404 页 '*' 放在所有route之后
-      // let notFound = { path: '*', redirect: '/404', meta: { hidden: true } }
-
-      // state.addRouters.push(notFound)
-      // state.routers.push(notFound)
-      state.routerLoadDone = true
-      state.routerLoaded = true
     }
   },
   actions: {
-    async FETCH_PERMISSION({ commit, state }) {
-      let permission = await fetchPermission()
-      console.log(permission)
-      const accessedRouters = permission.asyncRouters.filter((v) => {
-        return true
-      })
-      commit('setRouters', filterAsyncRouter(accessedRouters))
-    },
-    filterRoutes({ commit, state }, routes) {
-      console.log('filterRoutes')
-      const accessedRouters = formatAsyncRouter(routes)
-      console.log(accessedRouters)
-      commit('setRouters', accessedRouters)
-    },
-    generateRoutes({ commit, state }, response) {
-      console.log(response)
-      const accessedRouters = asyncRouterMap.filter((v) => {
-        return true
-      })
-      // let lastRouters = []
-      // if (state.routers) {
-      //   lastRouters = accessedRouters.filter(accessedRouter => {
-      //     return !state.routers.some(route => { return accessedRouter.path === route.path })
-      //   })
-      // } else {
-      //   lastRouters = accessedRouters
-      // }
-      // console.log(lastRouters)
-      commit('setRouters', accessedRouters)
-      // let asyncRouters = filterAsyncRouter(response);
-      // asyncRouters.push({ path: '*', redirect: '/404', hidden: true });
-      // commit('setRouters', asyncRouters);
-      // return new Promise((resolve) => {
-      //   // const { roles } = data;
-      //   // const roles = {}
-      //   const accessedRouters = asyncRouterMap.filter((v) => {
-      //     // if (roles.indexOf('admin') >= 0) return true;
-      //     // if (hasPermission(roles, v)) {
-      //     //   if (v.children && v.children.length > 0) {
-      //     //     v.children = v.children.filter(child => {
-      //     //       if (hasPermission(roles, child)) {
-      //     //         return child;
-      //     //       }
-      //     //       return false;
-      //     //     });
-      //     //     return v;
-      //     //   } else {
-      //     //     return v;
-      //     //   }
-      //     // }
-      //     console.log(v)
-      //     return true
-      //   })
+    GenerateRoutes({ commit, state }, routers) {
+      return new Promise(resolve => {
+        console.log(routers)
+        const accessedRouters = formatAsyncRouter(routers)
+        // asyncRouterMap.filter((v) => {
+        //   return true
+        // })
+        // let lastRouters = []
+        // if (state.routers) {
+        //   lastRouters = accessedRouters.filter(accessedRouter => {
+        //     return !state.routers.some(route => { return accessedRouter.path === route.path })
+        //   })
+        // } else {
+        //   lastRouters = accessedRouters
+        // }
+        // console.log(lastRouters)
+        commit('setRouters', accessedRouters)
+        resolve()
+        // let asyncRouters = filterAsyncRouter(response);
+        // asyncRouters.push({ path: '*', redirect: '/404', hidden: true });
+        // commit('setRouters', asyncRouters);
+        // return new Promise((resolve) => {
+        //   // const { roles } = data;
+        //   // const roles = {}
+        //   const accessedRouters = asyncRouterMap.filter((v) => {
+        //     // if (roles.indexOf('admin') >= 0) return true;
+        //     // if (hasPermission(roles, v)) {
+        //     //   if (v.children && v.children.length > 0) {
+        //     //     v.children = v.children.filter(child => {
+        //     //       if (hasPermission(roles, child)) {
+        //     //         return child;
+        //     //       }
+        //     //       return false;
+        //     //     });
+        //     //     return v;
+        //     //   } else {
+        //     //     return v;
+        //     //   }
+        //     // }
+        //     console.log(v)
+        //     return true
+        //   })
 
-      //   commit('setRouters', accessedRouters)
-      //   resolve()
-      // })
+        //   commit('setRouters', accessedRouters)
+        //   resolve()
+        // })
+      })
     }
   }
   // plugins: debug ? [createLogger(), createPersisted] : [createPersisted]
@@ -108,11 +81,10 @@ function filterAsyncRouter(routers) {
     let componentPath
     if (router.component === 'AdminLayout') {
       // Main组件特殊处理
-      // router.component = AdminLayout
+      router.component = AAdminLayout
     } else {
       // 处理组件---重点
-      componentPath = router.component
-      router.component = () => loadView(componentPath)
+      router.component =  _import(router.component)
     }
     // 存在子集
     if (router.children && router.children.length) {
@@ -135,7 +107,8 @@ function formatAsyncRouter(routers) {
       leaf,
       meta,
       children,
-      name
+      name,
+      redirect
     } = router
     // if (router.meta) {
     //   // 默认图标处理
@@ -143,37 +116,33 @@ function formatAsyncRouter(routers) {
     // }
     const nRouter = {
       path: path,
-      component(resolve) {
-        let componentPath = ''
-        if (component === 'AdminLayout') {
-          // Main组件特殊处理
-          require(['@/views/layout/Admin.vue'], resolve)
-        } else {
-          // 处理组件---重点
-          require([`${component}`], resolve)
-        }
-      },
+      // component: resolve => {
+      //   let componentPath = ''
+      //   if (component === 'AdminLayout') {
+      //     // Main组件特殊处理
+      //     require(['@/views/layout/Admin.vue'], resolve)
+      //     return
+      //   } else {
+      //     // 处理组件---重点
+      //     // vue的 import()函数不支持使用变量，只能是字符串（文件路径）
+      //     // import只是JavaScript模块引入的关键字，不能像使用普通函数一样，使用字符串的拼接。
+      //     componentPath = component
+      //   }
+      //   require([`${componentPath}`], resolve)
+      // },
+      // component: () => import('../../views/' + component + '.vue'),
+      // component: resolve => require([`${component}`], resolve),
+      component: component === 'AdminLayout' ? AAdminLayout : _import(component),
       name: name,
       children: (children && children.length > 0) ? formatAsyncRouter(children) : [],
       meta: meta,
-      leaf: leaf
+      leaf: leaf,
+      redirect: redirect
     }
     console.log(nRouter)
     accessedRouters.push(nRouter)
   })
   return accessedRouters
-}
-
-function loadView(view) {
-  // 路由懒加载
-  // if (process.env === 'production') {
-  //   resolved = id => import(`@/views/modules/${view}`)
-  // } else {
-  //   resolved = id => require(`${view}`)
-  // }
-  console.log('loadView')
-  return () => require(`${view}`)
-  return () => import(`@/views/modules/${view}`)
 }
 
 export { permissionModule }

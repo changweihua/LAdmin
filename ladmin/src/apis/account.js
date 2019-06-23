@@ -17,3 +17,7 @@ export const values = (params) => {
 export const fetchPermission = (params) => {
   return request('get', '/api/OAuth/GetPermissions', params); //登陆管理员获取自身信息
 };
+
+export const fetchProfile = (params) => {
+  return request('post', '/api/OAuth/Profile', params); //登陆管理员获取自身信息
+};

@@ -13,3 +13,5 @@ requireComponent.keys().forEach(fileName => {
   const componentName = (componentConfig.default || componentConfig).name
   Vue.component(componentName, componentConfig.default || componentConfig)
 })
+
+export default {}
