@@ -60,13 +60,18 @@ router.beforeEach((to, from, next) => {
           console.log(err)
         })
       } else {
-        if (store.getters.addRouters.length > 0 && !isRouterGenerated) {
+        if (!isRouterGenerated) {
           console.log('load from vuex')
-          isRouterGenerated = true
-          console.log(store.getters.addRouters)
-          // resetRouter()
-          router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-          next({ ...to, replace: true })
+          store.dispatch('FETCH_PERMISSION').then(permissions => { // 拉取权限
+            console.log(permissions)
+            store.dispatch('GenerateRoutes', permissions).then(() => { // 生成可访问的路由表
+              isRouterGenerated = true
+              router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+              next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+            })
+          }).catch(err => {
+            console.log(err)
+          })
         } else {
           next()
         }
