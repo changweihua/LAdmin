@@ -196,10 +196,7 @@ $color: #fff;
 
 <script>
 
-const signalR = require('@aspnet/signalr')
-
 import { mapState, mapGetters, mapActions } from 'vuex'
-import { send } from '@/apis/message'
 
 export default {
   name: 'AdminLayout',
@@ -217,19 +214,16 @@ export default {
     console.log('Admin created')
   },
   watch: {
-    // "$route": {
-    //   handler: function(newVal, oldVal) {
-    //   // 获取当前路径
-    //   let routeName = this.$route.name
-    //   console.log(routeName)
-    //   this.showCrumb = routeName !== 'dashboardIndex'
-    //   console.log(this.currentUser)
-    //   // 检索当前路径
-    //   // this.checkRouterLocal(path);
-    //   },
-    //   deep: true,
-    //   immediate: true
-    // }
+    "$route": {
+      handler: function(newVal, oldVal) {
+        console.log('$route')
+        // 获取当前路径
+        let routeName = this.$route.name
+        this.showCrumb = routeName !== 'dashboardIndex'
+      },
+      deep: true,
+      immediate: true
+    }
   },
   computed: {
     ...mapState(['CURRENT_USER', 'CRUMB_VISIBILITY']),
@@ -237,9 +231,6 @@ export default {
   },
   mounted() {
     console.log('Admin mounted')
-    this.initSignalR(function(conn) {
-          conn.invoke('GetLastestCount', 'ssss')
-        })
     this.loadForms()
     this.loadModules()
   },
@@ -248,109 +239,19 @@ export default {
       loadForms: 'LOAD_FORM_MODELS',
       loadModules: 'LOAD_SYSTEM_MODULES'
     }),
-    initSignalR(callback) {
-
-      if (this.connection === null) {
-        console.log(process.env.VUE_APP_SINGLAR_URL)
-        this.connection = new signalR.HubConnectionBuilder()
-          .withUrl(process.env.VUE_APP_SINGLAR_URL + '/test')
-          .build()
-
-        this.connection.on('someFunc', (obj) => {
-          this.$message({
-            message: obj.random,
-            type: 'success'
-          })
-          console.log('Someone called this, paramters: ' + obj.random)
-        })
-
-        this.connection.on('ReceiveUpdate', (obj) => {
-          this.$message({
-            message: obj.random,
-            type: 'success'
-          })
-          console.log('ReceiveUpdate')
-        })
-
-        this.connection.on('Finished', (obj) => {
-         this.connection.stop()
-          console.log('Finished')
-        })
-
-        this.connection.onClosed = (evt) => {
-          if (evt) {
-            console.log(evt)
-          }
-        }
-
-      }
-      console.log(this.connection.connectionState)
-      if (this.connection.connectionState === 0) {
-
-      this.connection.start()
-        .then(() => { 
-          console.log(this.connection)
-          console.log('Now connected, connection ID=' + this.connection.id)
-          if (callback) {
-            callback(this.connection)
-          }
-        })
-        .catch(err => {
-          console.error(err)
-        })
-      } else {
-        if (callback) {
-          callback(this.connection)
-        }
-      }
-    },
     handleCommand(command) {
       let that = this
-
-      // this.$message('click on item ' + command)
       if (command === 'logout') {
         that.$store.commit('SET_CURRENT_USER', null)
-        // that.$store.commit('RESET_ROUTERLOADDONE', false)
         that.$store.commit('SET_JWT_TOKEN', null)
         that.$router.replace({
           name: 'login'
         })
-        // location.reload()
       } else if (command === 'send') {
-        this.initSignalR(function(conn) {
-          conn.invoke('GetLastestCount', 'ssss')
-        })
-        // send({ random: 'abc' })
-//        this.connection.start().then(() => {
-// this.connection.invoke('GetLastestCount', 'ssss')
-//        })
-        // send({ random: 'abc' }).then((res) => { 
-        //     console.log(res)
-        //     console.log(res.text())
-        //     return res.text()
-        //   })
-        //   .then(id => this.connection.invoke('GetLastestCount', id))
       } else if (command === 'lock') {
       }
     },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
-    },
     isClossTabFun() {
-      // clearInterval(this.intelval);
-      // if (!this.isCollapse) {
-      //   this.intelval = setInterval(() => {
-      //     if (this.tabWidth <= 64) {
-      //       clearInterval(this.intelval);
-      //     }
-      //     this.tabWidth -= 1;
-      //   }, 1);
-      // } else {
-      //   this.tabWidth = 200;
-      // }
       this.isCollapse = !this.isCollapse
     },
     toggleLang(lang) {

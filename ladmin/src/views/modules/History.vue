@@ -27,6 +27,7 @@
 <script>
 
 export default {
+  name: 'history',
   data() {
     return {
       scroll_lists: [

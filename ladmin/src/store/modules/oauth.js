@@ -1,4 +1,4 @@
-import { auth, fetchProfile } from '@/apis/account'
+import { auth, fetchProfile, fetchPermission } from '@/apis/account'
 
 const oauthModule = {
   state: {
@@ -48,6 +48,18 @@ const oauthModule = {
             commit('SET_CURRENT_USER', res.result)
             commit('SET_CURRENT_PERMISSIONS', res.result.permissions)
             resolve()
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    },
+    FETCH_PERMISSION({ commit }, query) {
+      return new Promise((resolve, reject) => {
+        fetchPermission(Object.assign({ }, query))
+          .then((res) => {
+            console.log(res)
+            resolve(res.asyncRouters)
           })
           .catch((err) => {
             reject(err)

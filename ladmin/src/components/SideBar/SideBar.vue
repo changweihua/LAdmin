@@ -34,7 +34,6 @@
     mode="vertical"
     :default-active="$route.path"
     :collapse="isCollapse"
-    class="el-menu-vertical-demo"
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
@@ -47,8 +46,8 @@
           <fa-icon :icon="['fas', item.meta.icon || 'square']"></fa-icon>
           <span> {{ $t(item.name) }} </span>
         </template>
-        <!-- <el-menu-item v-for="child in item.children" :key="child.path" :index="child.name">
-          {{child.name}}
+        <!-- <el-menu-item v-for="child in item.children.filter(c => !c.meta.hidden)" :key="child.path" :index="child.name">
+          {{ $t(child.name) }}
         </el-menu-item> -->
         <router-link v-for="child in item.children.filter(c => !c.meta.hidden)" :key="child.path" class="title-link" :to="{ name: child.name }">
           <el-menu-item :index="child.name">
@@ -57,7 +56,8 @@
         </router-link>
       </el-submenu>
       <!-- <el-menu-item :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :index="item.name">
-        <fa-icon icon="language"></fa-icon> {{item.name}}
+        <fa-icon icon="language"></fa-icon>
+        {{ $t(item.name) }}
       </el-menu-item> -->
       <router-link :key="item.name" v-if="item.leaf&&item.children&&item.children.length>0" :to="{ name: item.name }" class="title-link">
         <el-menu-item :index="item.path+'/'+item.children[0].path">
@@ -84,6 +84,12 @@ export default {
   },
   watch: {},
   methods: {
+    subIsActive(input) {
+      const paths = Array.isArray(input) ? input : [input]
+      return paths.some(path => {
+        return this.$route.path.indexOf(path) === 0 // current path starts with this path string
+      })
+    },
     handleOpen(key, keyPath) {
       console.log(key)
       console.log(keyPath)
@@ -93,9 +99,9 @@ export default {
     },
     handleSelect(key, keyPath) {
       console.log(key, keyPath)
-      this.$router.push({
-        name: keyPath
-      })
+      // this.$router.push({
+      //   name: keyPath
+      // })
     }
   }
 }
@@ -108,14 +114,17 @@ export default {
     &:hover{
       color: rgb(255, 208, 75);
     }
+    &.router-link-active {
+      .el-menu {
+        color: rgb(255, 208, 75) !important;
+      }
+    }
   }
 
   .el-menu {
     border-right: 0 !important;
   }
 
-  .router-link-active .el-menu {
-    color: rgb(255, 208, 75) !important;
-  }
+  
 
 </style>

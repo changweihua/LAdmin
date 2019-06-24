@@ -28,6 +28,7 @@
 import { query, create } from '@/apis/values'
 
 export default {
+  name: 'about',
   data() {
     return {
       account: {

@@ -59,7 +59,7 @@ import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'configurationlist',
-  components: {},
+  // components: {},
   data() {
     return {
       form: {},

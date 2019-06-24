@@ -47,7 +47,7 @@
 
 export default {
   name: "dashboard",
-  components: {},
+  // components: {},
   data() {
     return {
       year: 0,

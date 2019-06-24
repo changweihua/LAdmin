@@ -128,6 +128,8 @@ new Vue({
   store,
   i18n,
   render: (h) => h(App),
+  // name: 'app',
+  // el: '#app',
   created: function() {
     console.log('app created from main.js')
     // if (store.getters.addRouters.length > 0) {

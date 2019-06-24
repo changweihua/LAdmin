@@ -60,9 +60,8 @@ axios.interceptors.request.use(config => {
   // config 为请求的一些配置 例如：请求头 请求时间 Token  可以根据自己的项目需求个性化配置，参考axios的中文说明手册  自己多动动手
   // 由于我们项目的后端大大给力，很多东西在服务端帮我们处理好了所以请求阶段只要传好参数就好了
   config.timeout = 1000 * 1000; // 请求响应时间
-  console.log(config)
   showFullScreenLoading();
-  console.log(`store.getters.access_token=${store.getters.access_token}`)
+  // console.log(`store.getters.access_token=${store.getters.access_token}`)
   if (store.getters.access_token !== '') { // 判断是否存在token，如果存在的话，则每个http header都加上token
     if (config.url !== '/api/OAuth/auth') {
       config.headers.Authorization = `Bearer ${store.getters.access_token}`;
@@ -100,14 +99,12 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(
   response => {
     tryHideFullScreenLoading();
-    console.log(response)
     if (response.data.code === 0) {   // 服务端定义的响应code码为0时请求成功
       return Promise.resolve(response.data); // 使用Promise.resolve 正常响应
     } else if (response.data.code === 401) { // 服务端定义的响应code码为1401时为未登录
       store.dispatch("setUserInfo", {});
       if (store.getters.refresh_token !== '') {
         return new Promise(resolve => {
-          console.log('refresh token')
           auth({
             client_id: 'ancdkfsdfds',
             client_secret: 'dsadsfdsfds',

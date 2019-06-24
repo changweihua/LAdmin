@@ -104,15 +104,15 @@ module.exports = {
       //   .use('vue-loader')
 
       // set preserveWhitespace
-    // config.module
-    //   .rule('vue')
-    //   .use('vue-loader')
-    //   .loader('vue-loader')
-    //   .tap(options => {
-    //     options.compilerOptions.preserveWhitespace = true
-    //     return options
-    //   })
-    //   .end()
+      config.module
+        .rule('vue')
+        .use('vue-loader')
+        .loader('vue-loader')
+        .tap(options => {
+          options.compilerOptions.preserveWhitespace = true
+          return options
+        })
+        .end()
 
       config.plugins.delete('preload');
       config.plugins.delete('prefetch');
@@ -122,8 +122,8 @@ module.exports = {
         .set("assets", resolve("src/assets"))
         .set("components", resolve("src/components"));
 
-      // config.resolve.alias
-      //   .set('vue$', 'vue/dist/vue.esm.js')
+      config.resolve.alias
+        .set('vue$', 'vue/dist/vue.js')
 
       const oneOfsMap = config.module.rule('scss').oneOfs.store
       oneOfsMap.forEach(item => {

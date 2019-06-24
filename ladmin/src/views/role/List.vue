@@ -37,7 +37,7 @@ import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'roleList',
-  components: {},
+  // components: {},
   data() {
     return {
       tablePager: {
